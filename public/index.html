@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism.min.css" />
+  <link rel="icon" href="../novaxjs2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"></script>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <title>Novaxjs2</title>
+  <style>
+    :root {
+      --primary-bg: #f3f3f3;
+      --primary-text: #000;
+      --secondary-bg: #222;
+      --secondary-text: #fff;
+      --transition-speed: 0.4s;
+    }
+
+    html{
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--primary-text);
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+    }
+
+    button {
+      padding: 15px;
+      border: none;
+      color: var(--primary-text);
+      border-radius: 3px;
+      cursor: pointer;
+      background-color: transparent;
+    }
+
+    #menu {
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .bar1, .bar2, .bar3 {
+      width: 35px;
+      height: 5px;
+      background-color: var(--primary-text);
+      margin: 6px 0;
+      transition: var(--transition-speed);
+    }
+
+    .change .bar1 {
+      transform: translate(0, 11px) rotate(-45deg);
+    }
+
+    .change .bar2 {
+      opacity: 0;
+    }
+
+    .change .bar3 {
+      transform: translate(0, -11px) rotate(45deg);
+    }
+
+    #header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--primary-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #down {
+      position: fixed;
+      right: 10px;
+      top: 60px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 5px;
+      width: 300px;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.9);
+      transition: var(--transition-speed);
+      background-color: var(--secondary-bg);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    #down.change {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    #down p {
+      margin: 10px 0 0 0;
+      padding: 10px 20px;
+      color: var(--secondary-text);
+      font-size: 18px;
+      border-bottom: 1px solid #333;
+    }
+
+    #down a {
+      text-decoration: none;
+      padding: 10px 20px;
+      color: var(--secondary-text);
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    #down a:hover {
+      background-color: #444;
+    }
+
+    #contents {
+      padding-top: 80px;
+    }
+
+    #back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--secondary-bg);
+      color: var(--secondary-text);
+      border: none;
+      width: 45px;
+      height: 45px;
+      padding: 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      display: none;
+    }
+
+    #footer {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--secondary-bg);
+      color: var(--secondary-text);
+      text-align: center;
+    }
+
+    #footer a {
+      color: var(--secondary-text);
+      margin: 0 10px;
+      font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+      #header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      #down {
+        width: 250px;
+      }
+    }
+    article{
+      padding: 20px;
+    }
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 10px 0;
+    }
+    code {
+      background-color: #f8f8f8;
+      padding: 2px 4px;
+      border-radius: 3px;
+      color: #c7254e;
+      font-size: 15px;
+    }
+    pre .token {
+      color: #e06c75;
+    }
+    pre .token.keyword {
+      color: #c678dd;
+    }
+    pre .token.function {
+      color: #61afef;
+    }
+    p{
+      font-size: 18px;
+    }
+    textarea{
+      width: 80%;
+      height: 70px;
+      padding: 15px;
+      outline: none;
+      border-radius: 3px;
+    }
+    #contact button{
+      width: 50%;
+      background-color: #0096cc;
+      color: #fff;
+      margin-top: 20px;
+      border-radius: 3px;
+    }
+    #links a{
+      text-decoration: none;
+      color: #0096cc;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="header">
+      <div id="drop">
+        <div class="menu" onclick="dropDown(this)">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+        <div id="down">
+          <p>Novaxjs2</p>
+          <a href="#about">About</a>
+          <a href="#installation">Installation</a>
+          <a href="#features">Features</a>
+          <a href="#usage">Usage</a>
+          <a href="#example">Example</a>
+          <a href="#links">Projects</a>
+          <a href="#contact">Contact us</a>
+        </div>
+      </div>
+    </div>
+    <div id="contents">
+      <article id="about">
+        <h1>Novaxjs2 About</h1>
+        <p>Novaxjs2 is a lightweight, flexible, and extensible web framework built for Node.js, designed to simplify the process of building and serving dynamic web applications. With a focus on simplicity and performance, Novaxjs2 provides a straightforward API that allows developers to quickly create and manage HTTP servers, handle routing, serve static files, and apply middleware—all while keeping the code clean and minimal.</p>
+      </article>
+      <article id="installation">
+        <h1>Installation</h1>
+        <p>Use the following command to install Novaxjs2:</p>
+        <pre><code>npm install novaxjs2</code></pre>
+      </article>
+      <article id="features">
+        <h1>Features</h1>
+        <ul>
+          <li><strong>Route Handling: </strong> Define routes using <strong>GET</strong>, <strong>POST</strong>, <strong>PUT</strong>, and <strong>DELETE</strong> methods.</li><br>
+          <li><strong>Middleware Support: </strong> Add custom middleware for request handling.</li><br>
+          <li><strong>Static File Serving: </strong> Easily serve static files using the serveStatic method.</li><br>
+          <li><strong>Customizable Styles: </strong> Use a &lt;style&gt; tag to apply custom styles to responses <pre><code>app.style = 'css style'</code></pre></li>
+          <li><strong>File-based Route Handling: Utilize: </strong> Utilize the sendFile method to return file contents directly.</li>
+        </ul>
+      </article>
+      <article id="usage">
+        <h1>Usage</h1>
+        <h2>Creating the Server</h2>
+        <pre>
+<code class="language-javascript">const Nova = require('novaxjs2');
+
+const app = new Nova();
+
+// Define routes
+app.get('/', (req, res) => {
+    return '&lt;h1&gt;Welcome to Nova Framework!&lt;/h1&gt;';
+});
+
+// Start the server
+app.at(3000, () => {
+    console.log('Server is running on port 3000');
+});
+</code>
+        </pre>
+        <h2>Middleware</h2>
+        <pre>
+<code class="language-javascript">
+app.useMiddleware((req, res, next) => {
+    console.log(`Request Method: ${req.method} - URL: ${req.url}`);
+    next();
+});
+</code>
+        </pre>
+        <h2>Errer handle</h2>
+        <pre>
+<code class="language-javascript">
+app.error((err, req, res, next) => {
+  res.writeHead(500, { "Content-Type": "text/html" });
+  return `&lt;h1&gt;Error: ${err.message}&tl;/h1&gt;`;
+});
+</code>
+        </pre>
+        <h2>Api reference</h2>
+        <pre><code>get(path, handler): Define a GET route.
+</code></pre>
+        <pre><code>post(path, handler): Define a POST route.
+</code></pre>
+        <pre><code>put(path, handler): Define a PUT route.</code></pre>
+        <pre><code>delete(path, handler): Define a DELETE route.
+</code></pre>
+        <pre><code>style: Use this to set custom CSS styles.
+</code></pre>
+        <pre><code>useMiddleware(middleware): Add middleware to the request handling chain.
+</code></pre>
+        <pre><code>error(handler): Handle errors with a custom error handler.
+</code></pre>
+        <pre><code>sendFile(filePath, res): Send file content directly to the response.
+</code></pre>
+        <pre><code>at(port, callback): Start the server and listen on the specified</code></pre>
+        <h1>Example</h1>
+        <pre id="example"><code class="language-javascript">
+const nova = require("novaxjs2");
+const app = nova();
+const port = 3000;
+
+// Global style CSS
+app.style = `
+  body {
+    margin: 0;
+    background: #ffff;
+    color: #000;
+    font-family: Arial, sans-serif;
+`;
+
+// JavaScript is an empty string to prevent errors when returning empty content
+app.js = '';
+
+// Home route returning HTML content
+app.get('/', () => {
+  return `
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="en">
+    &lt;head&gt;
+      &lt;meta charset="UTF-8"&lt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+      &lt;title&gt;Welcome to novaxjs2&lt;/title&gt;
+      &lt;style&gt;
+        body {
+          font-family: Arial, sans-serif;
+        }
+      &gt;/style&gt;
+    &tt;/head&gt;
+    &lt;body&gt;
+      &lt;h1&gt;Welcome to novaxjs2!&lt;/h1&gt;
+      &lt;pThis is a simple HTML page served by novaxjs2.&lt;/p&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+  `;
+});
+
+// Start the app on the specified port
+app.at(port, () => {
+  console.log(`App is running on https://localhost:${port}`);
+});
+</code></pre>
+      </article>
+      <article id="links">
+        <h1>To do list example</h1>
+        <a href="https://github.com/WhoappRoom/To-Do-List-">https://github.com/WhoappRoom/To-Do-List-</a>
+        <h1>Forum Api example</h1>
+        <a href="https://github.com/WhoappRoom/Novaxjs2">https://github.com/WhoappRoom/Novaxjs2</a>
+      </article>
+      <article id="contact">
+        <h1>Contact Us</h1>
+        <p>Message on Small Pencil we will response quickly</p>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <textarea id="message" placeholder="Message..."></textarea>
+          <button id="submit">Submit</button>
+        </div>
+      </article>
+    </div>
+    <button id="back-to-top" onclick="scrollToTop()"><i class="bx bx-up-arrow-alt"></i></button>
+    <div id="footer">
+      <p>Follow us on:</p>
+      <a href="https://www.facebook.com/share/14g2SMPvD3/"><i class="fab fa-facebook"></i></a>
+      <a href="https://x.com/CabdiWaaxi100"><i class="fab fa-twitter"></i></a>
+    </div>
+  </div>
+  <script>
+    function dropDown(x) {
+      const downMenu = document.getElementById('down');
+      downMenu.classList.toggle('change');
+      x.classList.toggle('change');
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+      const backToTopButton = document.getElementById('back-to-top');
+      if (window.scrollY > 300) {
+        backToTopButton.style.display = 'block';
+      } else {
+        backToTopButton.style.display = 'none';
+      }
+    });
+    document.getElementById('submit').addEventListener('click', () => {
+      var url = 'https://www.small-pencil.website/api/send?uid=yKWM2ZqH54OH7AtKgYqBC2REYmI2&text=';
+      var text = document.getElementById('message').value.trim();
+      if (!text) {
+        alert('Please enter the message!');
+        return;
+      }
+      var fullUrl = url + encodeURIComponent(text);
+      window.open(fullUrl, '_blank');
+    });
+  </script>
+</body>
+</html>
