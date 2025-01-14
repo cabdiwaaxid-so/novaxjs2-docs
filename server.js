@@ -2,9 +2,13 @@ const nova = require('novaxjs2');
 const path = require('path');
 const app = new nova();
 const port = 3000;
-app.serveStatic('./public')
-app.get('/', (req, res) => {
-  app.sendFile(path.join(__dirname, 'public/index.html')), res)
+app.serveStatic('public')
+app.get('/', async (req, res) => {
+  try {
+    app.sendFile(path.join(__dirname, './public/index.html'), res)
+  } catch(err) {
+    return 'Error: '+err;
+  }
 });
 app.on(404, () => {
     return `<h1>404 - Page Not Found </h1>`;
