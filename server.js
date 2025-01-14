@@ -1,13 +1,12 @@
 const nova = require('novaxjs2');
-const fs = require('fs');
-const path = require('path');
-const app = nova();
+const app = new nova();
 const port = 3000;
+app.serveStatic('public')
 app.get('/', (req, res) => {
-  res.end(fs.readFileSync(path.join(__dirname, './public/index.html')));
+  app.sendFile('public/index.html', res)
 });
-app.get('/novaxjs2', (eeq, res) => {
-  res.end(fs.readFileSync(path.join(__dirname, './public/novaxjs2.webp')));
+app.on(404, () => {
+    return `<h1>404 - Page Not Found </h1>`;
 });
 app.at(port, () => {
   console.log(`Nova is running on https:localhost:${port}`);
