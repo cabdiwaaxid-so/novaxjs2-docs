@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism.min.css" />
-  <link rel="icon" href="../novaxjs2">
+  <link rel="icon" href="/public/novaxjs2.webp">
   <meta name="google-site-verification" content="-Sc2AOOxp3P9T75c7qu6mzbuBegIGFaB6C88zFn7v4w" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"></script>
@@ -250,16 +250,19 @@
       <article id="features">
         <h1>Features</h1>
         <ul>
-          <li><strong>Route Handling: </strong> Define routes using <strong>GET</strong>, <strong>POST</strong>, <strong>PUT</strong>, and <strong>DELETE</strong> methods.</li><br>
+          <li><strong>Route Handling: </strong> Define routes using <strong>GET</strong>, <strong>POST</strong>, <strong>PUT</strong>, and <strong>DELETE</strong> methods.<li>Routes with dynamic parameters (e.g., /user/:id) and (e.g., /search:q ) are matched using regex</li></li><br>
           <li><strong>Middleware Support: </strong> Add custom middleware for request handling.</li><br>
           <li><strong>Static File Serving: </strong> Easily serve static files using the serveStatic method.</li><br>
           <li><strong>Customizable Styles: </strong> Use a &lt;style&gt; tag to apply custom styles to responses <pre><code>app.style = 'css style'</code></pre></li>
-          <li><strong>File-based Route Handling: Utilize: </strong> Utilize the sendFile method to return file contents directly.</li>
+          <li><strong>Customizable JavaScript: </strong> Use a &lt;script&gt; tag to inject custom JavaScript into responses  
+          <pre><code>app.js = '//javascript code'</code></pre></li>
+          <li><strong>File-based Route Handling: Utilize: </strong> Utilize the sendFile method to return file contents directly using <pre><code>app.sendFile(filePath, res).</code></pre></li>
         </ul>
       </article>
       <article id="usage">
         <h1>Usage</h1>
         <h2>Creating the Server</h2>
+        <p><strong>Note: </strong>Novaxjs2 version 4.5.7 or above requires initializing the application using <pre><code>new nova()</code></pre></p>
         <pre>
 <code class="language-javascript">const Nova = require('novaxjs2');
 
@@ -285,12 +288,29 @@ app.useMiddleware((req, res, next) => {
 });
 </code>
         </pre>
-        <h2>Errer handle</h2>
+        <h2>404 Error</h2>
         <pre>
 <code class="language-javascript">
-app.error((err, req, res, next) => {
-  res.writeHead(500, { "Content-Type": "text/html" });
-  return `&lt;h1&gt;Error: ${err.message}&tl;/h1&gt;`;
+app.on(404, (req, res) => {
+    return '&lt;h1&gt;404 - Page Not Found&lt;/h1&gt;';
+});
+</code>
+        </pre>
+        <h2>params access</h2>
+        <pre>
+<code class="language-javascript">
+  app.get('/user/:id', (req, res) => {
+    const p = req.params.id;  // Access route parameter 'id'
+    return `You searched user with id: ${p}`;
+});
+</code>
+        </pre>
+        <h2>query access</h2>
+        <pre>
+<code class="language-javascript">
+  app.get('/search:q', (req, res) => {
+    const q = req.query.q;
+    return `You searched for: ${q}`;
 });
 </code>
         </pre>
@@ -304,17 +324,23 @@ app.error((err, req, res, next) => {
 </code></pre>
         <pre><code>style: Use this to set custom CSS styles.
 </code></pre>
+        <pre><code>js: Use this to inject custom JavaScript into your responses.
+</code></pre>
         <pre><code>useMiddleware(middleware): Add middleware to the request handling chain.
+</code></pre>
+        <pre><code>on(404, handler): Defines a custom handler for 404 errors. When a requested route is not found, this handler is invoked to return a "Not Found" response or a custom error message.
 </code></pre>
         <pre><code>error(handler): Handle errors with a custom error handler.
 </code></pre>
         <pre><code>sendFile(filePath, res): Send file content directly to the response.
 </code></pre>
+        <pre><code>serveStatic(directly): Static files are served using the serveStatic() method, which maps file paths based on the staticPath..
+</code></pre>
         <pre><code>at(port, callback): Start the server and listen on the specified</code></pre>
         <h1>Example</h1>
         <pre id="example"><code class="language-javascript">
 const nova = require("novaxjs2");
-const app = nova();
+const app = new nova();
 const port = 3000;
 
 // Global style CSS
@@ -326,8 +352,7 @@ app.style = `
     font-family: Arial, sans-serif;
 `;
 
-// JavaScript is an empty string to prevent errors when returning empty content
-app.js = '';
+app.js = 'console.log("Hello world")';
 
 // Home route returning HTML content
 app.get('/', () => {
