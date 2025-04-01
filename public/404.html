@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --error: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 25% 60%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .error-code {
+            font-size: 6rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--error));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: #4f46e5;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+        }
+        
+        .animation {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+        
+        .circle-1 {
+            width: 150px;
+            height: 150px;
+            background-color: var(--primary);
+            top: 20%;
+            left: 20%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .circle-2 {
+            width: 100px;
+            height: 100px;
+            background-color: var(--error);
+            top: 50%;
+            right: 20%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+        
+        .circle-3 {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            bottom: 20%;
+            left: 40%;
+            animation: float 5s ease-in-out infinite 1s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .error-code {
+                font-size: 4rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .animation {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animation">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+    
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1>Oops! Page not found</h1>
+        <p>The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
+        <a href="/" class="btn btn-primary">Go back home</a>
+    </div>
+
+    <script>
+        // Add interactive elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.querySelector('.btn-primary');
+            
+            // Button hover effect enhancement
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transform = 'translateY(-2px)';
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translateY(0)';
+            });
+            
+            // Randomly adjust animation timing on load
+            const circles = document.querySelectorAll('.circle');
+            circles.forEach((circle, index) => {
+                const randomDelay = Math.random() * 2;
+                circle.style.animationDelay = `${randomDelay}s`;
+                
+                // Random size variation
+                if (index === 0) {
+                    const randomSize = 140 + Math.random() * 20;
+                    circle.style.width = `${randomSize}px`;
+                    circle.style.height = `${randomSize}px`;
+                }
+            });
+            
+            // Add a fun console message
+            console.log('%c404! The page is missing, but you found the console! 👋', 
+                'color: #6366f1; font-size: 14px; font-weight: bold;');
+        });
+    </script>
+</body>
+</html>
