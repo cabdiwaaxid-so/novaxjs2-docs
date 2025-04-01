@@ -1,5 +1,16 @@
 {
+  "name": "novaxjs2",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "novaxjs2": "^4.5.9"
+    "novaxjs2": "^4.6.2"
   }
 }
