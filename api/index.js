@@ -16,5 +16,4 @@ app.on(404, () => {
 });
 app.at(port, () => {
   console.log(`Nova is running on https:localhost:${port}`);
-})
-module.exports = app;
+});
