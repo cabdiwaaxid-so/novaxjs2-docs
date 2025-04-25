@@ -1,16 +1,16 @@
 {
   "name": "novaxjs2",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "api/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node api/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "novaxjs2": "^4.6.2"
+    "novaxjs2": "^4.6.4"
   }
 }
