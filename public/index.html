@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="icon" href="/novaxjs2.png">
+  <link rel="icon" href="/logo.png">
   <meta name="google-site-verification" content="-Sc2AOOxp3P9T75c7qu6mzbuBegIGFaB6C88zFn7v4w" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
@@ -14,7 +14,42 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
-  <title>Novaxjs2 - Modren Node.js Framework</title>
+  <title>Novaxjs2 - Modern Node.js Framework</title>
+  <meta name="title" content="Novaxjs2 - Modern Node.js Framework">
+  <meta name="description" content="Lightweight, high-performance Node.js framework for building web applications and APIs with minimal overhead and maximum flexibility">
+  <meta name="keywords" content="Node.js, Framework, JavaScript, Web Development, API, Novaxjs2">
+  <meta name="author" content="Cabdi Waaxid Siciid">
+
+  <!-- Open Graph / Facebook (for social sharing) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novaxjs.vercel.app/">
+  <meta property="og:title" content="Novaxjs2 - Modern Node.js Framework">
+  <meta property="og:description" content="Lightweight, high-performance Node.js framework for building web applications and APIs">
+  <meta property="og:image" content="https://novaxjs.vercel.app/logo.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://novaxjs.vercel.app/">
+  <meta property="twitter:title" content="Novaxjs2 - Modern Node.js Framework">
+  <meta property="twitter:description" content="Lightweight, high-performance Node.js framework for building web applications and APIs">
+  <meta property="twitter:image" content="https://novaxjs.vercel.app/logo.png">
+
+  <!-- Favicons -->
+  <link rel="icon" href="/logo.png" sizes="any">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <!-- Theme Color (for mobile browsers) -->
+  <meta name="theme-color" content="#0f172a">
+  <meta name="msapplication-TileColor" content="#0f172a">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://novaxjs.vercel.app/">
+
+  <!-- Additional Recommended Tags -->
+  <meta name="robots" content="index, follow">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <style>
     :root {
       --primary-bg: #0f172a;
@@ -127,8 +162,6 @@
     #header {
       position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
       background-color: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(10px);
       display: flex;
@@ -179,7 +212,7 @@
     }
 
     .change .bar1 {
-      transform: translate(0, 10px) rotate(-45deg);
+      transform: translate(0, 11px) rotate(-45deg);
     }
 
     .change .bar2 {
@@ -187,7 +220,7 @@
     }
 
     .change .bar3 {
-      transform: translate(0, -10px) rotate(45deg);
+      transform: translate(0, -11px) rotate(45deg);
     }
 
     #down {
@@ -747,6 +780,13 @@
       box-shadow: var(--card-shadow);
     }
 
+    .logo{
+      width: 50px;
+      height: 50px;
+      aspect-ratio: 1;
+      border-radius: 4px;
+    }
+
   </style>
 </head>
 <body>
@@ -768,18 +808,19 @@
           <a href="#file-uploads"><i class="fas fa-upload"></i> File Uploads</a>
           <a href="#cors"><i class="fas fa-shield-alt"></i> CORS</a>
           <a href="#middleware"><i class="fas fa-cogs"></i> Middleware</a>
+          <a href="#templating"><i class="fas fa-file-code"></i> Templating</a>
           <a href="#example"><i class="fas fa-laptop-code"></i> Example</a>
           <a href="#links"><i class="fas fa-project-diagram"></i> Projects</a>
           <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
         </div>
       </div>
-      <h1>Novaxjs2 Documentation</h1>
+      <img class="logo" src="/logo.png" alt="Novaxjs2 logo">
     </div>
     
     <div id="contents">
       <article id="about">
         <h1><i class="fas fa-rocket"></i> Novaxjs2 Framework</h1>
-        <p>Novaxjs2 is a modren, lightweight, and high-performance Node.js framework designed for building web applications and APIs with minimal overhead and maximum flexibility.</p>
+        <p>Novaxjs2 is a modern, lightweight, and high-performance Node.js framework designed for building web applications and APIs with minimal overhead and maximum flexibility.</p>
         
         <div class="feature-grid">
           <div class="feature-card">
@@ -791,8 +832,8 @@
             <p>Extensible architecture with middleware support and customizable options.</p>
           </div>
           <div class="feature-card">
-            <h3><i class="fas fa-mobile-alt"></i> modren</h3>
-            <p>Supports all modren JavaScript features including async/await.</p>
+            <h3><i class="fas fa-mobile-alt"></i> modern</h3>
+            <p>Supports all modern JavaScript features including async/await.</p>
           </div>
           <div class="feature-card">
             <h3><i class="fas fa-shield-alt"></i> Secure</h3>
@@ -813,96 +854,85 @@
         <div id="npm" class="tab-content active">
           <pre><code class="language-bash">npm install novaxjs2</code></pre>
         </div>
-        
-        <h3>Version Compatibility</h3>
-        <table class="api-reference">
-          <thead>
-            <tr>
-              <th>Novaxjs2 Version</th>
-              <th>Node.js Version</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>4.x</td>
-              <td>14+</td>
-              <td><span class="status stable"></span> Stable</td>
-            </tr>
-            <tr>
-              <td>3.x</td>
-              <td>12+</td>
-              <td><span class="status deprecated"></span> Deprecated</td>
-            </tr>
-            <tr>
-              <td>5.x (beta)</td>
-              <td>16+</td>
-              <td><span class="status beta"></span> Beta</td>
-            </tr>
-          </tbody>
-        </table>
       </article>
       
       <article id="features">
-        <h1><i class="fas fa-star"></i> Core Features</h1>
-        
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h3><i class="fas fa-route"></i> Advanced Routing</h3>
-            <ul>
-              <li>RESTful route definitions</li>
-              <li>Dynamic path parameters</li>
-              <li>Query parameter parsing</li>
-              <li>Regular expression routes</li>
-            </ul>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-layer-group"></i> Middleware System</h3>
-            <ul>
-              <li>Standard middleware chain</li>
-              <li>Error handling middleware</li>
-              <li>Built-in static file middleware</li>
-              <li>Async middleware support</li>
-            </ul>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-file-upload"></i> File Handling</h3>
-            <ul>
-              <li>Static file serving</li>
-              <li>File uploads with size limits</li>
-              <li>MIME type detection</li>
-              <li>Direct file responses</li>
-            </ul>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-shield-virus"></i> Security</h3>
-            <ul>
-              <li>Configurable CORS</li>
-              <li>Request body parsing</li>
-              <li>Error handling</li>
-              <li>File upload protections</li>
-            </ul>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-tachometer-alt"></i> Performance</h3>
-            <ul>
-              <li>Lightweight core</li>
-              <li>Optimized routing</li>
-              <li>Minimal overhead</li>
-              <li>Efficient middleware</li>
-            </ul>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-cogs"></i> Customization</h3>
-            <ul>
-              <li>Global CSS injection</li>
-              <li>Global JavaScript injection</li>
-              <li>Custom error pages</li>
-              <li>Response helpers</li>
-            </ul>
-          </div>
-        </div>
-      </article>
+  <h1><i class="fas fa-star"></i> Core Features</h1>
+  
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h3><i class="fas fa-route"></i> Advanced Routing</h3>
+      <ul>
+        <li>RESTful route definitions</li>
+        <li>Dynamic path parameters</li>
+        <li>Query parameter parsing</li>
+        <li>Regular expression routes</li>
+      </ul>
+    </div>
+    
+    <div class="feature-card">
+      <h3><i class="fas fa-layer-group"></i> Middleware System</h3>
+      <ul>
+        <li>Standard middleware chain</li>
+        <li>Error handling middleware</li>
+        <li>Built-in static file middleware</li>
+        <li>Async middleware support</li>
+      </ul>
+    </div>
+    
+    <div class="feature-card">
+      <h3><i class="fas fa-file-code"></i> Templating Engine</h3>
+      <ul>
+        <li>Built-in Novax template engine</li>
+        <li>Conditionals (#if, #else, #elif)</li>
+        <li>Loops (#each)</li>
+        <li>Variable interpolation</li>
+        <li>Nested templates</li>
+        <li>Automatic HTML escaping</li>
+      </ul>
+    </div>
+    
+    <div class="feature-card">
+      <h3><i class="fas fa-file-upload"></i> File Handling</h3>
+      <ul>
+        <li>Static file serving</li>
+        <li>File uploads with size limits</li>
+        <li>MIME type detection</li>
+        <li>Direct file responses</li>
+      </ul>
+    </div>
+    
+    <div class="feature-card">
+      <h3><i class="fas fa-shield-virus"></i> Security</h3>
+      <ul>
+        <li>Configurable CORS</li>
+        <li>Request body parsing</li>
+        <li>Error handling</li>
+        <li>File upload protections</li>
+      </ul>
+    </div>
+    
+    <div class="feature-card">
+      <h3><i class="fas fa-tachometer-alt"></i> Performance</h3>
+      <ul>
+        <li>Lightweight core</li>
+        <li>Optimized routing</li>
+        <li>Minimal overhead</li>
+        <li>Efficient middleware</li>
+      </ul>
+    </div>
+    
+    <div class="feature-card">
+      <h3><i class="fas fa-cogs"></i> Customization</h3>
+      <ul>
+        <li>Global CSS injection</li>
+        <li>Global JavaScript injection</li>
+        <li>Custom error pages</li>
+        <li>Response helpers</li>
+      </ul>
+    </div>
+  </div>
+</article>
       
       <article id="usage">
         <h1><i class="fas fa-code"></i> Basic Usage</h1>
@@ -1230,6 +1260,94 @@ app.serveStatic('public');
 // File upload parsing (automatic)</code></pre>
       </article>
       
+<article id="templating">
+  <h1><i class="fas fa-file-code"></i> Templating Engine <code>New</code></h1>
+  <p>Novaxjs2 includes a powerful templating engine with conditionals, loops, and variable interpolation.</p>
+  
+  <h2>Setting Up Views</h2>
+  <pre><code class="language-javascript">// Configure view engine
+app.setViewEngine('novax', {
+  viewsPath: './views' // optional, defaults to './views'
+});</code></pre>
+  
+  <h2>Basic Template</h2>
+  <p>Create a file <code>views/home.html</code>:</p>
+  <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;{{ title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;{{ heading }}&lt;/h1&gt;
+  
+  {{#if user}}
+    &lt;p&gt;Welcome back, {{ user.name }}!&lt;/p&gt;
+  {{#else}}
+    &lt;p&gt;Please log in&lt;/p&gt;
+  {{/if}}
+  
+  {{#each items}}
+    &lt;div class="item"&gt;
+      &lt;h3&gt;{{ this.name }}&lt;/h3&gt;
+      &lt;p&gt;Price: ${{ this.price }}&lt;/p&gt;
+    &lt;/div&gt;
+  {{/each}}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  
+  <h2>Rendering Templates</h2>
+  <pre><code class="language-javascript">app.get('/', async (req, res) => {
+  const data = {
+    title: 'Home Page',
+    heading: 'Welcome to our site',
+    user: { name: 'John Doe' },
+    items: [
+      { name: 'Product 1', price: 19.99 },
+      { name: 'Product 2', price: 29.99 }
+    ]
+  };
+  
+  return await app.render('home', data);
+});</code></pre>
+  
+  <h2>Template Features</h2>
+  <table class="api-reference">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Syntax</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Variables</td>
+        <td><code>{{ variable }}</code></td>
+        <td>Output variable value</td>
+      </tr>
+      <tr>
+        <td>Conditionals</td>
+        <td><code>{{#if condition}}...{{/if}}</code></td>
+        <td>Conditional rendering</td>
+      </tr>
+      <tr>
+        <td>Else</td>
+        <td><code>{{#else}}...{{/else}}</code></td>
+        <td>Else clause for conditionals</td>
+      </tr>
+      <tr>
+        <td>Loops</td>
+        <td><code>{{#each array}}...{{/each}}</code></td>
+        <td>Iterate over arrays</td>
+      </tr>
+      <tr>
+        <td>Nested</td>
+        <td><code>{{#each}}{{#if}}...{{/if}}{{/each}}</code></td>
+        <td>Nested conditionals and loops</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
       <article id="example">
         <h1><i class="fas fa-laptop-code"></i> Complete Example</h1>
         <p>A complete Novaxjs2 application demonstrating multiple features.</p>
@@ -1326,6 +1444,13 @@ app.at(3000, () => {
               <i class="fab fa-github"></i> View on GitHub
             </a>
           </div>
+          <div class="feature-card">
+            <h3><i class="fas fa-tasks"></i> Modern To List App <code>v-4.6.4 required</code></h3>
+            <p>This app demonstrates modern web development practices with server-side rendering, REST API endpoints</p>
+            <a href="https://github.com/WhoappRoom/modern-to-do-list" class="button">
+              <i class="fab fa-github"></i> View on GitHub
+            </a>
+          </div>
         </div>
       </article>
       
@@ -1375,8 +1500,8 @@ app.at(3000, () => {
           <i class="fab fa-npm"></i>
         </a>
       </div>
-      <p>&copy; 2023 Novaxjs2. All rights reserved.</p>
-      <p>Version 4.6.2</p>
+      <p>&copy; 2025 Novaxjs2. All rights reserved.</p>
+      <p>Version 4.6.4</p>
     </div>
   </div>
 
