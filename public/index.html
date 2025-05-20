@@ -809,6 +809,9 @@
           <a href="#cors"><i class="fas fa-shield-alt"></i> CORS</a>
           <a href="#middleware"><i class="fas fa-cogs"></i> Middleware</a>
           <a href="#templating"><i class="fas fa-file-code"></i> Templating</a>
+          <a href="#route-middleware"><i class="fas fa-code-branch"></i> Route Middleware</a>
+          <a href="#advanced-responses"><i class="fas fa-reply"></i> Advanced Responses</a>
+          <a href="#error-handling"><i class="fas fa-exclamation-triangle"></i> Error Handling</a>
           <a href="#example"><i class="fas fa-laptop-code"></i> Example</a>
           <a href="#links"><i class="fas fa-project-diagram"></i> Projects</a>
           <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
@@ -959,7 +962,7 @@ app.get('/user/:id', (req, res) => {
 });
 
 // Query parameters
-app.get('/search', (req, res) => {
+app.get('/search:', (req, res) => {
     const query = req.query.q;
     return `Search: ${query}`;
 });</code></pre>
@@ -1011,8 +1014,8 @@ app.get('/search', (req, res) => {
               <td><code>app.delete('/users/:id', (req, res) => {...})</code></td>
             </tr>
             <tr>
-              <td><code>at(port, callback)</code></td>
-              <td>Start server</td>
+              <td><code>at(port, host, callback)</code></td>
+              <td>Start server </td>
               <td><code>app.at(3000, () => {...})</code></td>
             </tr>
             <tr>
@@ -1153,7 +1156,7 @@ app.get('/search', (req, res) => {
               <td><code>res.redirect('/home')</code></td>
             </tr>
             <tr>
-              <td><code>res.sendFile(path)</code></td>
+              <td><code>res.sendFile(path, res)</code></td>
               <td>Send file response</td>
               <td><code>res.sendFile('index.html')</code></td>
             </tr>
@@ -1248,7 +1251,7 @@ app.setFileSizeLimit(10); // 10MB limit</code></pre>
         <h2>Error Middleware</h2>
         <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
   console.error('Error:', err);
-  res.status(500).send('Internal Server Error');
+  res.status(500).end('Internal Server Error');
 });</code></pre>
         
         <h2>Built-in Middleware</h2>
@@ -1331,8 +1334,8 @@ app.setViewEngine('novax', {
         <td>Conditional rendering</td>
       </tr>
       <tr>
-        <td>Else</td>
-        <td><code>{{#else}}...{{/else}}</code></td>
+        <td>Else/Else If</td>
+        <td><code>{{#else}}...{{/else}}</code> and <code>{{#elif condition}}...{{/elif}}</code></td>
         <td>Else clause for conditionals</td>
       </tr>
       <tr>
@@ -1347,6 +1350,96 @@ app.setViewEngine('novax', {
       </tr>
     </tbody>
   </table>
+</article>
+
+<article id="route-middleware">
+  <h1><i class="fas fa-code-branch"></i> Route-Specific Middleware</h1>
+  
+  <p>Novaxjs2 supports adding middleware to specific routes:</p>
+  
+  <h2>Adding Middleware to Routes</h2>
+  <pre><code class="language-javascript">// Middleware function
+function logRequest(req, res, next) {
+  console.log(`Request: ${req.method} ${req.url}`);
+  next();
+}
+
+// Route with middleware
+app.get('/protected', logRequest, (req, res) => {
+  return 'This route is protected by middleware';
+});</code></pre>
+  
+  <h2>Multiple Middleware</h2>
+  <pre><code class="language-javascript">function auth(req, res, next) {
+  if (req.headers.authorization) {
+    next();
+  } else {
+    res.status(401).end('Unauthorized');
+  }
+}
+
+app.get('/admin', 
+  logRequest, 
+  auth,
+  (req, res) => {
+    return 'Admin dashboard';
+  }
+);</code></pre>
+</article>
+
+<article id="advanced-responses">
+  <h1><i class="fas fa-reply"></i> Advanced Response Handling</h1>
+  
+  <h2>Redirect Responses</h2>
+  <pre><code class="language-javascript">app.get('/old-route', (req, res) => {
+  res.redirect('/new-route');
+});
+
+app.get('/temp-redirect', (req, res) => {
+  res.redirect('/new-location', 307); // Temporary redirect
+});</code></pre>
+  
+  <h2>Sending Files</h2>
+  <pre><code class="language-javascript">app.get('/file', (req, res) => {
+  res.sendFile('path/to/file.pdf', res);
+});</code></pre>
+  
+  <h2>Setting Headers</h2>
+  <pre><code class="language-javascript">app.get('/custom', (req, res) => {
+  res.setHeader('X-Custom-Header', 'value');
+  return 'Response with custom header';
+});</code></pre>
+</article>
+
+<article id="error-handling">
+  <h1><i class="fas fa-exclamation-triangle"></i> Advanced Error Handling</h1>
+  
+  <h2>Custom Error Pages</h2>
+  <pre><code class="language-javascript">// Custom 404 page
+app.on(404, () => {
+  return '&lt;h1&gt;Custom 404 Page&lt;/h1&gt;';
+});
+
+// Custom 500 handler
+app.error((err, req, res) => {
+  console.error(err);
+  return '&lt;h1&gt;Something went wrong&lt;/h1&gt;';
+});</code></pre>
+  
+  <h2>Error Middleware</h2>
+  <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
+  if (err) {
+    console.log(err)
+    res.status(400).end(err.message);
+  } else {
+    next(err);
+  }
+});</code></pre>
+  
+  <h2>Throwing Errors</h2>
+  <pre><code class="language-javascript">app.get('/error', (req, res) => {
+  throw new Error('Something went wrong');
+});</code></pre>
 </article>
       <article id="example">
         <h1><i class="fas fa-laptop-code"></i> Complete Example</h1>
@@ -1504,7 +1597,7 @@ app.at(3000, () => {
         </a>
       </div>
       <p>&copy; 2025 Novaxjs2. All rights reserved.</p>
-      <p>Version 4.6.5</p>
+      <p>Version 4.6.6</p>
     </div>
   </div>
 
