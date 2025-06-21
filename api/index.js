@@ -3,10 +3,16 @@ const path = require('path');
 const fs = require('fs');
 const app = new nova();
 const port = 3000;
+
+app.setViewEngine('novax', {
+  viewsPath: path.join(process.cwd(), '../public')
+})
+
 app.serveStatic('public')
 app.get('/', (req, res) => {
   app.sendFile(path.join(__dirname, '../public/index.html'), res)
 });
+
 app.get('/sitemap', (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/xml'})
   res.end(`<?xml version="1.0" encoding="UTF-8"?>
@@ -26,11 +32,11 @@ app.get('/sitemap', (req, res) => {
 
 </urlset>`)
 });
-app.on(404, () => {
-  return `${fs.readFileSync(path.join(__dirname, '../public/404.html'))}`;
+app.on(404, async () => {
+  return await app.render('404');;
 });
-app.error((err, req, res) => {
-  return `${fs.readFileSync(path.join(__dirname, '../public/500.html'))}`;
+app.error(async(err, req, res) => {
+  return await app.render('500');;
 })
 app.at(port, () => {
   console.log(`Nova is running on https:localhost:${port}`);
