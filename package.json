@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "novaxjs2": "^4.6.7"
+    "novaxjs2": "^4.6.7",
+    "novax-submanager": "^1.0.0"
   }
 }
