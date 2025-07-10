@@ -16,8 +16,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <title>Novaxjs2 - Modern Node.js Framework</title>
   <meta name="title" content="Novaxjs2 - Modern Node.js Framework">
-  <meta name="description" content="Lightweight, high-performance Node.js framework for building web applications and APIs with minimal overhead and maximum flexibility">
-  <meta name="keywords" content="Node.js, Framework, JavaScript, Web Development, API, Novaxjs2">
+  <meta name="description" content="Lightweight, high-performance Node.js framework for building web applications and APIs with minimal overhead and maximum flexibility using modern JavaScript features.">
+  <meta name="keywords" content="Node.js, Framework, JavaScript, Web Development, API, Novaxjs2, novaxjs2, nova, nova framework, api, novajs, node.js, web framework, lightweight, flexible, extensible, http server, routing, middleware, static files, dynamic web applications, node framework, node web framework, nodejs, nodejs framework, nodejs web framework, nodejs api, nodejs server, nodejs routing, nodejs middleware, nodejs static files">
   <meta name="author" content="Cabdi Waaxid Siciid">
 
   <!-- Open Graph / Facebook (for social sharing) -->
@@ -787,6 +787,25 @@
       border-radius: 4px;
     }
 
+    /* scrollbar */
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-color);
+      border-radius: 0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-hover);
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 0;
+    }
+    ::-webkit-scrollbar-track:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -805,6 +824,7 @@
           <a href="#features"><i class="fas fa-star"></i> Features</a>
           <a href="#usage"><i class="fas fa-code"></i> Usage</a>
           <a href="#api-reference"><i class="fas fa-book"></i> API Reference</a>
+          <a href="#plugin-system"><i class="fas fa-puzzle-piece"></i>Plugin System</a>
           <a href="#file-uploads"><i class="fas fa-upload"></i> File Uploads</a>
           <a href="#cors"><i class="fas fa-shield-alt"></i> CORS</a>
           <a href="#middleware"><i class="fas fa-cogs"></i> Middleware</a>
@@ -1156,13 +1176,93 @@ app.get('/search:', (req, res) => {
               <td><code>res.redirect('/home')</code></td>
             </tr>
             <tr>
-              <td><code>res.sendFile(path, res)</code></td>
+              <td><code>res.sendFile(path, contentType, res)</code></td>
               <td>Send file response</td>
-              <td><code>res.sendFile('index.html')</code></td>
+              <td><code>res.sendFile('index.html', res)//default text/html</code></td>
+            </tr>
+            <tr>
+              <td><code>res.send(content, contentType)</code></td>
+              <td>Send raw content</td>
+              <td><code>res.send('Hello World', 'text/plain')</code></td>
+            </tr>
+            <tr>
+              <td><code>res.set(headers)</code></td>
+              <td>Set multiple headers</td>
+              <td><code>res.set({ 'X-Custom': 'value' })</code></td>
             </tr>
           </tbody>
         </table>
       </article>
+
+       <h2>Plugin System</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>usePlugin(plugin, options)</code></td>
+          <td>Extend framework functionality with plugins</td>
+          <td><code>app.usePlugin(myPlugin, { config: true })</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>View Engine Methods</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>setViewEngine(engine, options)</code></td>
+          <td>Configure template engine</td>
+          <td><code>app.setViewEngine('novax', { viewsPath: './views' })</code></td>
+        </tr>
+        <tr>
+          <td><code>render(file, data)</code></td>
+          <td>Render template with data</td>
+          <td><code>await app.render('home', { title: 'Home' })</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Enhanced Request Object</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Description</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>req.protocol</code></td>
+          <td>Request protocol (http/https)</td>
+          <td>String</td>
+        </tr>
+        <tr>
+          <td><code>req.fullUrl</code></td>
+          <td>Complete request URL</td>
+          <td>String</td>
+        </tr>
+        <tr>
+          <td><code>req.ip</code></td>
+          <td>Client IP address</td>
+          <td>String</td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
       
       <article id="file-uploads">
         <h1><i class="fas fa-file-upload"></i> File Uploads</h1>
@@ -1264,7 +1364,7 @@ app.serveStatic('public');
       </article>
       
 <article id="templating">
-  <h1><i class="fas fa-file-code"></i> Templating Engine <code>New</code></h1>
+  <h1><i class="fas fa-file-code"></i> Templating Engine </h1>
   <p>Novaxjs2 includes a powerful templating engine with conditionals, loops, and variable interpolation.</p>
   
   <h2>Setting Up Views</h2>
@@ -1351,6 +1451,61 @@ app.setViewEngine('novax', {
     </tbody>
   </table>
 </article>
+
+<article id="plugin-system">
+    <h1><i class="fas fa-puzzle-piece"></i> Plugin System</h1>
+    <p>Extend Novaxjs2 functionality with custom plugins:</p>
+    
+    <h2>Creating a Plugin</h2>
+    <pre><code class="language-javascript">function myPlugin(context, options) {
+  // Add new methods
+  context.addMethod('greet', function(name) {
+    return `Hello ${name}!`;
+  });
+  
+  // Add routes
+  context.addRoute('get', '/plugin-route', (req, res) => {
+    return 'This route was added by plugin';
+  });
+  
+  // Add middleware
+  context.addMiddleware((req, res, next) => {
+    console.log('Plugin middleware');
+    next();
+  });
+  
+  // Store configuration
+  context.setConfig('pluginConfig', options);
+}</code></pre>
+    
+    <h2>Using a Plugin</h2>
+    <pre><code class="language-javascript">app.usePlugin(myPlugin, { setting: 'value' });
+
+// Now you can use plugin methods
+app.get('/', (req, res) => {
+  return app.greet('World');
+});</code></pre>
+  </article>
+
+  <!-- Enhanced Static File Serving section -->
+  <article id="static-files">
+    <h1><i class="fas fa-folder-open"></i> Static File Serving</h1>
+    
+    <h2>Basic Usage</h2>
+    <pre><code class="language-javascript">// Serve files from 'public' directory
+app.serveStatic('public');
+
+// Files will be available at:
+// /public/style.css -> /style.css
+// /public/images/logo.png -> /images/logo.png</code></pre>
+    
+    <h2>Custom Directory</h2>
+    <pre><code class="language-javascript">// Serve from 'assets' directory instead
+app.serveStatic('assets');</code></pre>
+    
+    <h2>MIME Types</h2>
+    <p>Novaxjs2 automatically detects file types from extensions using a comprehensive MIME type database.</p>
+  </article>
 
 <article id="route-middleware">
   <h1><i class="fas fa-code-branch"></i> Route-Specific Middleware</h1>
@@ -1597,7 +1752,9 @@ app.at(3000, () => {
         </a>
       </div>
       <p>&copy; 2025 Novaxjs2. All rights reserved.</p>
-      <p>Version 4.6.7</p>
+      <p>Version 6.0.0</p>
+      <p>Created by <code>Cabdi Waaxid Siciid</code></p>
+      <p>Last updated: July, 10, 2025</p>
     </div>
   </div>
 

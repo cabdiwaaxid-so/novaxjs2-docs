@@ -1,30 +1,11 @@
 const nova = require('novaxjs2');
 const path = require('path');
-const submager = require('novax-submanager');
 const fs = require('fs');
 const app = new nova();
 const port = 3000;
 
 app.serveStatic('public')
-const availablePlugins = fs.readdirSync(path.join(__dirname, '../public/plugins'));
-const config = {
-  subdomains: ['plugin', availablePlugins.map(plugin =>plugin)],
-};
-const subApps = submager(app, config);
 
-subApps.sub('plugin').get('/', (req, res) => {
-    res.send(`
-      <h1>Available Plugins</h1>
-      <ul>
-        ${availablePlugins.map(plugin => `<a href="http://${plugin}.localhost:3000">${plugin}</a>`).join('')}
-      </ul>
-    `);
-})
-for(const plugin of availablePlugins) {
-  subApps.sub(plugin).get('/', (req, res) => {
-    app.sendFile(path.join(__dirname, `../public/plugins/${plugin}/index.html`), res);
-  })
-}
 app.get('/', (req, res) => {
   app.sendFile(path.join(__dirname, '../public/index.html'), res)
 });
@@ -48,7 +29,7 @@ app.get('/sitemap', (req, res) => {
 </urlset>`, 'text/xml');
 });
 app.on(404, () => {
-    return fs.readFileSync(path.join(__dirname, '../public/404.html'), 'utf8');
+  return fs.readFileSync(path.join(__dirname, '../public/404.html'), 'utf8');
 });
 app.error(async(err, req, res) => {
   res.send(fs.readFileSync(path.join(__dirname, '../public/500.html'), 'utf8'));
