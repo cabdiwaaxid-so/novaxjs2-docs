@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <meta name="title" content="Novaxjs2 - Templating Engine">
+<meta name="description" content="Use Novaxjs2's built-in templating engine with conditionals, loops and layouts">
+<meta property="og:title" content="Novaxjs2 - Templating Engine">
+<meta property="og:description" content="Powerful template rendering in Novaxjs2">
+<meta property="twitter:title" content="Novaxjs2 - Templating Engine">
+<meta property="twitter:description" content="Template rendering features">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <link rel="icon" href="/logo.png">
+  <title>Novaxjs2 Docs - Templating</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<article id="templating">
+  <h1><i class="fas fa-file-code"></i> Templating Engine</h1>
+  <p>Novaxjs2 includes a powerful templating engine with conditionals, loops, and variable interpolation.</p>
+
+  <h2>Setting Up Views</h2>
+  <pre><code class="language-javascript">
+// Configure view engine
+app.setViewEngine('novax', {
+  viewsPath: './views' // optional, defaults to './views'
+});
+  </code></pre>
+
+  <h2>Basic Template</h2>
+  <p>Create a file <code>views/home.html</code>:</p>
+  <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;&#123;&#123; title &#125;&#125;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;&#123;&#123; heading &#125;&#125;&lt;/h1&gt;
+
+  &#123;&#123;#if user&#125;&#125;
+    &lt;p&gt;Welcome back, &#123;&#123; user.name &#125;&#125;!&lt;/p&gt;
+  &#123;&#123;#else&#125;&#125;
+    &lt;p&gt;Please log in&lt;/p&gt;
+  &#123;&#123;/if&#125;&#125;
+
+  &#123;&#123;#each items&#125;&#125;
+    &lt;div class="item"&gt;
+      &lt;h3&gt;&#123;&#123; name &#125;&#125;&lt;/h3&gt;
+      &lt;p&gt;Price: $&#123;&#123; price &#125;&#125;&lt;/p&gt;
+    &lt;/div&gt;
+  &#123;&#123;/each&#125;&#125;
+&lt;/body&gt;
+&lt;/html&gt;
+  </code></pre>
+
+  <h2>Rendering Templates</h2>
+  <pre><code class="language-javascript">
+app.get('/', async (req, res) => {
+  const data = {
+    title: 'Home Page',
+    heading: 'Welcome to our site',
+    user: { name: 'John Doe' },
+    items: [
+      { name: 'Product 1', price: 19.99 },
+      { name: 'Product 2', price: 29.99 }
+    ]
+  };
+
+  return await app.render('home', data);
+});
+  </code></pre>
+
+  <h2>Template Features</h2>
+  <table class="api-reference">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Syntax</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Variables</td>
+        <td><code>&#123;&#123; variable &#125;&#125;</code></td>
+        <td>Output variable value</td>
+      </tr>
+      <tr>
+        <td>Conditionals</td>
+        <td><code>&#123;&#123;#if condition&#125;&#125;...&#123;&#123;/if&#125;&#125;</code></td>
+        <td>Conditional rendering</td>
+      </tr>
+      <tr>
+        <td>Else / Else If</td>
+        <td><code>&#123;&#123;#else&#125;&#125;...&#123;&#123;/else&#125;&#125;</code><br/><code>&#123;&#123;#elif condition&#125;&#125;...&#123;&#123;/elif&#125;&#125;</code></td>
+        <td>Else clause for conditionals</td>
+      </tr>
+      <tr>
+        <td>Loops</td>
+        <td><code>&#123;&#123;#each array&#125;&#125;...&#123;&#123;/each&#125;&#125;</code></td>
+        <td>Iterate over arrays</td>
+      </tr>
+      <tr>
+        <td>Nested</td>
+        <td><code>&#123;&#123;#each&#125;&#125;&#123;&#123;#if&#125;&#125;...&#123;&#123;/if&#125;&#125;&#123;&#123;/each&#125;&#125;</code></td>
+        <td>Nested conditionals and loops</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+    <a href="/docs/middleware" class="btn next">
+      <i class="fas fa-arrow-left"></i> Prev: Middleware
+    </a>
+    <a href="/docs/static-files" class="btn next">
+      Next: Static Files <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+</article>
+
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+<script>
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+</script>
+<script src="/helper.js"></script>
+
+</body>
+</html>

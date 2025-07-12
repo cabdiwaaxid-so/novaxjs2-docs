@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <meta name="title" content="Novaxjs2 - File Uploads">
+<meta name="description" content="Handle file uploads in Novaxjs2 with size limits, type restrictions and management">
+<meta property="og:title" content="Novaxjs2 - File Uploads">
+<meta property="og:description" content="Complete guide to file upload handling in Novaxjs2">
+<meta property="twitter:title" content="Novaxjs2 - File Uploads">
+<meta property="twitter:description" content="Managing file uploads with Novaxjs2">
+  <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
+  <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
+  <link rel="icon" href="/logo.png">
+  <title>Novaxjs2 docs - File Uploads</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  
+  <article id="file-uploads">
+        <h1><i class="fas fa-file-upload"></i> File Uploads</h1>
+        <p>Novaxjs2 supports file uploads with configurable size limits and automatic parsing.</p>
+        
+        <h2>Basic File Upload</h2>
+        <pre><code class="language-html">&lt;form action="/upload" method="post" enctype="multipart/form-data"&gt;
+  &lt;input type="file" name="myFile"&gt;
+  &lt;button type="submit"&gt;Upload&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+        
+        <pre><code class="language-javascript">app.post('/upload', (req, res) => {
+  const file = req.files.myFile;
+  console.log('Uploaded file:', file);
+  res.json({ message: 'File uploaded successfully' });
+});</code></pre>
+        
+        <h2>Configuration</h2>
+        <pre><code class="language-javascript">// Set file size limit (default: 50MB)
+app.setFileSizeLimit(10); // 10MB limit</code></pre>
+        
+        <h2>Error Handling</h2>
+        <pre><code class="language-javascript">app.error((err, req, res) => {
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return 'File is too large! Maximum size is 10MB';
+  }
+  return 'An error occurred during file upload';
+});</code></pre>
+<h2>File Management</h2>
+<pre><code class="language-javascript">// Clear all uploaded files
+app.fileHandler.clearUploads();
+
+// Remove specific file
+app.fileHandler.removeFile('/path/to/file');
+
+// Get readable stream of a file
+const stream = app.fileHandler.getFileStream('/path/to/file');
+stream.pipe(res);</code></pre>
+    <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+      <a href="/docs/plugin-system" class="btn next">
+        <i class="fas fa-arrow-left"></i> Prev: Plugin System
+      </a>
+      <a href="/docs/cors" class="btn next">
+        Next: Cors <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+      </article>
+  
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+  
+  <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
+  <script src="/helper.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
+  <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
+  <link rel="icon" href="/logo.png">
+  <title>Novaxjs2 docs - Example Projects</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  
+  <article id="links">
+        <h1><i class="fas fa-project-diagram"></i> Example Projects</h1>
+        
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3><i class="fas fa-tasks"></i> To-Do List</h3>
+            <p>A complete task management application built with Novaxjs2.</p>
+            <a href="https://github.com/WhoappRoom/To-Do-List-" class="button">
+              <i class="fab fa-github"></i> View on GitHub
+            </a>
+          </div>
+          <div class="feature-card">
+            <h3><i class="fas fa-comments"></i> Forum API</h3>
+            <p>RESTful API for a discussion forum with authentication.</p>
+            <a href="https://github.com/WhoappRoom/Novaxjs2" class="button">
+              <i class="fab fa-github"></i> View on GitHub
+            </a>
+          </div>
+          <div class="feature-card">
+            <h3><i class="fas fa-tasks"></i> Modern To List App <code>v-4.6.4 required</code></h3>
+            <p>This app demonstrates modern web development practices with server-side rendering, REST API endpoints</p>
+            <a href="https://github.com/WhoappRoom/modern-to-do-list" class="button">
+              <i class="fab fa-github"></i> View on GitHub
+            </a>
+          </div>
+        </div>
+        <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+      <a href="/docs/example" class="btn next">
+        <i class="fas fa-arrow-left"></i> Prev: Exmaple
+      </a>
+      <a href="/docs/contact" class="btn next">
+        Next: Contact <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+      </article>
+  
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+  
+  <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="title" content="Novaxjs2 - Contact">
+<meta name="description" content="Get help and support for Novaxjs2 framework">
+<meta property="og:title" content="Novaxjs2 - Contact">
+<meta property="og:description" content="Connect with Novaxjs2 developers">
+<meta property="twitter:title" content="Novaxjs2 - Contact">
+<meta property="twitter:description" content="Support and contact information">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
+  <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
+  <link rel="icon" href="/logo.png">
+  <title>Novaxjs2 docs - Contact</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  
+  <article id="contact">
+        <h1><i class="fas fa-envelope"></i> Contact Us</h1>
+        <p>Have questions or feedback? Send us a message!</p>
+        
+        <form id="contact-form" style="max-width: 600px; margin: 0 auto;">
+          <div style="margin-bottom: 1rem;">
+            <label for="name" style="display: block; margin-bottom: 0.5rem;">Name</label>
+            <input type="text" id="name" placeholder="Your name" required>
+          </div>
+          
+          <div style="margin-bottom: 1rem;">
+            <label for="email" style="display: block; margin-bottom: 0.5rem;">Email</label>
+            <input type="email" id="email" placeholder="Your email" required>
+          </div>
+          
+          <div style="margin-bottom: 1rem;">
+            <label for="message" style="display: block; margin-bottom: 0.5rem;">Message</label>
+            <textarea id="message" placeholder="Your message" required></textarea>
+          </div>
+          
+          <button type="submit" style="width: 100%;">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+            <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: flex-start;">
+      <a href="/docs/projects" class="btn next">
+        Next: Projects <i class="fas fa-arrow-left"></i>
+      </a>
+    </div>
+      </article>
+  
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+  
+  <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      
+      if (!name || !email || !message) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      const url = `https://www.small-pencil.website/api/send?uid=yKWM2ZqH54OH7AtKgYqBC2REYmI2&text=${encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+      )}`;
+      
+      window.open(url, '_blank');
+      e.target.reset();
+      alert('Thank you for your message!');
+    });</script>
+</body>
+</html>

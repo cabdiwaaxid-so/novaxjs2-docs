@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
+  <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
+  <link rel="icon" href="/logo.png">
+  <meta name="title" content="Novaxjs2 - Complete Example">
+<meta name="description" content="Full-featured Novaxjs2 application example demonstrating multiple framework features">
+<meta property="og:title" content="Novaxjs2 - Complete Example">
+<meta property="og:description" content="Sample application using Novaxjs2">
+<meta property="twitter:title" content="Novaxjs2 - Complete Example">
+<meta property="twitter:description" content="Example Novaxjs2 application">
+  <title>Novaxjs2 docs - Example</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  
+  <article id="example">
+        <h1><i class="fas fa-laptop-code"></i> Complete Example</h1>
+        <p>A complete Novaxjs2 application demonstrating multiple features.</p>
+        
+        <pre><code class="language-javascript">const Nova = require('novaxjs2');
+const app = new Nova();
+
+// Global styles and scripts
+app.style = `
+  body { 
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #f5f5f5;
+  }
+`;
+
+app.js = 'console.log("App initialized");';
+
+// Middleware
+app.useMiddleware((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
+// CORS
+app.cors({
+  origins: ['http://localhost:3000'],
+  methods: ['GET', 'POST']
+});
+
+// File upload limit
+app.setFileSizeLimit(10); // 10MB
+
+// Routes
+app.get('/', (req, res) => {
+  return `
+    &lt;h1&gt;Welcome to Novaxjs2&lt;/h1&gt;
+    &lt;p&gt;This is a sample application.&lt;/p&gt;
+  `;
+});
+
+app.get('/api/users', (req, res) => {
+  res.json([
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Jane Smith' }
+  ]);
+});
+
+app.post('/api/users', (req, res) => {
+  const newUser = req.body;
+  // Save to database...
+  res.status(201).json({ success: true, user: newUser });
+});
+
+app.post('/upload', (req, res) => {
+  if (!req.files || !req.files.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  res.json({ message: 'File uploaded successfully' });
+});
+
+// Error handling
+app.on(404, () => {
+  return '&lt;h1&gt;404 - Page Not Found&lt;/h1&gt;';
+});
+
+app.error((err, req, res) => {
+  console.error(err);
+  return '&lt;h1&gt;500 - Server Error&lt;/h1&gt;';
+});
+
+// Start server
+app.at(3000, () => {
+  console.log('Server running on port 3000');
+});</code></pre>
+<div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+      <a href="/docs/file-configuration" class="btn next">
+        <i class="fas fa-arrow-left"></i> Prev: File Configuration
+      </a>
+      <a href="/docs/projects" class="btn next">
+        Next: Projects <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+      </article>
+  
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+  
+  <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
+  <script src="/helper.js"></script>
+</body>
+</html>

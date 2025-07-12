@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="title" content="Novaxjs2 - API Reference">
+<meta name="description" content="Complete API documentation for Novaxjs2 framework methods and properties">
+<meta property="og:title" content="Novaxjs2 - API Reference">
+<meta property="og:description" content="Detailed API documentation for Novaxjs2">
+<meta property="twitter:title" content="Novaxjs2 - API Reference">
+<meta property="twitter:description" content="Comprehensive API docs for Novaxjs2 framework">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
+  <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
+  <link rel="icon" href="/logo.png">
+  <title>Novaxjs2 docs - Api Reference</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  
+  <article id="api-reference">
+    <h1><i class="fas fa-book"></i> API Reference</h1>
+    
+    <h2>Core Methods</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>get(path, handler)</code></td>
+          <td>Define GET route</td>
+          <td><code>app.get('/', (req, res) => {...})</code></td>
+        </tr>
+        <tr>
+          <td><code>post(path, handler)</code></td>
+          <td>Define POST route</td>
+          <td><code>app.post('/users', (req, res) => {...})</code></td>
+        </tr>
+        <tr>
+          <td><code>put(path, handler)</code></td>
+          <td>Define PUT route</td>
+          <td><code>app.put('/users/:id', (req, res) => {...})</code></td>
+        </tr>
+        <tr>
+          <td><code>delete(path, handler)</code></td>
+          <td>Define DELETE route</td>
+          <td><code>app.delete('/users/:id', (req, res) => {...})</code></td>
+        </tr>
+        <tr>
+          <td><code>at(port, host, callback)</code></td>
+          <td>Start server </td>
+          <td><code>app.at(3000, () => {...})</code></td>
+        </tr>
+        <tr>
+          <td><code>on(status, handler)</code></td>
+          <td>Error handler</td>
+          <td><code>app.on(404, () => 'Not found')</code></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h2>Middleware Methods</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>useMiddleware(fn)</code></td>
+          <td>Add standard middleware</td>
+          <td><code>app.useMiddleware((req, res, next) => {...})</code></td>
+        </tr>
+        <tr>
+          <td><code>useErrorMiddleware(fn)</code></td>
+          <td>Add error middleware</td>
+          <td><code>app.useErrorMiddleware((err, req, res, next) => {...})</code></td>
+        </tr>
+        <tr>
+          <td><code>serveStatic(dir)</code></td>
+          <td>Serve static files</td>
+          <td><code>app.serveStatic('public')</code></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h2>Configuration Methods</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>cors(options)</code></td>
+          <td>Configure CORS</td>
+          <td><code>app.cors({ origins: ['*'] })</code></td>
+        </tr>
+        <tr>
+          <td><code>setFileSizeLimit(mb)</code></td>
+          <td>Set upload limit</td>
+          <td><code>app.setFileSizeLimit(50)</code></td>
+        </tr>
+        <tr>
+          <td><code>style(css)</code></td>
+          <td>Global CSS</td>
+          <td><code>app.style = 'body { color: red }'</code></td>
+        </tr>
+        <tr>
+          <td><code>js(script)</code></td>
+          <td>Global JavaScript</td>
+          <td><code>app.js = 'console.log("Hello")'</code></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h2>Request Object</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Description</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>req.method</code></td>
+          <td>HTTP method (GET, POST, etc.)</td>
+          <td>String</td>
+        </tr>
+        <tr>
+          <td><code>req.url</code></td>
+          <td>Request URL</td>
+          <td>String</td>
+        </tr>
+        <tr>
+          <td><code>req.query</code></td>
+          <td>Parsed query parameters</td>
+          <td>Object</td>
+        </tr>
+        <tr>
+          <td><code>req.params</code></td>
+          <td>Route parameters</td>
+          <td>Object</td>
+        </tr>
+        <tr>
+          <td><code>req.body</code></td>
+          <td>Parsed request body</td>
+          <td>Object</td>
+        </tr>
+        <tr>
+          <td><code>req.files</code></td>
+          <td>Uploaded files</td>
+          <td>Object</td>
+        </tr>
+        <tr>
+          <td><code>req.protocol</code></td>
+          <td>Request protocol (http/https)</td>
+          <td>String</td>
+        </tr>
+        <tr>
+          <td><code>req.fullUrl</code></td>
+          <td>Complete request URL</td>
+          <td>String</td>
+        </tr>
+        <tr>
+          <td><code>req.ip</code></td>
+          <td>Client IP address</td>
+          <td>String</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h2>Response Methods</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>res.status(code)</code></td>
+          <td>Set HTTP status</td>
+          <td><code>res.status(404)</code></td>
+        </tr>
+        <tr>
+          <td><code>res.json(data)</code></td>
+          <td>Send JSON response</td>
+          <td><code>res.json({ success: true })</code></td>
+        </tr>
+        <tr>
+          <td><code>res.redirect(url)</code></td>
+          <td>Redirect to URL</td>
+          <td><code>res.redirect('/home')</code></td>
+        </tr>
+        <tr>
+          <td><code>res.send(content, contentType)</code></td>
+          <td>Send raw content</td>
+          <td><code>res.send('Hello World', 'text/plain')</code></td>
+        </tr>
+        <tr>
+          <td><code>res.set(headers)</code></td>
+          <td>Set multiple headers</td>
+          <td><code>res.set({ 'X-Custom': 'value' })</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Plugin System</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>usePlugin(plugin, options)</code></td>
+          <td>Extend framework functionality with plugins</td>
+          <td><code>app.usePlugin(myPlugin, { config: true })</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>View Engine Methods</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>setViewEngine(engine, options)</code></td>
+          <td>Configure template engine</td>
+          <td><code>app.setViewEngine('novax', { viewsPath: './views' })</code></td>
+        </tr>
+        <tr>
+          <td><code>render(file, data)</code></td>
+          <td>Render template with data</td>
+          <td><code>await app.render('home', { title: 'Home' })</code></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+      <a href="/docs/usage" class="btn next">
+        <i class="fas fa-arrow-left"></i> Prev: Basic Usage 
+      </a>
+      <a href="/docs/plugin-system" class="btn next">
+        Next: Plugin System <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </article>
+  
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+  
+  <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
+</body>
+</html>

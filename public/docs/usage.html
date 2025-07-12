@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
+  <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
+  <meta name="title" content="Novaxjs2 - Basic Usage">
+<meta name="description" content="Learn how to create routes, handle requests and build applications with Novaxjs2">
+<meta property="og:title" content="Novaxjs2 - Basic Usage">
+<meta property="og:description" content="Getting started with Novaxjs2 framework basics">
+<meta property="twitter:title" content="Novaxjs2 - Basic Usage">
+<meta property="twitter:description" content="Fundamentals of using Novaxjs2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
+  <link rel="icon" href="/logo.png">
+  <title>Novaxjs2 docs - Basic Usage</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  
+  <article id="usage">
+    <h1><i class="fas fa-code"></i> Basic Usage</h1>
+    
+    <h2>Creating a Server</h2>
+    <pre><code class="language-javascript">const Nova = require('novaxjs2');
+const app = new Nova();
+
+// Define routes
+app.get('/', (req, res) => {
+    return '&lt;h1&gt;Welcome to Novaxjs2!&lt;/h1&gt;';
+});
+
+// Start server
+app.at(3000, () => {
+    console.log('Server running on port 3000');
+});</code></pre>
+    
+    <h2>Route Parameters</h2>
+    <pre><code class="language-javascript">// Dynamic route parameter
+app.get('/user/:id', (req, res) => {
+    const userId = req.params.id;
+    return `User ID: ${userId}`;
+});
+
+// Query parameters
+app.get('/search:', (req, res) => {
+    const query = req.query.q;
+    return `Search: ${query}`;
+});</code></pre>
+    
+    <h2>Request & Response</h2>
+    <pre><code class="language-javascript">app.post('/api/data', (req, res) => {
+    // Access request body
+    const data = req.body;
+    
+    // Set response status
+    res.status(201).json({
+    success: true,
+    data: data
+    });
+});</code></pre>
+    
+      <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+      <a href="/docs/features" class="btn next">
+        <i class="fas fa-arrow-left"></i> Prev: Core Features 
+      </a>
+      <a href="/docs/api-reference" class="btn next">
+        Next: Api References <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+
+</article>
+  
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+  
+  <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
+  <script src="/helper.js"></script>
+</body>
+</html>

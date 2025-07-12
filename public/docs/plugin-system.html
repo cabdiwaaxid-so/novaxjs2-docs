@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <meta name="title" content="Novaxjs2 - Plugin System">
+<meta name="description" content="Extend Novaxjs2 functionality with custom plugins - complete guide">
+<meta property="og:title" content="Novaxjs2 - Plugin System">
+<meta property="og:description" content="Learn to create and use plugins with Novaxjs2">
+<meta property="twitter:title" content="Novaxjs2 - Plugin System">
+<meta property="twitter:description" content="Extending Novaxjs2 with plugins">
+  <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
+  <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
+  <link rel="icon" href="/logo.png">
+  <title>Novaxjs2 docs - Plugin System</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  
+  <article id="plugin-system">
+    <h1><i class="fas fa-puzzle-piece"></i> Plugin System</h1>
+    <p>Extend Novaxjs2 functionality with custom plugins:</p>
+    
+    <h2>Creating a Plugin</h2>
+    <pre><code class="language-javascript">function myPlugin({addMethod,addRoute, addRoute, addMiddleware }, options) {
+  // Add new methods
+  addMethod('greet', function(name) {
+    return `Hello ${name}!`;
+  });
+  
+  // Add routes
+  addRoute('get', '/plugin-route', (req, res) => {
+    return 'This route was added by plugin';
+  });
+  
+  // Add middleware
+  addMiddleware((req, res, next) => {
+    console.log('Plugin middleware');
+    next();
+  });
+  
+  // Store configuration
+  setConfig('pluginConfig', options);
+}</code></pre>
+    
+    <h2>Using a Plugin</h2>
+    <pre><code class="language-javascript">app.usePlugin(myPlugin, { setting: 'value' });
+
+// Now you can use plugin methods
+app.get('/', (req, res) => {
+  return app.greet('World');
+});</code></pre>
+
+<h2>Plugin Configuration</h2>
+<pre><code class="language-javascript">// In your plugin:
+function myPlugin({ setConfig, getConfig }, options) {
+  // Store configuration
+  setConfig('apiKey', options.apiKey);
+  
+  // Later retrieve it
+  const apiKey = getConfig('apiKey');
+}</code></pre>
+<div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+      <a href="/docs/api-reference" class="btn next">
+        <i class="fas fa-arrow-left"></i> Prev: Api References
+      </a>
+      <a href="/docs/file-uploads" class="btn next">
+        Next: File Uploads <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </article>
+  
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+  
+  <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
+</body>
+</html>

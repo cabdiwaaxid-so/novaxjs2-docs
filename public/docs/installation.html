@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+  <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
+  <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
+  <link rel="icon" href="/logo.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <meta name="title" content="Novaxjs2 - Installation Guide">
+<meta name="description" content="Step-by-step guide to install Novaxjs2 framework via npm or yarn">
+<meta property="og:title" content="Novaxjs2 - Installation Guide">
+<meta property="og:description" content="Get started with Novaxjs2 in minutes">
+<meta property="twitter:title" content="Novaxjs2 - Installation Guide">
+<meta property="twitter:description" content="Quick setup instructions for Novaxjs2">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+  <title>Novaxjs2 docs - Installation</title>
+</head>
+<body>
+  <article id="installation">
+    <h1><i class="fas fa-download"></i> Installation</h1>
+    <p>Get started with Novaxjs2 in seconds:</p>
+    
+    <div class="tabs">
+          <div class="tab active" onclick="changeTab(event, 'npm')">npm</div>
+          <div class="tab" onclick="changeTab(event, 'yarn')">Yarn</div>
+        </div>
+        
+        <div id="npm" class="tab-content active">
+          <pre><code class="language-bash">npm install novaxjs2</code></pre>
+        </div>
+        <div id="yarn" class="tab-content">
+          <pre><code class="language-bash">yarn add novaxjs2</code></pre>
+        </div>
+    <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+      <a href="/docs/about" class="btn next">
+        <i class="fas fa-arrow-left"></i> Prev: About 
+      </a>
+      <a href="/docs/features" class="btn next">
+        Next: features <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+</article>
+
+  {{ #if footer }}
+    {{ footer }}
+  {{/if}}
+  <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
+  <script src="/helper.js"></script>
+</body>
+</html>
