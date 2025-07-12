@@ -50,761 +50,91 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    :root {
-      --primary-bg: #0f172a;
-      --primary-text: #e2e8f0;
-      --secondary-bg: #1e293b;
-      --secondary-text: #f8fafc;
-      --accent-color: #3b82f6;
-      --accent-hover: #2563eb;
-      --highlight-color: #60a5fa;
-      --transition-speed: 0.3s;
-      --card-bg: rgba(30, 41, 59, 0.7);
-      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      --border-radius: 12px;
-      --success-color: #10b981;
-      --warning-color: #f59e0b;
-      --error-color: #ef4444;
-      --info-color: #3b82f6;
+    /* New Styles */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      padding: 4rem 1rem;
+      background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));
+      border-radius: var(--border-radius);
+      margin-bottom: 3rem;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: var(--primary-bg);
-      color: var(--primary-text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    @media (max-width: 768px) {
-      html {
-        font-size: 14px;
-      }
-    }
-
-    /* Typography */
-    h1, h2, h3, h4, h5, h6 {
-      font-weight: 600;
-      line-height: 1.25;
+    .hero-content h1 {
+      font-size: 3rem;
       margin-bottom: 1rem;
-    }
-
-    h1 {
-      font-size: 2.5rem;
       background: linear-gradient(90deg, var(--accent-color), var(--highlight-color));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      display: inline-block;
     }
 
-    h2 {
-      font-size: 2rem;
-      color: var(--highlight-color);
-      position: relative;
-      padding-bottom: 0.5rem;
-    }
-
-    h2::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent-color), transparent);
-      border-radius: 3px;
-    }
-
-    h3 {
+    .subtitle {
       font-size: 1.5rem;
-      color: var(--highlight-color);
-    }
-
-    p {
-      margin-bottom: 1.5rem;
-      font-size: 1.1rem;
-    }
-
-    a {
-      color: var(--accent-color);
-      text-decoration: none;
-      transition: color var(--transition-speed);
-    }
-
-    a:hover {
-      color: var(--highlight-color);
-      text-decoration: underline;
-    }
-
-    /* Layout */
-    #app {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    #header {
-      position: sticky;
-      top: 0;
-      background-color: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    #header h1 {
-      font-size: 1.5rem;
-      margin: 0;
-      background: none;
-      color: var(--highlight-color);
-    }
-
-    #contents {
-      flex: 1;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-      width: 100%;
-    }
-
-    /* Navigation */
-    #drop {
-      position: relative;
-      z-index: 1001;
-    }
-
-    .menu {
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      padding: 0.5rem;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
-    }
-
-    .bar1, .bar2, .bar3 {
-      width: 28px;
-      height: 3px;
-      background-color: var(--highlight-color);
-      margin: 4px 0;
-      transition: var(--transition-speed);
-    }
-
-    .change .bar1 {
-      transform: translate(0, 11px) rotate(-45deg);
-    }
-
-    .change .bar2 {
-      opacity: 0;
-    }
-
-    .change .bar3 {
-      transform: translate(0, -11px) rotate(45deg);
-    }
-
-    #down {
-      position: fixed;
-      right: 2rem;
-      top: 5rem;
-      display: flex;
-      flex-direction: column;
-      border-radius: var(--border-radius);
-      width: 280px;
-      max-width: 90vw;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: all var(--transition-speed) ease-out;
-      background-color: var(--secondary-bg);
-      box-shadow: var(--card-shadow);
-      z-index: 1000;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-    }
-
-    #down.change {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    #down p {
-      margin: 0;
-      padding: 1rem;
-      color: var(--highlight-color);
-      font-size: 1.2rem;
-      font-weight: 600;
-      background-color: rgba(0, 0, 0, 0.2);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    #down a {
-      display: block;
-      padding: 0.8rem 1rem;
-      color: var(--primary-text);
-      font-size: 1rem;
-      transition: all var(--transition-speed);
-      border-left: 3px solid transparent;
-    }
-
-    #down a:hover {
-      background-color: rgba(59, 130, 246, 0.1);
-      border-left-color: var(--accent-color);
-      padding-left: 1.2rem;
-      text-decoration: none;
-    }
-
-    /* Articles */
-    article {
-      padding: 2rem;
       margin-bottom: 2rem;
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: var(--card-shadow);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    article:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Code Blocks */
-    pre {
-      background-color: #0f172a;
-      padding: 1.5rem;
-      border-radius: var(--border-radius);
-      overflow-x: auto;
-      font-family: 'Fira Code', monospace;
-      margin: 1.5rem 0;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-      position: relative;
-    }
-
-    pre code {
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    code {
-      background-color: rgba(59, 130, 246, 0.1);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
       color: var(--highlight-color);
-      font-family: 'Fira Code', monospace;
-      font-size: 0.9rem;
     }
 
-    /* Buttons */
-    button {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      color: white;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      background-color: var(--accent-color);
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all var(--transition-speed);
-      display: inline-flex;
-      align-items: center;
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
       justify-content: center;
-      gap: 0.5rem;
+      margin-bottom: 2rem;
     }
 
-    button:hover {
-      background-color: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    button i {
-      font-size: 1.2rem;
-    }
-
-    /* Forms */
-    textarea, input {
+    .hero-code {
       width: 100%;
-      padding: 0.75rem 1rem;
-      border-radius: var(--border-radius);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background-color: rgba(255, 255, 255, 0.05);
-      color: var(--primary-text);
-      font-size: 1rem;
-      transition: all var(--transition-speed);
-      margin-bottom: 1rem;
+      max-width: 800px;
+      margin-top: 2rem;
     }
 
-    textarea:focus, input:focus {
-      outline: none;
-      border-color: var(--accent-color);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    .features {
+      padding: 3rem 0;
+      text-align: center;
+    }
+    
+    .features h2 {
+      margin-bottom: 3rem;
     }
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    /* Lists */
-    ul, ol {
-      padding-left: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    li {
-      margin-bottom: 0.75rem;
-      font-size: 1.1rem;
-    }
-
-    /* Feature Cards */
-    .feature-grid {
+    .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
     }
 
-    .feature-card {
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius);
-      padding: 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all var(--transition-speed);
-    }
 
     .feature-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      border-color: var(--accent-color);
     }
 
-    .feature-card h3 {
-      margin-top: 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .feature-card h3 i {
+    .feature-card i {
+      font-size: 2.5rem;
       color: var(--accent-color);
-    }
-
-    /* API Reference Table */
-    .api-reference {
-      width: 100%;
-      border: 1px solid var(--accent-color);
-      border-collapse: collapse;
-      margin: 2rem 0;
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      box-shadow: var(--card-shadow);
-    }
-
-    .api-reference th, .api-reference td {
-      padding: 1rem;
-      width: 100%;
-      text-align: left;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .api-reference th {
-      background-color: var(--accent-color);
-      color: white;
-      font-weight: 600;
-      position: sticky;
-      top: 0;
-    }
-
-    .api-reference tr:last-child td {
-      border-bottom: none;
-    }
-
-    .api-reference tr:hover {
-      background-color: rgba(59, 130, 246, 0.05);
-    }
-
-    .api-reference td:first-child {
-      font-family: 'Fira Code', monospace;
-      color: var(--highlight-color);
-      white-space: nowrap;
-    }
-
-    .api-reference td:nth-child(2) {
-      color: var(--primary-text);
-    }
-
-    .api-reference td:nth-child(3) {
-      font-family: 'Fira Code', monospace;
-      color: #86efac;
-    }
-
-    /* Badges */
-    .badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: bold;
-      margin-left: 0.5rem;
-      background-color: var(--accent-color);
-      color: white;
-      vertical-align: middle;
-    }
-
-    .badge.new {
-      background-color: var(--success-color);
-    }
-
-    .badge.updated {
-      background-color: var(--warning-color);
-    }
-
-    .badge.experimental {
-      background-color: var(--error-color);
-    }
-
-    /* Footer */
-    #footer {
-      margin-top: 3rem;
-      padding: 2rem;
-      background-color: var(--secondary-bg);
-      color: var(--secondary-text);
-      text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    #footer p {
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-    }
-
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
       margin-bottom: 1rem;
     }
 
-    .social-links a {
-      color: var(--secondary-text);
-      font-size: 1.5rem;
-      transition: all var(--transition-speed);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .social-links a:hover {
-      color: var(--highlight-color);
-      transform: translateY(-3px);
-      background-color: rgba(59, 130, 246, 0.2);
-      text-decoration: none;
-    }
-
-    /* Back to top button */
-    #back-to-top {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background-color: var(--accent-color);
-      color: white;
-      border: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      display: none;
-      transition: all var(--transition-speed);
-      z-index: 999;
-      opacity: 0.9;
-    }
-
-    #back-to-top:hover {
-      background-color: var(--accent-hover);
-      transform: translateY(-3px) scale(1.1);
-      opacity: 1;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 1024px) {
-      #contents {
-        padding: 1.5rem;
-      }
-      
-      article {
-        padding: 1.5rem;
-      }
-      
-      .feature-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      }
+    .quick-start {
+      padding: 3rem 0;
     }
 
     @media (max-width: 768px) {
-      #header {
-        padding: 0.75rem 1rem;
+      .hero-content h1 {
+        font-size: 2.5rem;
       }
       
-      #header h1 {
-        font-size: 1.25rem;
+      .subtitle {
+        font-size: 1.2rem;
       }
       
-      #contents {
-        padding: 1rem;
-      }
-      
-      article {
-        padding: 1.25rem;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
-      
-      h2 {
-        font-size: 1.75rem;
-      }
-      
-      pre {
-        padding: 1rem;
-      }
-      
-      .api-reference {
-        display: block;
-        overflow-x: auto;
+      .hero-buttons {
+        flex-direction: column;
       }
     }
-
-    @media (max-width: 480px) {
-      #down {
-        right: 1rem;
-        top: 4rem;
-      }
-      
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .api-reference th, .api-reference td {
-        padding: 0.75rem;
-        font-size: 0.9rem;
-      }
-      
-      #back-to-top {
-        width: 45px;
-        height: 45px;
-        bottom: 1.5rem;
-        right: 1.5rem;
-      }
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    article {
-      animation: fadeIn 0.6s ease-out forwards;
-    }
-
-    article:nth-child(1) { animation-delay: 0.1s; }
-    article:nth-child(2) { animation-delay: 0.2s; }
-    article:nth-child(3) { animation-delay: 0.3s; }
-    article:nth-child(4) { animation-delay: 0.4s; }
-    article:nth-child(5) { animation-delay: 0.5s; }
-    article:nth-child(6) { animation-delay: 0.6s; }
-    article:nth-child(7) { animation-delay: 0.7s; }
-    article:nth-child(8) { animation-delay: 0.8s; }
-    article:nth-child(9) { animation-delay: 0.9s; }
-    article:nth-child(10) { animation-delay: 1s; }
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 1.5rem;
-    }
-
-    .tab {
-      padding: 0.75rem 1.5rem;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: all var(--transition-speed);
-      font-weight: 500;
-    }
-
-    .tab.active {
-      border-bottom-color: var(--accent-color);
-      color: var(--highlight-color);
-    }
-
-    .tab:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Tooltips */
-    .tooltip {
-      position: relative;
-      display: inline-block;
-    }
-
-    .tooltip .tooltip-text {
-      visibility: hidden;
-      width: 200px;
-      background-color: var(--secondary-bg);
-      color: var(--primary-text);
+    .y h3{
       text-align: center;
-      border-radius: 6px;
-      padding: 0.5rem;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity var(--transition-speed);
-      font-size: 0.9rem;
-      box-shadow: var(--card-shadow);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .tooltip:hover .tooltip-text {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    /* Status indicators */
-    .status {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-right: 0.5rem;
-    }
-
-    .status.stable {
-      background-color: var(--success-color);
-    }
-
-    .status.beta {
-      background-color: var(--warning-color);
-    }
-
-    .status.deprecated {
-      background-color: var(--error-color);
-    }
-
-    /* Copy code button */
-    .copy-btn {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      background-color: var(--card-bg);
-      border: none;
-      color: var(--primary-text);
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      transition: all var(--transition-speed);
-      opacity: 0;
-    }
-
-    pre:hover .copy-btn {
-      opacity: 1;
-    }
-
-    .copy-btn:hover {
-      background-color: var(--accent-color);
-      color: white;
-    }
-
-    /* Dark mode toggle (example - would need JS implementation) */
-    .theme-toggle {
-      position: fixed;
-      bottom: 2rem;
-      left: 2rem;
-      background-color: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 999;
-      box-shadow: var(--card-shadow);
-    }
-
-    .logo{
-      width: 50px;
-      height: 50px;
-      aspect-ratio: 1;
-      border-radius: 4px;
-    }
-
-    /* scrollbar */
-    ::-webkit-scrollbar {
-      width: 12px;
-      height: 12px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--accent-color);
-      border-radius: 0;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-hover);
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 0;
-    }
-    ::-webkit-scrollbar-track:hover {
-      background: rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
@@ -819,942 +149,137 @@
         </div>
         <div id="down">
           <p>Novaxjs2</p>
-          <a href="#about"><i class="fas fa-info-circle"></i> About</a>
-          <a href="#installation"><i class="fas fa-download"></i> Installation</a>
-          <a href="#features"><i class="fas fa-star"></i> Features</a>
-          <a href="#usage"><i class="fas fa-code"></i> Usage</a>
-          <a href="#api-reference"><i class="fas fa-book"></i> API Reference</a>
-          <a href="#plugin-system"><i class="fas fa-puzzle-piece"></i>Plugin System</a>
-          <a href="#file-uploads"><i class="fas fa-upload"></i> File Uploads</a>
-          <a href="#cors"><i class="fas fa-shield-alt"></i> CORS</a>
-          <a href="#middleware"><i class="fas fa-cogs"></i> Middleware</a>
-          <a href="#templating"><i class="fas fa-file-code"></i> Templating</a>
-          <a href="#route-middleware"><i class="fas fa-code-branch"></i> Route Middleware</a>
-          <a href="#advanced-responses"><i class="fas fa-reply"></i> Advanced Responses</a>
-          <a href="#error-handling"><i class="fas fa-exclamation-triangle"></i> Error Handling</a>
-          <a href="#example"><i class="fas fa-laptop-code"></i> Example</a>
-          <a href="#links"><i class="fas fa-project-diagram"></i> Projects</a>
-          <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+          <a href="/docs/about"><i class="fas fa-info-circle"></i> About</a>
+          <a href="/docs/installation"><i class="fas fa-download"></i> Installation</a>
+          <a href="/docs/features"><i class="fas fa-star"></i> Features</a>
+          <a href="/docs/usage"><i class="fas fa-code"></i> Usage</a>
+          <a href="/docs/api-reference"><i class="fas fa-book"></i> API Reference</a>
+          <a href="/docs/plugin-system"><i class="fas fa-puzzle-piece"></i> Plugin System</a>
+          <a href="/docs/file-uploads"><i class="fas fa-upload"></i> File Uploads</a>
+          <a href="/docs/cors"><i class="fas fa-shield-alt"></i> CORS</a>
+          <a href="/docs/middleware"><i class="fas fa-cogs"></i> Middleware</a>
+          <a href="/docs/templating"><i class="fas fa-file-code"></i> Templating</a>
+          <a href="/docs/static-files"><i class="fas fa-reply"></i> Static Files</a>
+          <a href="/docs/error-handling"><i class="fas fa-exclamation-triangle"></i> Error Handling</a>
+          <a href="/docs/file-configuration"><i class="fas fa-exclamation-triangle"></i> File Configuration</a>
+          <a href="/docs/example"><i class="fas fa-laptop-code"></i> Example</a>
+          <a href="/docs/projects"><i class="fas fa-project-diagram"></i> Projects</a>
+          <a href="/docs/contact"><i class="fas fa-envelope"></i> Contact</a>
         </div>
       </div>
       <img class="logo" src="/logo.png" alt="Novaxjs2 logo">
     </div>
     
     <div id="contents">
-      <article id="about">
-        <h1><i class="fas fa-rocket"></i> Novaxjs2 Framework</h1>
-        <p>Novaxjs2 is a modern, lightweight, and high-performance Node.js framework designed for building web applications and APIs with minimal overhead and maximum flexibility.</p>
-        
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h3><i class="fas fa-bolt"></i> Fast & Lightweight</h3>
-            <p>Built for performance with minimal dependencies and optimized routing.</p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-sliders-h"></i> Flexible</h3>
-            <p>Extensible architecture with middleware support and customizable options.</p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-mobile-alt"></i> modern</h3>
-            <p>Supports all modern JavaScript features including async/await.</p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-shield-alt"></i> Secure</h3>
-            <p>Built-in security features including CORS and file upload protections.</p>
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Build Faster with Novaxjs2</h1>
+          <p class="subtitle">The lightweight Node.js framework for modern web applications</p>
+          <div class="hero-buttons">
+            <a href="/docs/installation" class="btn primary">
+              <i class="fas fa-rocket"></i> Get Started
+            </a>
           </div>
         </div>
-        
-      </article>
-      
-      <article id="installation">
-        <h1><i class="fas fa-download"></i> Installation</h1>
-        <p>Get started with Novaxjs2 in seconds:</p>
-        
-        <div class="tabs">
-          <div class="tab active" onclick="changeTab(event, 'npm')">npm</div>
-        </div>
-        
-        <div id="npm" class="tab-content active">
-          <pre><code class="language-bash">npm install novaxjs2</code></pre>
-        </div>
-      </article>
-      
-      <article id="features">
-  <h1><i class="fas fa-star"></i> Core Features</h1>
-  
-  <div class="feature-grid">
-    <div class="feature-card">
-      <h3><i class="fas fa-route"></i> Advanced Routing</h3>
-      <ul>
-        <li>RESTful route definitions</li>
-        <li>Dynamic path parameters</li>
-        <li>Query parameter parsing</li>
-        <li>Regular expression routes</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-layer-group"></i> Middleware System</h3>
-      <ul>
-        <li>Standard middleware chain</li>
-        <li>Error handling middleware</li>
-        <li>Built-in static file middleware</li>
-        <li>Async middleware support</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-file-code"></i> Templating Engine</h3>
-      <ul>
-        <li>Built-in Novax template engine</li>
-        <li>Conditionals (#if, #else, #elif)</li>
-        <li>Loops (#each)</li>
-        <li>Variable interpolation</li>
-        <li>Nested templates</li>
-        <li>Automatic HTML escaping</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-file-upload"></i> File Handling</h3>
-      <ul>
-        <li>Static file serving</li>
-        <li>File uploads with size limits</li>
-        <li>MIME type detection</li>
-        <li>Direct file responses</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-shield-virus"></i> Security</h3>
-      <ul>
-        <li>Configurable CORS</li>
-        <li>Request body parsing</li>
-        <li>Error handling</li>
-        <li>File upload protections</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-tachometer-alt"></i> Performance</h3>
-      <ul>
-        <li>Lightweight core</li>
-        <li>Optimized routing</li>
-        <li>Minimal overhead</li>
-        <li>Efficient middleware</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-cogs"></i> Customization</h3>
-      <ul>
-        <li>Global CSS injection</li>
-        <li>Global JavaScript injection</li>
-        <li>Custom error pages</li>
-        <li>Response helpers</li>
-      </ul>
-    </div>
-  </div>
-</article>
-      
-      <article id="usage">
-        <h1><i class="fas fa-code"></i> Basic Usage</h1>
-        
-        <h2>Creating a Server</h2>
-        <pre><code class="language-javascript">const Nova = require('novaxjs2');
+        <div class="hero-code">
+          <pre><code class="language-javascript">const Nova = require('novaxjs2');
 const app = new Nova();
 
-// Define routes
+// Simple route
 app.get('/', (req, res) => {
-    return '&lt;h1&gt;Welcome to Novaxjs2!&lt;/h1&gt;';
+  return 'Hello World!';
 });
 
-// Start server
-app.at(3000, () => {
-    console.log('Server running on port 3000');
-});</code></pre>
-        
-        <h2>Route Parameters</h2>
-        <pre><code class="language-javascript">// Dynamic route parameter
-app.get('/user/:id', (req, res) => {
-    const userId = req.params.id;
-    return `User ID: ${userId}`;
-});
-
-// Query parameters
-app.get('/search:', (req, res) => {
-    const query = req.query.q;
-    return `Search: ${query}`;
-});</code></pre>
-        
-        <h2>Request & Response</h2>
-        <pre><code class="language-javascript">app.post('/api/data', (req, res) => {
-    // Access request body
-    const data = req.body;
-    
-    // Set response status
-    res.status(201).json({
-        success: true,
-        data: data
-    });
-});</code></pre>
-      </article>
-      
-      <article id="api-reference">
-        <h1><i class="fas fa-book"></i> API Reference</h1>
-        
-        <h2>Core Methods</h2>
-        <table class="api-reference">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Description</th>
-              <th>Example</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>get(path, handler)</code></td>
-              <td>Define GET route</td>
-              <td><code>app.get('/', (req, res) => {...})</code></td>
-            </tr>
-            <tr>
-              <td><code>post(path, handler)</code></td>
-              <td>Define POST route</td>
-              <td><code>app.post('/users', (req, res) => {...})</code></td>
-            </tr>
-            <tr>
-              <td><code>put(path, handler)</code></td>
-              <td>Define PUT route</td>
-              <td><code>app.put('/users/:id', (req, res) => {...})</code></td>
-            </tr>
-            <tr>
-              <td><code>delete(path, handler)</code></td>
-              <td>Define DELETE route</td>
-              <td><code>app.delete('/users/:id', (req, res) => {...})</code></td>
-            </tr>
-            <tr>
-              <td><code>at(port, host, callback)</code></td>
-              <td>Start server </td>
-              <td><code>app.at(3000, () => {...})</code></td>
-            </tr>
-            <tr>
-              <td><code>on(status, handler)</code></td>
-              <td>Error handler</td>
-              <td><code>app.on(404, () => 'Not found')</code></td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <h2>Middleware Methods</h2>
-        <table class="api-reference">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Description</th>
-              <th>Example</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>useMiddleware(fn)</code></td>
-              <td>Add standard middleware</td>
-              <td><code>app.useMiddleware((req, res, next) => {...})</code></td>
-            </tr>
-            <tr>
-              <td><code>useErrorMiddleware(fn)</code></td>
-              <td>Add error middleware</td>
-              <td><code>app.useErrorMiddleware((err, req, res, next) => {...})</code></td>
-            </tr>
-            <tr>
-              <td><code>serveStatic(dir)</code></td>
-              <td>Serve static files</td>
-              <td><code>app.serveStatic('public')</code></td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <h2>Configuration Methods</h2>
-        <table class="api-reference">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Description</th>
-              <th>Example</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>cors(options)</code></td>
-              <td>Configure CORS</td>
-              <td><code>app.cors({ origins: ['*'] })</code></td>
-            </tr>
-            <tr>
-              <td><code>setFileSizeLimit(mb)</code></td>
-              <td>Set upload limit</td>
-              <td><code>app.setFileSizeLimit(50)</code></td>
-            </tr>
-            <tr>
-              <td><code>set style(css)</code></td>
-              <td>Global CSS</td>
-              <td><code>app.style = 'body { color: red }'</code></td>
-            </tr>
-            <tr>
-              <td><code>set js(script)</code></td>
-              <td>Global JavaScript</td>
-              <td><code>app.js = 'console.log("Hello")'</code></td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <h2>Request Object</h2>
-        <table class="api-reference">
-          <thead>
-            <tr>
-              <th>Property</th>
-              <th>Description</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>req.method</code></td>
-              <td>HTTP method (GET, POST, etc.)</td>
-              <td>String</td>
-            </tr>
-            <tr>
-              <td><code>req.url</code></td>
-              <td>Request URL</td>
-              <td>String</td>
-            </tr>
-            <tr>
-              <td><code>req.query</code></td>
-              <td>Parsed query parameters</td>
-              <td>Object</td>
-            </tr>
-            <tr>
-              <td><code>req.params</code></td>
-              <td>Route parameters</td>
-              <td>Object</td>
-            </tr>
-            <tr>
-              <td><code>req.body</code></td>
-              <td>Parsed request body</td>
-              <td>Object</td>
-            </tr>
-            <tr>
-              <td><code>req.files</code></td>
-              <td>Uploaded files</td>
-              <td>Object</td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <h2>Response Methods</h2>
-        <table class="api-reference">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Description</th>
-              <th>Example</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>res.status(code)</code></td>
-              <td>Set HTTP status</td>
-              <td><code>res.status(404)</code></td>
-            </tr>
-            <tr>
-              <td><code>res.json(data)</code></td>
-              <td>Send JSON response</td>
-              <td><code>res.json({ success: true })</code></td>
-            </tr>
-            <tr>
-              <td><code>res.redirect(url)</code></td>
-              <td>Redirect to URL</td>
-              <td><code>res.redirect('/home')</code></td>
-            </tr>
-            <tr>
-              <td><code>res.sendFile(path, contentType, res)</code></td>
-              <td>Send file response</td>
-              <td><code>res.sendFile('index.html', res)//default text/html</code></td>
-            </tr>
-            <tr>
-              <td><code>res.send(content, contentType)</code></td>
-              <td>Send raw content</td>
-              <td><code>res.send('Hello World', 'text/plain')</code></td>
-            </tr>
-            <tr>
-              <td><code>res.set(headers)</code></td>
-              <td>Set multiple headers</td>
-              <td><code>res.set({ 'X-Custom': 'value' })</code></td>
-            </tr>
-          </tbody>
-        </table>
-      </article>
-
-       <h2>Plugin System</h2>
-    <table class="api-reference">
-      <thead>
-        <tr>
-          <th>Method</th>
-          <th>Description</th>
-          <th>Example</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>usePlugin(plugin, options)</code></td>
-          <td>Extend framework functionality with plugins</td>
-          <td><code>app.usePlugin(myPlugin, { config: true })</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>View Engine Methods</h2>
-    <table class="api-reference">
-      <thead>
-        <tr>
-          <th>Method</th>
-          <th>Description</th>
-          <th>Example</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>setViewEngine(engine, options)</code></td>
-          <td>Configure template engine</td>
-          <td><code>app.setViewEngine('novax', { viewsPath: './views' })</code></td>
-        </tr>
-        <tr>
-          <td><code>render(file, data)</code></td>
-          <td>Render template with data</td>
-          <td><code>await app.render('home', { title: 'Home' })</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>Enhanced Request Object</h2>
-    <table class="api-reference">
-      <thead>
-        <tr>
-          <th>Property</th>
-          <th>Description</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>req.protocol</code></td>
-          <td>Request protocol (http/https)</td>
-          <td>String</td>
-        </tr>
-        <tr>
-          <td><code>req.fullUrl</code></td>
-          <td>Complete request URL</td>
-          <td>String</td>
-        </tr>
-        <tr>
-          <td><code>req.ip</code></td>
-          <td>Client IP address</td>
-          <td>String</td>
-        </tr>
-      </tbody>
-    </table>
-  </article>
-      
-      <article id="file-uploads">
-        <h1><i class="fas fa-file-upload"></i> File Uploads</h1>
-        <p>Novaxjs2 supports file uploads with configurable size limits and automatic parsing.</p>
-        
-        <h2>Basic File Upload</h2>
-        <pre><code class="language-html">&lt;form action="/upload" method="post" enctype="multipart/form-data"&gt;
-  &lt;input type="file" name="myFile"&gt;
-  &lt;button type="submit"&gt;Upload&lt;/button&gt;
-&lt;/form&gt;</code></pre>
-        
-        <pre><code class="language-javascript">app.post('/upload', (req, res) => {
-  const file = req.files.myFile;
-  console.log('Uploaded file:', file);
-  res.json({ message: 'File uploaded successfully' });
-});</code></pre>
-        
-        <h2>Configuration</h2>
-        <pre><code class="language-javascript">// Set file size limit (default: 50MB)
-app.setFileSizeLimit(10); // 10MB limit</code></pre>
-        
-        <h2>Error Handling</h2>
-        <pre><code class="language-javascript">app.error((err, req, res) => {
-  if (err.code === 'LIMIT_FILE_SIZE') {
-    return 'File is too large! Maximum size is 10MB';
-  }
-  return 'An error occurred during file upload';
-});</code></pre>
-      </article>
-      
-      <article id="cors">
-        <h1><i class="fas fa-shield-alt"></i> CORS Configuration</h1>
-        <p>Configure Cross-Origin Resource Sharing (CORS) for your API endpoints.</p>
-        
-        <h2>Basic Setup</h2>
-        <pre><code class="language-javascript">app.cors({
-  origins: ['https://example.com'],
-  methods: ['GET', 'POST'],
-  headers: ['Content-Type']
-});</code></pre>
-        
-        <h2>Allow All Origins</h2>
-        <pre><code class="language-javascript">app.cors({
-  origins: ['*']
-});</code></pre>
-        
-        <h2>Options</h2>
-        <table class="api-reference">
-          <thead>
-            <tr>
-              <th>Option</th>
-              <th>Description</th>
-              <th>Default</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>origins</code></td>
-              <td>Allowed origins (array)</td>
-              <td>[]</td>
-            </tr>
-            <tr>
-              <td><code>methods</code></td>
-              <td>Allowed HTTP methods</td>
-              <td>['GET','POST','PUT','DELETE']</td>
-            </tr>
-            <tr>
-              <td><code>headers</code></td>
-              <td>Allowed headers</td>
-              <td>['Content-Type']</td>
-            </tr>
-          </tbody>
-        </table>
-      </article>
-      
-      <article id="middleware">
-        <h1><i class="fas fa-cogs"></i> Middleware System</h1>
-        <p>Novaxjs2 provides a flexible middleware system for request processing.</p>
-        
-        <h2>Standard Middleware</h2>
-        <pre><code class="language-javascript">app.useMiddleware((req, res, next) => {
-  console.log(`Request: ${req.method} ${req.url}`);
-  next(); // Call next middleware
-});</code></pre>
-        
-        <h2>Error Middleware</h2>
-        <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(500).end('Internal Server Error');
-});</code></pre>
-        
-        <h2>Built-in Middleware</h2>
-        <pre><code class="language-javascript">// Static file serving
-app.serveStatic('public');
-
-// JSON body parsing (automatic)
-// Form data parsing (automatic)
-// File upload parsing (automatic)</code></pre>
-      </article>
-      
-<article id="templating">
-  <h1><i class="fas fa-file-code"></i> Templating Engine </h1>
-  <p>Novaxjs2 includes a powerful templating engine with conditionals, loops, and variable interpolation.</p>
-  
-  <h2>Setting Up Views</h2>
-  <pre><code class="language-javascript">// Configure view engine
-app.setViewEngine('novax', {
-  viewsPath: './views' // optional, defaults to './views'
-});</code></pre>
-  
-  <h2>Basic Template</h2>
-  <p>Create a file <code>views/home.html</code>:</p>
-  <pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;title&gt;{{ title }}&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;h1&gt;{{ heading }}&lt;/h1&gt;
-  
-  {{#if user}}
-    &lt;p&gt;Welcome back, {{ user.name }}!&lt;/p&gt;
-  {{#else}}
-    &lt;p&gt;Please log in&lt;/p&gt;
-  {{/if}}
-  
-  {{#each items}}
-    &lt;div class="item"&gt;
-      &lt;h3&gt;{{ name }}&lt;/h3&gt;
-      &lt;p&gt;Price: ${{ price }}&lt;/p&gt;
-    &lt;/div&gt;
-  {{/each}}
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-  
-  <h2>Rendering Templates</h2>
-  <pre><code class="language-javascript">app.get('/', async (req, res) => {
-  const data = {
-    title: 'Home Page',
-    heading: 'Welcome to our site',
-    user: { name: 'John Doe' },
-    items: [
-      { name: 'Product 1', price: 19.99 },
-      { name: 'Product 2', price: 29.99 }
-    ]
-  };
-  
-  return await app.render('home', data);
-});</code></pre>
-  
-  <h2>Template Features</h2>
-  <table class="api-reference">
-    <thead>
-      <tr>
-        <th>Feature</th>
-        <th>Syntax</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Variables</td>
-        <td><code>{{ variable }}</code></td>
-        <td>Output variable value</td>
-      </tr>
-      <tr>
-        <td>Conditionals</td>
-        <td><code>{{#if condition}}...{{/if}}</code></td>
-        <td>Conditional rendering</td>
-      </tr>
-      <tr>
-        <td>Else/Else If</td>
-        <td><code>{{#else}}...{{/else}}</code> and <code>{{#elif condition}}...{{/elif}}</code></td>
-        <td>Else clause for conditionals</td>
-      </tr>
-      <tr>
-        <td>Loops</td>
-        <td><code>{{#each array}}...{{/each}}</code></td>
-        <td>Iterate over arrays</td>
-      </tr>
-      <tr>
-        <td>Nested</td>
-        <td><code>{{#each}}{{#if}}...{{/if}}{{/each}}</code></td>
-        <td>Nested conditionals and loops</td>
-      </tr>
-    </tbody>
-  </table>
-</article>
-
-<article id="plugin-system">
-    <h1><i class="fas fa-puzzle-piece"></i> Plugin System</h1>
-    <p>Extend Novaxjs2 functionality with custom plugins:</p>
-    
-    <h2>Creating a Plugin</h2>
-    <pre><code class="language-javascript">function myPlugin(context, options) {
-  // Add new methods
-  context.addMethod('greet', function(name) {
-    return `Hello ${name}!`;
-  });
-  
-  // Add routes
-  context.addRoute('get', '/plugin-route', (req, res) => {
-    return 'This route was added by plugin';
-  });
-  
-  // Add middleware
-  context.addMiddleware((req, res, next) => {
-    console.log('Plugin middleware');
-    next();
-  });
-  
-  // Store configuration
-  context.setConfig('pluginConfig', options);
-}</code></pre>
-    
-    <h2>Using a Plugin</h2>
-    <pre><code class="language-javascript">app.usePlugin(myPlugin, { setting: 'value' });
-
-// Now you can use plugin methods
-app.get('/', (req, res) => {
-  return app.greet('World');
-});</code></pre>
-  </article>
-
-  <!-- Enhanced Static File Serving section -->
-  <article id="static-files">
-    <h1><i class="fas fa-folder-open"></i> Static File Serving</h1>
-    
-    <h2>Basic Usage</h2>
-    <pre><code class="language-javascript">// Serve files from 'public' directory
-app.serveStatic('public');
-
-// Files will be available at:
-// /public/style.css -> /style.css
-// /public/images/logo.png -> /images/logo.png</code></pre>
-    
-    <h2>Custom Directory</h2>
-    <pre><code class="language-javascript">// Serve from 'assets' directory instead
-app.serveStatic('assets');</code></pre>
-    
-    <h2>MIME Types</h2>
-    <p>Novaxjs2 automatically detects file types from extensions using a comprehensive MIME type database.</p>
-  </article>
-
-<article id="route-middleware">
-  <h1><i class="fas fa-code-branch"></i> Route-Specific Middleware</h1>
-  
-  <p>Novaxjs2 supports adding middleware to specific routes:</p>
-  
-  <h2>Adding Middleware to Routes</h2>
-  <pre><code class="language-javascript">// Middleware function
-function logRequest(req, res, next) {
-  console.log(`Request: ${req.method} ${req.url}`);
-  next();
-}
-
-// Route with middleware
-app.get('/protected', logRequest, (req, res) => {
-  return 'This route is protected by middleware';
-});</code></pre>
-  
-  <h2>Multiple Middleware</h2>
-  <pre><code class="language-javascript">function auth(req, res, next) {
-  if (req.headers.authorization) {
-    next();
-  } else {
-    res.status(401).end('Unauthorized');
-  }
-}
-
-app.get('/admin', 
-  logRequest, 
-  auth,
-  (req, res) => {
-    return 'Admin dashboard';
-  }
-);</code></pre>
-</article>
-
-<article id="advanced-responses">
-  <h1><i class="fas fa-reply"></i> Advanced Response Handling</h1>
-  
-  <h2>Redirect Responses</h2>
-  <pre><code class="language-javascript">app.get('/old-route', (req, res) => {
-  res.redirect('/new-route');
-});
-
-app.get('/temp-redirect', (req, res) => {
-  res.redirect('/new-location', 307); // Temporary redirect
-});</code></pre>
-  
-  <h2>Sending Files</h2>
-  <pre><code class="language-javascript">app.get('/file', (req, res) => {
-  res.sendFile('path/to/file.pdf', res);
-});</code></pre>
-  
-  <h2>Setting Headers</h2>
-  <pre><code class="language-javascript">app.get('/custom', (req, res) => {
-  res.setHeader('X-Custom-Header', 'value');
-  return 'Response with custom header';
-});</code></pre>
-</article>
-
-<article id="error-handling">
-  <h1><i class="fas fa-exclamation-triangle"></i> Advanced Error Handling</h1>
-  
-  <h2>Custom Error Pages</h2>
-  <pre><code class="language-javascript">// Custom 404 page
-app.on(404, () => {
-  return '&lt;h1&gt;Custom 404 Page&lt;/h1&gt;';
-});
-
-// Custom 500 handler
-app.error((err, req, res) => {
-  console.error(err);
-  return '&lt;h1&gt;Something went wrong&lt;/h1&gt;';
-});</code></pre>
-  
-  <h2>Error Middleware</h2>
-  <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
-  if (err) {
-    console.log(err)
-    res.status(400).end(err.message);
-  } else {
-    next(err);
-  }
-});</code></pre>
-  
-  <h2>Throwing Errors</h2>
-  <pre><code class="language-javascript">app.get('/error', (req, res) => {
-  throw new Error('Something went wrong');
-});</code></pre>
-</article>
-      <article id="example">
-        <h1><i class="fas fa-laptop-code"></i> Complete Example</h1>
-        <p>A complete Novaxjs2 application demonstrating multiple features.</p>
-        
-        <pre><code class="language-javascript">const Nova = require('novaxjs2');
-const app = new Nova();
-
-// Global styles and scripts
-app.style = `
-  body { 
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background: #f5f5f5;
-  }
-`;
-
-app.js = 'console.log("App initialized");';
-
-// Middleware
-app.useMiddleware((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
-
-// CORS
-app.cors({
-  origins: ['http://localhost:3000'],
-  methods: ['GET', 'POST']
-});
-
-// File upload limit
-app.setFileSizeLimit(10); // 10MB
-
-// Routes
-app.get('/', (req, res) => {
-  return `
-    &lt;h1&gt;Welcome to Novaxjs2&lt;/h1&gt;
-    &lt;p&gt;This is a sample application.&lt;/p&gt;
-  `;
-});
-
+// API endpoint
 app.get('/api/users', (req, res) => {
-  res.json([
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Smith' }
-  ]);
-});
-
-app.post('/api/users', (req, res) => {
-  const newUser = req.body;
-  // Save to database...
-  res.status(201).json({ success: true, user: newUser });
-});
-
-app.post('/upload', (req, res) => {
-  if (!req.files || !req.files.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-  res.json({ message: 'File uploaded successfully' });
-});
-
-// Error handling
-app.on(404, () => {
-  return '&lt;h1&gt;404 - Page Not Found&lt;/h1&gt;';
-});
-
-app.error((err, req, res) => {
-  console.error(err);
-  return '&lt;h1&gt;500 - Server Error&lt;/h1&gt;';
+  res.json([{ id: 1, name: 'John' }]);
 });
 
 // Start server
 app.at(3000, () => {
   console.log('Server running on port 3000');
 });</code></pre>
-      </article>
-      
-      <article id="links">
-        <h1><i class="fas fa-project-diagram"></i> Example Projects</h1>
-        
-        <div class="feature-grid">
+        </div>
+      </section>
+
+      <!-- Key Features -->
+      <section class="features">
+        <h2>Why Choose Novaxjs2?</h2>
+        <div class="features-grid y">
           <div class="feature-card">
-            <h3><i class="fas fa-tasks"></i> To-Do List</h3>
-            <p>A complete task management application built with Novaxjs2.</p>
-            <a href="https://github.com/WhoappRoom/To-Do-List-" class="button">
-              <i class="fab fa-github"></i> View on GitHub
-            </a>
+            <i class="fas fa-tachometer-alt"></i>
+            <h3>Blazing Fast</h3>
+            <p>Minimal overhead and optimized routing for high performance applications</p>
           </div>
           <div class="feature-card">
-            <h3><i class="fas fa-comments"></i> Forum API</h3>
-            <p>RESTful API for a discussion forum with authentication.</p>
-            <a href="https://github.com/WhoappRoom/Novaxjs2" class="button">
-              <i class="fab fa-github"></i> View on GitHub
-            </a>
+            <i class="fas fa-cubes"></i>
+            <h3>Modular</h3>
+            <p>Plugin system lets you extend functionality without bloat</p>
           </div>
           <div class="feature-card">
-            <h3><i class="fas fa-tasks"></i> Modern To List App <code>v-4.6.4 required</code></h3>
-            <p>This app demonstrates modern web development practices with server-side rendering, REST API endpoints</p>
-            <a href="https://github.com/WhoappRoom/modern-to-do-list" class="button">
-              <i class="fab fa-github"></i> View on GitHub
-            </a>
+            <i class="fas fa-shield-alt"></i>
+            <h3>Secure</h3>
+            <p>Built-in protections against common web vulnerabilities</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-code"></i>
+            <h3>Simple API</h3>
+            <p>Intuitive syntax that's easy to learn and use</p>
           </div>
         </div>
-      </article>
-      
-      <article id="contact">
-        <h1><i class="fas fa-envelope"></i> Contact Us</h1>
-        <p>Have questions or feedback? Send us a message!</p>
+      </section>
+
+      <!-- Quick Start -->
+      <section class="quick-start">
+        <h2>Get Started in Seconds</h2>
+        <div class="tabs">
+          <div class="tab active" onclick="changeTab(event, 'npm')">npm</div>
+          <div class="tab" onclick="changeTab(event, 'yarn')">Yarn</div>
+        </div>
         
-        <form id="contact-form" style="max-width: 600px; margin: 0 auto;">
-          <div style="margin-bottom: 1rem;">
-            <label for="name" style="display: block; margin-bottom: 0.5rem;">Name</label>
-            <input type="text" id="name" placeholder="Your name" required>
-          </div>
-          
-          <div style="margin-bottom: 1rem;">
-            <label for="email" style="display: block; margin-bottom: 0.5rem;">Email</label>
-            <input type="email" id="email" placeholder="Your email" required>
-          </div>
-          
-          <div style="margin-bottom: 1rem;">
-            <label for="message" style="display: block; margin-bottom: 0.5rem;">Message</label>
-            <textarea id="message" placeholder="Your message" required></textarea>
-          </div>
-          
-          <button type="submit" style="width: 100%;">
-            <i class="fas fa-paper-plane"></i> Send Message
-          </button>
-        </form>
-      </article>
-    </div>
-    
-    <button id="back-to-top" onclick="scrollToTop()">
-      <i class="bx bx-up-arrow-alt"></i>
-    </button>
-    
-    <div id="footer">
-      <div class="social-links">
-        <a href="https://www.facebook.com/share/14g2SMPvD3/" title="Facebook">
-          <i class="fab fa-facebook-f"></i>
+        <div id="npm" class="tab-content active">
+          <pre><code class="language-bash">npm install novaxjs2</code></pre>
+        </div>
+        <div id="yarn" class="tab-content">
+          <pre><code class="language-bash">yarn add novaxjs2</code></pre>
+        </div>
+        
+        <p>Then create your first app:</p>
+        <pre><code class="language-javascript">// app.js
+const Nova = require('novaxjs2');
+const app = new Nova();
+
+app.get('/', (req, res) => {
+  return 'Hello World!';
+});
+
+app.at(3000);</code></pre>
+      </section>
+      
+      <div id="footer">
+  <div class="social-links">
+    <a href="https://www.facebook.com/share/14g2SMPvD3/" title="Facebook">
+    <i class="fab fa-facebook-f"></i>
         </a>
         <a href="https://x.com/CabdiWaaxi100" title="Twitter">
-          <i class="fab fa-twitter"></i>
+    <i class="fab fa-twitter"></i>
         </a>
         <a href="https://github.com/WhoappRoom" title="GitHub">
-          <i class="fab fa-github"></i>
+    <i class="fab fa-github"></i>
         </a>
         <a href="https://www.npmjs.com/package/novaxjs2" title="NPM">
-          <i class="fab fa-npm"></i>
+    <i class="fab fa-npm"></i>
         </a>
         <a href="https://www.whoappsomali.site/profile/novaxjs2" title="Whoapp Somali">
           <i class="fa-solid fa-w"></i>
         </a>
-      </div>
-      <p>&copy; 2025 Novaxjs2. All rights reserved.</p>
-      <p>Version 6.0.0</p>
-      <p>Created by <code>Cabdi Waaxid Siciid</code></p>
-      <p>Last updated: July, 10, 2025</p>
+  </div>
+  <p>&copy; 2025 Novaxjs2. All rights reserved.</p>
+  <p>Version 7.0.0</p>
+  <p>Created by <code>Cabdi Waaxid Siciid</code></p>
+  <p>Last updated: July, 10, 2025</p>
+</div>
     </div>
   </div>
 
@@ -1784,23 +309,6 @@ app.at(3000, () => {
       }
     }
 
-    // Back to top button
-    function scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
-    
-    window.addEventListener('scroll', () => {
-      const backToTopButton = document.getElementById('back-to-top');
-      if (window.scrollY > 300) {
-        backToTopButton.style.display = 'flex';
-      } else {
-        backToTopButton.style.display = 'none';
-      }
-    });
-
     // Tab system
     function changeTab(evt, tabId) {
       // Hide all tab contents
@@ -1819,58 +327,8 @@ app.at(3000, () => {
       evt.currentTarget.classList.add('active');
       document.getElementById(tabId).classList.add('active');
     }
-
-    // Contact form submission
-    document.getElementById('contact-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-      
-      if (!name || !email || !message) {
-        alert('Please fill in all fields');
-        return;
-      }
-      
-      const url = `https://www.small-pencil.website/api/send?uid=yKWM2ZqH54OH7AtKgYqBC2REYmI2&text=${encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
-      )}`;
-      
-      window.open(url, '_blank');
-      e.target.reset();
-      alert('Thank you for your message!');
-    });
-
-    // Copy code buttons
-    document.addEventListener('DOMContentLoaded', () => {
-      // Add copy buttons to all pre elements
-      const preElements = document.querySelectorAll('pre');
-      
-      preElements.forEach(pre => {
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'copy-btn';
-        copyBtn.textContent = 'Copy';
-        copyBtn.title = 'Copy to clipboard';
-        
-        copyBtn.addEventListener('click', () => {
-          const code = pre.querySelector('code').textContent;
-          navigator.clipboard.writeText(code).then(() => {
-            copyBtn.textContent = 'Copied!';
-            setTimeout(() => {
-              copyBtn.textContent = 'Copy';
-            }, 2000);
-          });
-        });
-        
-        pre.appendChild(copyBtn);
-      });
-      
-      // Initialize Prism syntax highlighting
-      document.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightBlock(block);
-      });
-    });
+    document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});
   </script>
+  <script src="helper.js"></script>
 </body>
 </html>
