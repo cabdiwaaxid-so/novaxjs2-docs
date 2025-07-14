@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://novaxjs.vercel.app/</loc>
+  <lastmod>2025-07-14T04:04:29+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/about</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/installation</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/features</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/usage</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/api-reference</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/plugin-system</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/file-uploads</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/cors</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/middleware</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/templating</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/static-files</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/error-handling</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/file-configuration</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/example</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/projects</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://novaxjs.vercel.app/docs/contact</loc>
+  <lastmod>2025-07-14T04:04:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
+</urlset>
