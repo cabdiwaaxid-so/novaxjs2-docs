@@ -31,7 +31,7 @@ app.get('/docs/:feature', (req, res) => {
   }
 })
 app.get('/sitemap', (req, res) => {
-  app.sendFile('../public/sitemap.xml', 'text/xml', res);
+  app.sendFile(path.join(__dirname, '../public/sitemap.xml'), 'text/xml', res);
 });
 app.on(404, () => {
   return fs.readFileSync(path.join(__dirname, '../public/404.html'), 'utf8');
