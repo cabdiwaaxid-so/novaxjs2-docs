@@ -3,4 +3,4 @@ Allow: /
 Disallow: /404.html
 Disallow: /500.html
 
-Sitemap: https://novaxjs.vercel.app/sitemap
+Sitemap: https://www.novaxjs2.site/sitemap
