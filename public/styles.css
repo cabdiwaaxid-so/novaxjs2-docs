@@ -60,6 +60,8 @@ body {
   background-color: var(--primary-bg);
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
+}
 }
 
 /* Typography */
