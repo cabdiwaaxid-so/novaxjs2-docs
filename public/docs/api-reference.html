@@ -57,6 +57,11 @@
           <td><code>app.delete('/users/:id', (req, res) => {...})</code></td>
         </tr>
         <tr>
+          <td><code>group(prefix, callback)</code></td>
+          <td>Group routes under a common prefix</td>
+          <td><code>app.group('/api', ({ get, post }) => {<br>&nbsp;&nbsp;get('/users', handler);<br>&nbsp;&nbsp;post('/users', handler);<br>})</code></td>
+        </tr>
+        <tr>
           <td><code>at(port, host, callback)</code></td>
           <td>Start server </td>
           <td><code>app.at(3000, () => {...})</code></td>

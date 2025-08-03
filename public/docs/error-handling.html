@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-  <meta name="title" content="Novaxjs2 - Error Handling">
-<meta name="description" content="Implement custom error pages and middleware in Novaxjs2 applications">
-<meta property="og:title" content="Novaxjs2 - Error Handling">
-<meta property="og:description" content="Robust error handling in Novaxjs2">
-<meta property="twitter:title" content="Novaxjs2 - Error Handling">
-<meta property="twitter:description" content="Error management best practices">
+  <meta name="title" content="Novaxjs2 - Advanced Error Handling">
+  <meta name="description" content="Complete guide to error handling in Novaxjs2 including custom error pages, middleware, and status code management">
+  <meta property="og:title" content="Novaxjs2 - Advanced Error Handling">
+  <meta property="og:description" content="Master error management in Novaxjs2 applications">
+  <meta property="twitter:title" content="Novaxjs2 - Error Handling System">
+  <meta property="twitter:description" content="Comprehensive error handling documentation">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
@@ -18,40 +18,227 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 docs - Error Handling</title>
+  <title>Novaxjs2 docs - Advanced Error Handling</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="error-handling">
-  <h1><i class="fas fa-exclamation-triangle"></i> Advanced Error Handling</h1>
-  
-  <h2>Custom Error Pages</h2>
-  <pre><code class="language-javascript">// Custom 404 page
-app.on(404, () => {
-  return '&lt;h1&gt;Custom 404 Page&lt;/h1&gt;';
+    <h1><i class="fas fa-exclamation-triangle"></i> Advanced Error Handling</h1>
+    <p>Novaxjs2 provides a comprehensive error handling system with multiple layers of error management.</p>
+    
+    <h2>Error Handling Layers</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3><i class="fas fa-code"></i> Route-Level</h3>
+        <p>Try/catch in individual route handlers</p>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-layer-group"></i> Error Middleware</h3>
+        <p>Global error processing pipeline</p>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-file-alt"></i> Custom Error Pages</h3>
+        <p>Status-code specific responses</p>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-shield-alt"></i> Fallback Handler</h3>
+        <p>Final safety net for uncaught errors</p>
+      </div>
+    </div>
+
+    <h2>Custom Error Pages</h2>
+    <pre><code class="language-javascript">// Custom error page for 404
+app.on(404, (err, req, res) => {
+  return `
+    &lt;h1&gt;Page Not Found&lt;/h1&gt;
+    &lt;p&gt;${err.message}&lt;/p&gt;
+    &lt;p&gt;Requested URL: ${req.url}&lt;/p&gt;
+  `;
 });
 
-// Custom 500 handler
-app.error((err, req, res) => {
-  console.error(err);
+// Custom error page for 500
+app.on(500, (err, req, res) => {
+  console.error(err.stack);
+  return `
+    &lt;h1&gt;Server Error&lt;/h1&gt;
+    &lt;p&gt;We're working to fix this!&lt;/p&gt;
+    ${process.env.NODE_ENV === 'development' ? 
+      `&lt;pre&gt;${err.stack}&lt;/pre&gt;` : ''}
+  `;
+});
+
+// Custom handler for 401 Unauthorized
+app.on(401, () => {
+  return '&lt;h1&gt;Please log in to access this page&lt;/h1&gt;';
+});</code></pre>
+
+    <h2>Error Middleware</h2>
+    <pre><code class="language-javascript">// Basic error middleware
+app.useErrorMiddleware((err, req, res, next) => {
+  if (err instanceof DatabaseError) {
+    res.status(500).json({ error: 'Database operation failed' });
+  } else {
+    next(err); // Pass to next error middleware
+  }
+});
+
+// Logging middleware
+app.useErrorMiddleware((err, req, res, next) => {
+  console.error(`[${new Date().toISOString()}] Error:`, err);
+  next(err);
+});
+
+// Final error formatter
+app.useErrorMiddleware((err, req, res, next) => {
+  const status = err.statusCode || 500;
+  res.status(status).json({
+    error: err.message,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});</code></pre>
+
+    <h2>Custom Error Classes</h2>
+    <pre><code class="language-javascript">// Define custom error types
+class ValidationError extends Error {
+  constructor(message, field) {
+    super(message);
+    this.name = 'ValidationError';
+    this.statusCode = 400;
+    this.field = field;
+  }
+}
+
+class DatabaseError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'DatabaseError';
+    this.statusCode = 503;
+  }
+}
+
+// Usage in routes
+app.post('/users', (req, res) => {
+  if (!req.body.email) {
+    throw new ValidationError('Email is required', 'email');
+  }
+  // ...
+});</code></pre>
+
+    <h2>Route-Level Error Handling</h2>
+    <pre><code class="language-javascript">// Async/await with try/catch
+app.get('/profile/:id', async (req, res) => {
+  try {
+    const user = await getUserById(req.params.id);
+    if (!user) {
+      throw new Error('User not found');
+      // Or: const err = new Error('User not found');
+      // err.statusCode = 404;
+      // throw err;
+    }
+    return await app.render('profile', { user });
+  } catch (err) {
+    // Route-specific handling
+    if (err.message === 'User not found') {
+      return res.status(404).send('User not found');
+    }
+    throw err; // Pass to error middleware
+  }
+});
+
+// Promise-based handling
+app.get('/api/data', (req, res) => {
+  fetchData()
+    .then(data => res.json(data))
+    .catch(err => {
+      console.error('Data fetch failed:', err);
+      res.status(500).json({ error: 'Failed to load data' });
+    });
+});</code></pre>
+
+    <h2>Built-in Error Types</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Error Type</th>
+          <th>Status Code</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>404 Not Found</td>
+          <td>404</td>
+          <td>Automatic for unmatched routes</td>
+        </tr>
+        <tr>
+          <td>File Upload Errors</td>
+          <td>400/413</td>
+          <td>Size limits, invalid types</td>
+        </tr>
+        <tr>
+          <td>JSON Parse Errors</td>
+          <td>400</td>
+          <td>Invalid JSON payloads</td>
+        </tr>
+        <tr>
+          <td>Static File Errors</td>
+          <td>404</td>
+          <td>Missing static files</td>
+        </tr>
+        <tr>
+          <td>Template Errors</td>
+          <td>500</td>
+          <td>Template rendering failures</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Error Handling Best Practices</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3><i class="fas fa-bug"></i> Development vs Production</h3>
+        <pre><code class="language-javascript">app.error((err, req, res) => {
+  if (process.env.NODE_ENV === 'development') {
+    return `&lt;pre&gt;${err.stack}&lt;/pre&gt;`;
+  }
   return '&lt;h1&gt;Something went wrong&lt;/h1&gt;';
 });</code></pre>
-  
-  <h2>Error Middleware</h2>
-  <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
-  if (err) {
-    console.log(err)
-    res.status(400).end(err.message);
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-tags"></i> Error Classification</h3>
+        <pre><code class="language-javascript">class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+    this.isOperational = true;
+  }
+}</code></pre>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-file-alt"></i> Structured Logging</h3>
+        <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
+  logger.error({
+    message: err.message,
+    stack: err.stack,
+    url: req.url,
+    ip: req.ip
+  });
+  next(err);
+});</code></pre>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-exchange-alt"></i> Error Transformation</h3>
+        <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
+  if (err.name === 'MongoError') {
+    next(new DatabaseError('Database operation failed'));
   } else {
     next(err);
   }
 });</code></pre>
-  
-  <h2>Throwing Errors</h2>
-  <pre><code class="language-javascript">app.get('/error', (req, res) => {
-  throw new Error('Something went wrong');
-});</code></pre>
+      </div>
+    </div>
+
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/static-files" class="btn next">
         <i class="fas fa-arrow-left"></i> Prev: Static Files
@@ -64,7 +251,7 @@ app.error((err, req, res) => {
   
   {{ #if footer }}
     {{ footer }}
-  {{/if}}
+  {{/if }}
   
   <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
   <script src="/helper.js"></script>

@@ -30,11 +30,18 @@ app.get('/docs/:feature', (req, res) => {
     res.send(err)
   }
 })
-app.on(404, () => {
+app.get('/500', (req, res) => {
+  throw new Error("500 error testing");
+})
+app.on(404, (err, req, res) => {
   return fs.readFileSync(path.join(__dirname, '../public/404.html'), 'utf8');
 });
+app.on(500, (err, req, res) => {
+  console.log(err)
+  return fs.readFileSync(path.join(__dirname, '../public/500.html'), 'utf8');
+})
 app.error((err, req, res) => {
-  res.send(fs.readFileSync(path.join(__dirname, '../public/500.html'), 'utf8'));
+  console.log(err)
 })
 app.at(port, () => {
   console.log(`Nova is running on https:localhost:${port}`);
