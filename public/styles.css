@@ -503,9 +503,6 @@ label {
   #app {
     flex-direction: column;
   }
-  body{
-    flex-direction: column;
-  }
   
   #header {
     position: static;
