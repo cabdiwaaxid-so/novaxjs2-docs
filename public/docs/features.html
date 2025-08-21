@@ -5,95 +5,186 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-  <meta name="title" content="Novaxjs2 - Core Features">
-<meta name="description" content="Explore Novaxjs2's powerful features including routing, middleware, templating and file handling">
-<meta property="og:title" content="Novaxjs2 - Core Features">
-<meta property="og:description" content="Discover what makes Novaxjs2 a great Node.js framework choice">
-<meta property="twitter:title" content="Novaxjs2 - Core Features">
-<meta property="twitter:description" content="Key features of the Novaxjs2 framework">
+  <meta name="title" content="Novaxjs2 v8.3.0 - Core Features">
+  <meta name="description" content="Explore Novaxjs2 v8.3.0's powerful features including advanced routing, middleware, templating, file handling, and performance optimizations">
+  <meta property="og:title" content="Novaxjs2 v8.3.0 - Core Features">
+  <meta property="og:description" content="Discover what makes Novaxjs2 v8.3.0 a great Node.js framework choice with comprehensive feature overview">
+  <meta property="twitter:title" content="Novaxjs2 v8.3.0 - Core Features">
+  <meta property="twitter:description" content="Key features of the Novaxjs2 v8.3.0 framework with detailed explanations">
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 docs - Features</title>
+  <title>Novaxjs2 v8.3.0 docs - Features</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="features">
-  <h1><i class="fas fa-star"></i> Core Features</h1>
-  
-  <div class="feature-grid">
-    <div class="feature-card">
-      <h3><i class="fas fa-route"></i> Advanced Routing</h3>
-      <ul>
-        <li>RESTful route definitions</li>
-        <li>Dynamic path parameters</li>
-        <li>Query parameter parsing</li>
-        <li>Regular expression routes</li>
-      </ul>
-    </div>
+    <h1><i class="fas fa-star"></i> Core Features (v8.3.0)</h1>
+    <p class="subtitle">Novaxjs2 v8.3.0 is packed with powerful features designed to make web development faster, simpler, and more efficient. Here's a comprehensive overview of what the framework offers.</p>
     
-    <div class="feature-card">
-      <h3><i class="fas fa-layer-group"></i> Middleware System</h3>
-      <ul>
-        <li>Standard middleware chain</li>
-        <li>Error handling middleware</li>
-        <li>Built-in static file middleware</li>
-        <li>Async middleware support</li>
-      </ul>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3><i class="fas fa-route"></i> Advanced Routing System</h3>
+        <ul>
+          <li><strong>RESTful route definitions</strong> - GET, POST, PUT, DELETE methods</li>
+          <li><strong>Dynamic path parameters</strong> - <code>/users/:id</code> style routes</li>
+          <li><strong>Query parameter parsing</strong> - Automatic <code>req.query</code> object</li>
+          <li><strong>Route groups</strong> - Organize routes with common prefixes</li>
+          <li><strong>Regular expression routes</strong> - Advanced pattern matching</li>
+          <li><strong>Middleware per route</strong> - Apply middleware to specific routes</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <h3><i class="fas fa-layer-group"></i> Middleware System</h3>
+        <ul>
+          <li><strong>Standard middleware chain</strong> - Sequential request processing</li>
+          <li><strong>Error handling middleware</strong> - Centralized error management</li>
+          <li><strong>Built-in static file middleware</strong> - Automatic static asset serving</li>
+          <li><strong>Async middleware support</strong> - Promise-based middleware functions</li>
+          <li><strong>Route-specific middleware</strong> - Apply middleware to route groups</li>
+          <li><strong>Custom middleware creation</strong> - Extend functionality easily</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <h3><i class="fas fa-file-code"></i> Templating Engine</h3>
+        <ul>
+          <li><strong>Built-in Novax template engine</strong> - No external dependencies</li>
+          <li><strong>Dual-mode templates</strong> - HTML syntax or JavaScript functions</li>
+          <li><strong>Conditionals</strong> - <code>&#123;&#123;#if&#125;&#125;, &#123;&#123;#else&#125;&#125;, &#123;&#123;#elif&#125;&#125;, &#123;&#123;/if&#125;&#125;</code></li>
+          <li><strong>Loops</strong> - <code>&#123;&#123;#each&#125;&#125;</code> with index support</li>
+          <li><strong>Variable interpolation</strong> - <code>&#123;&#123;variable &#125;&#125;</code> syntax</li>
+          <li><strong>Custom helpers</strong> - Register helper functions</li>
+          <li><strong>Third-party engine support</strong> - EJS, Pug, Handlebars integration</li>
+          <li><strong>Layout system</strong> - Template inheritance and partials</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <h3><i class="fas fa-file-upload"></i> File Handling</h3>
+        <ul>
+          <li><strong>Static file serving</strong> - Automatic MIME type detection</li>
+          <li><strong>File uploads with limits</strong> - Size, type, and quantity restrictions</li>
+          <li><strong>Multipart form parsing</strong> - Automatic <code>req.files</code> object</li>
+          <li><strong>80+ MIME type support</strong> - Comprehensive file type detection</li>
+          <li><strong>Direct file responses</strong> - <code>sendFile()</code> method</li>
+          <li><strong>File management utilities</strong> - Upload cleanup and stream handling</li>
+          <li><strong>Security validation</strong> - File type and size validation</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <h3><i class="fas fa-shield-virus"></i> Security Features</h3>
+        <ul>
+          <li><strong>Configurable CORS</strong> - Cross-origin resource sharing</li>
+          <li><strong>Automatic body parsing</strong> - JSON and form data parsing</li>
+          <li><strong>IP address detection</strong> - <code>req.ip</code> with proxy support</li>
+          <li><strong>File upload protections</strong> - Size and type restrictions</li>
+          <li><strong>XSS protection</strong> - Automatic content escaping in templates</li>
+          <li><strong>Header security</strong> - Custom security headers</li>
+          <li><strong>Error sanitization</strong> - Production error message hiding</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <h3><i class="fas fa-tachometer-alt"></i> Performance Optimizations</h3>
+        <ul>
+          <li><strong>Lightweight core</strong> - Minimal memory footprint</li>
+          <li><strong>Optimized routing</strong> - Fast route matching with regex</li>
+          <li><strong>Built-in minification</strong> - HTML, CSS, and JS minification</li>
+          <li><strong>Efficient middleware</strong> - Low-overhead middleware system</li>
+          <li><strong>Streaming support</strong> - File and response streaming</li>
+          <li><strong>Memory management</strong> - Efficient buffer handling</li>
+          <li><strong>Connection handling</strong> - Keep-alive and timeout management</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <h3><i class="fas fa-cogs"></i> Customization & Extensibility</h3>
+        <ul>
+          <li><strong>Global CSS injection</strong> - Application-wide styles</li>
+          <li><strong>Global JavaScript injection</strong> - Client-side scripts</li>
+          <li><strong>Custom error pages</strong> - Status code specific error handling</li>
+          <li><strong>Response helpers</strong> - <code>res.json()</code>, <code>res.send()</code></li>
+          <li><strong>Plugin system</strong> - Extend framework functionality</li>
+          <li><strong>Configuration system</strong> - App-wide settings management</li>
+          <li><strong>Helper functions</strong> - Custom template helpers</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3><i class="fas fa-plug"></i> Plugin System</h3>
+        <ul>
+          <li><strong>Extensible architecture</strong> - Add new methods and features</li>
+          <li><strong>Middleware injection</strong> - Plugin-provided middleware</li>
+          <li><strong>Route registration</strong> - Plugins can define routes</li>
+          <li><strong>Configuration management</strong> - Plugin-specific settings</li>
+          <li><strong>Lifecycle hooks</strong> - Plugin initialization events</li>
+          <li><strong>Dependency management</strong> - Plugin interoperability</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3><i class="fas fa-bug"></i> Error Handling</h3>
+        <ul>
+          <li><strong>Custom error pages</strong> - Status-specific error responses</li>
+          <li><strong>Global error handler</strong> - Centralized exception handling</li>
+          <li><strong>Async error support</strong> - Promise rejection handling</li>
+          <li><strong>Development mode</strong> - Detailed error messages</li>
+          <li><strong>Production mode</strong> - User-friendly error pages</li>
+          <li><strong>Error logging</strong> - Structured error information</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3><i class="fas fa-code-branch"></i> API Features</h3>
+        <ul>
+          <li><strong>RESTful API support</strong> - Resource-based routing</li>
+          <li><strong>JSON responses</strong> - Automatic serialization</li>
+          <li><strong>Status code helpers</strong> - <code>res.status()</code> method</li>
+          <li><strong>Redirect support</strong> - <code>res.redirect()</code> method</li>
+          <li><strong>Header manipulation</strong> - <code>res.set()</code> method</li>
+          <li><strong>Request information</strong> - URL, protocol, IP address data</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3><i class="fas fa-tools"></i> Development Experience</h3>
+        <ul>
+          <li><strong>Hot reload support</strong> - Development server restarts</li>
+          <li><strong>Debug logging</strong> - Detailed request information</li>
+          <li><strong>Code minification</strong> - Production-ready asset optimization</li>
+          <li><strong>Template caching</strong> - Improved rendering performance</li>
+          <li><strong>Environment detection</strong> - Development vs production modes</li>
+          <li><strong>Comprehensive documentation</strong> - Detailed guides and examples</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3><i class="fas fa-server"></i> Server Management</h3>
+        <ul>
+          <li><strong>Port and host configuration</strong> - Flexible server binding</li>
+          <li><strong>Graceful shutdown</strong> - Connection draining support</li>
+          <li><strong>Process management</strong> - PID file and process signals</li>
+          <li><strong>Health checks</strong> - Application monitoring endpoints</li>
+          <li><strong>Cluster support</strong> - Multi-process application scaling</li>
+          <li><strong>Proxy support</strong> - Behind load balancer configuration</li>
+        </ul>
+      </div>
     </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-file-code"></i> Templating Engine</h3>
-      <ul>
-        <li>Built-in Novax template engine</li>
-        <li>Conditionals (#if, #else, #elif)</li>
-        <li>Loops (#each)</li>
-        <li>Variable interpolation</li>
-        <li>Nested templates</li>
-        <li>Automatic HTML escaping</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-file-upload"></i> File Handling</h3>
-      <ul>
-        <li>Static file serving</li>
-        <li>File uploads with size limits</li>
-        <li>MIME type detection</li>
-        <li>Direct file responses</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-shield-virus"></i> Security</h3>
-      <ul>
-        <li>Configurable CORS</li>
-        <li>Request body parsing</li>
-        <li>Error handling</li>
-        <li>File upload protections</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-tachometer-alt"></i> Performance</h3>
-      <ul>
-        <li>Lightweight core</li>
-        <li>Optimized routing</li>
-        <li>Minimal overhead</li>
-        <li>Efficient middleware</li>
-      </ul>
-    </div>
-    
-    <div class="feature-card">
-      <h3><i class="fas fa-cogs"></i> Customization</h3>
-      <ul>
-        <li>Global CSS injection</li>
-        <li>Global JavaScript injection</li>
-        <li>Custom error pages</li>
-        <li>Response helpers</li>
-      </ul>
-    </div>
-  </div>
-  <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+
+    <h2>Version 8.3.0 Specific Features</h2>
+    <ul>
+      <li><strong>Enhanced Plugin System</strong> - Improved plugin context and options handling</li>
+      <li><strong>Extended Template Helpers</strong> - Additional built-in template functions</li>
+      <li><strong>Improved Error Messages</strong> - More descriptive error reporting</li>
+      <li><strong>Performance Optimizations</strong> - Faster route matching and middleware execution</li>
+      <li><strong>Security Enhancements</strong> - Additional security headers and protections</li>
+      <li><strong>Extended File Type Support</strong> - Additional MIME type recognitions</li>
+      <li><strong>Better Documentation</strong> - Comprehensive guides and examples</li>
+    </ul>
+
+    <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/installation" class="btn next">
         <i class="fas fa-arrow-left"></i> Prev: Installation 
       </a>
@@ -101,7 +192,7 @@
         Next: Basic Usage <i class="fas fa-arrow-right"></i>
       </a>
     </div>
-</article>
+  </article>
   
   {{ #if footer }}
     {{ footer }}

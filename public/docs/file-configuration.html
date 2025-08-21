@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <meta name="title" content="Novaxjs2 - File Configuration">
-<meta name="description" content="Advanced file upload configuration options in Novaxjs2 including size limits and MIME types">
+<meta name="description" content="Advanced file upload configuration options in Novaxjs2 including size limits, MIME types, and file handling settings">
 <meta property="og:title" content="Novaxjs2 - File Configuration">
-<meta property="og:description" content="Configure file upload settings in Novaxjs2">
+<meta property="og:description" content="Comprehensive guide to configuring file upload settings in Novaxjs2">
 <meta property="twitter:title" content="Novaxjs2 - File Configuration">
-<meta property="twitter:description" content="Advanced file upload settings">
+<meta property="twitter:description" content="Advanced file upload settings and configuration options">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
@@ -24,27 +24,30 @@
 <body>
   <article id="file-configuration">
     <h1><i class="fas fa-cog"></i> File Upload Configuration</h1>
+    <p>Novaxjs2 provides comprehensive file upload configuration options to handle various upload scenarios securely and efficiently.</p>
     
     <h2>Basic Configuration</h2>
+    <p>Configure all file upload settings at once using the <code>setFileConfig</code> method:</p>
     <pre><code class="language-javascript">// Configure file upload settings
 app.setFileConfig({
-  maxSize: 10,          // Max size in MB
-  allowedTypes: ['image/jpeg', 'image/png'],
-  maxFiles: 3,          // Max files per upload
-  keepOriginalName: true // Keep original filenames
+  maxSize: 10,          // Max size in MB (default: 50MB)
+  allowedTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+  maxFiles: 3,          // Max files per upload (default: 5)
+  keepOriginalName: true // Keep original filenames (default: false)
 });</code></pre>
     
     <h2>Individual Settings</h2>
+    <p>You can also configure each setting individually for more granular control:</p>
     <pre><code class="language-javascript">// Set max file size (in MB)
 app.setFileSizeLimit(10);
 
-// Set allowed MIME types
-app.setAllowedFileTypes(['image/jpeg', 'image/png']);
+// Set allowed MIME types (empty array allows all types)
+app.setAllowedFileTypes(['image/jpeg', 'image/png', 'application/pdf']);
 
-// Set max number of files
+// Set max number of files per upload
 app.setMaxFiles(3);
 
-// Keep original filenames
+// Keep original filenames (default uses generated names)
 app.setKeepOriginalName(true);</code></pre>
     
     <h2>Configuration Options</h2>
@@ -61,29 +64,98 @@ app.setKeepOriginalName(true);</code></pre>
         <tr>
           <td><code>maxSize</code></td>
           <td>number</td>
-          <td>Maximum file size in megabytes</td>
-          <td>50</td>
+          <td>Maximum file size in megabytes. Files larger than this will be rejected.</td>
+          <td>50 MB</td>
         </tr>
         <tr>
           <td><code>allowedTypes</code></td>
           <td>string[]</td>
-          <td>Array of allowed MIME types</td>
+          <td>Array of allowed MIME types. Empty array allows all types. Example: <code>['image/jpeg', 'image/png']</code></td>
           <td>[] (all types)</td>
         </tr>
         <tr>
           <td><code>maxFiles</code></td>
           <td>number</td>
-          <td>Maximum files per upload</td>
+          <td>Maximum number of files allowed in a single upload request.</td>
           <td>5</td>
         </tr>
         <tr>
           <td><code>keepOriginalName</code></td>
           <td>boolean</td>
-          <td>Preserve original filenames</td>
+          <td>Whether to preserve original filenames. If false, generates unique filenames.</td>
           <td>false</td>
         </tr>
       </tbody>
     </table>
+    
+    <h2>Complete File Upload Example</h2>
+    <pre><code class="language-javascript">const Nova = require('novaxjs2');
+const app = new Nova();
+
+// Configure file uploads
+app.setFileConfig({
+  maxSize: 10,
+  allowedTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+  maxFiles: 5,
+  keepOriginalName: false
+});
+
+// File upload route
+app.post('/upload', (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({ error: 'No files uploaded' });
+  }
+  
+  // Process uploaded files
+  const fileInfo = Object.values(req.files).map(file => ({
+    originalName: file.originalName,
+    filename: file.filename,
+    size: file.size,
+    mimetype: file.mimetype,
+    path: file.path
+  }));
+  
+  return res.json({ 
+    message: 'Files uploaded successfully', 
+    files: fileInfo,
+    totalSize: fileInfo.reduce((sum, file) => sum + file.size, 0)
+  });
+});
+
+// Error handling for file uploads
+app.error((err, req, res) => {
+  if (err.code === 'FILE_TOO_LARGE') {
+    return res.status(413).json({ 
+      error: 'File too large', 
+      maxSize: `${app.fileConfig.maxSize}MB` 
+    });
+  }
+  
+  if (err.code === 'INVALID_FILE_TYPE') {
+    return res.status(415).json({ 
+      error: 'Invalid file type', 
+      allowedTypes: app.fileConfig.allowedTypes 
+    });
+  }
+  
+  // Default error handling
+  return res.status(500).json({ error: 'Upload failed' });
+});
+
+app.at(3000, () => console.log('Server running on port 3000'));</code></pre>
+    
+    <h2>Uploaded File Object Structure</h2>
+    <p>When files are uploaded successfully, they are available in <code>req.files</code> with the following structure:</p>
+    <pre><code class="language-javascript">{
+  "fieldname": "upload",           // Field name from the form
+  "originalName": "photo.jpg",     // Original filename
+  "filename": "abc123.jpg",        // Saved filename (if keepOriginalName is false)
+  "encoding": "7bit",              // File encoding
+  "mimetype": "image/jpeg",        // MIME type
+  "size": 102400,                  // File size in bytes
+  "path": "/uploads/abc123.jpg"    // Path to saved file
+}</code></pre>
+    
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/error-handling" class="btn next">
         <i class="fas fa-arrow-left"></i> Prev: Error Handling

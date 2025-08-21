@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-  <meta name="title" content="Novaxjs2 - Advanced Error Handling">
-  <meta name="description" content="Complete guide to error handling in Novaxjs2 including custom error pages, middleware, and status code management">
-  <meta property="og:title" content="Novaxjs2 - Advanced Error Handling">
-  <meta property="og:description" content="Master error management in Novaxjs2 applications">
-  <meta property="twitter:title" content="Novaxjs2 - Error Handling System">
-  <meta property="twitter:description" content="Comprehensive error handling documentation">
+  <meta name="title" content="Novaxjs2 v8.3.0 - Advanced Error Handling">
+  <meta name="description" content="Complete guide to error handling in Novaxjs2 including custom error pages, middleware, status code management, and error transformation">
+  <meta property="og:title" content="Novaxjs2 v8.3.0 - Advanced Error Handling">
+  <meta property="og:description" content="Master error management in Novaxjs2 applications with comprehensive error handling system">
+  <meta property="twitter:title" content="Novaxjs2 v8.3.0 - Error Handling System">
+  <meta property="twitter:description" content="Comprehensive error handling documentation with custom error classes and middleware">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
@@ -18,46 +18,48 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 docs - Advanced Error Handling</title>
+  <title>Novaxjs2 v8.3.0 docs - Advanced Error Handling</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="error-handling">
-    <h1><i class="fas fa-exclamation-triangle"></i> Advanced Error Handling</h1>
-    <p>Novaxjs2 provides a comprehensive error handling system with multiple layers of error management.</p>
+    <h1><i class="fas fa-exclamation-triangle"></i> Advanced Error Handling v8.3.0</h1>
+    <p>Novaxjs2 provides a comprehensive, multi-layered error handling system that includes route-level handling, error middleware, custom error pages, and a fallback handler.</p>
     
-    <h2>Error Handling Layers</h2>
+    <h2>Error Handling Architecture</h2>
     <div class="feature-grid">
       <div class="feature-card">
-        <h3><i class="fas fa-code"></i> Route-Level</h3>
-        <p>Try/catch in individual route handlers</p>
+        <h3><i class="fas fa-code"></i> Route-Level Handling</h3>
+        <p>Try/catch blocks in individual route handlers with automatic error propagation</p>
       </div>
       <div class="feature-card">
         <h3><i class="fas fa-layer-group"></i> Error Middleware</h3>
-        <p>Global error processing pipeline</p>
+        <p>Global error processing pipeline with multiple middleware support</p>
       </div>
       <div class="feature-card">
         <h3><i class="fas fa-file-alt"></i> Custom Error Pages</h3>
-        <p>Status-code specific responses</p>
+        <p>Status-code specific responses with dynamic error information</p>
       </div>
       <div class="feature-card">
         <h3><i class="fas fa-shield-alt"></i> Fallback Handler</h3>
-        <p>Final safety net for uncaught errors</p>
+        <p>Final safety net for uncaught errors with automatic status code handling</p>
       </div>
     </div>
 
     <h2>Custom Error Pages</h2>
+    <p>Register custom error handlers for specific HTTP status codes (400-599):</p>
     <pre><code class="language-javascript">// Custom error page for 404
 app.on(404, (err, req, res) => {
   return `
     &lt;h1&gt;Page Not Found&lt;/h1&gt;
     &lt;p&gt;${err.message}&lt;/p&gt;
     &lt;p&gt;Requested URL: ${req.url}&lt;/p&gt;
+    &lt;p&gt;Client IP: ${req.ip}&lt;/p&gt;
   `;
 });
 
-// Custom error page for 500
+// Custom error page for 500 with environment detection
 app.on(500, (err, req, res) => {
   console.error(err.stack);
   return `
@@ -69,51 +71,132 @@ app.on(500, (err, req, res) => {
 });
 
 // Custom handler for 401 Unauthorized
-app.on(401, () => {
-  return '&lt;h1&gt;Please log in to access this page&lt;/h1&gt;';
+app.on(401, (err, req, res) => {
+  return `&lt;h1&gt;Please log in to access this page&lt;/h1&gt;
+          &lt;p&gt;${err.message || 'Authentication required'}&lt;/p&gt;`;
+});
+
+// Custom handler for 403 Forbidden
+app.on(403, (err, req, res) => {
+  return `&lt;h1&gt;Access Denied&lt;/h1&gt;
+          &lt;p&gt;You don't have permission to access this resource&lt;/p&gt;
+          &lt;p&gt;Requested: ${req.url}&lt;/p&gt;`;
 });</code></pre>
 
-    <h2>Error Middleware</h2>
-    <pre><code class="language-javascript">// Basic error middleware
+    <h2>Error Middleware System</h2>
+    <p>Chain multiple error middleware functions for comprehensive error processing:</p>
+    <pre><code class="language-javascript">// Basic error middleware with custom error types
 app.useErrorMiddleware((err, req, res, next) => {
   if (err instanceof DatabaseError) {
     res.status(500).json({ error: 'Database operation failed' });
+  } else if (err instanceof ValidationError) {
+    res.status(400).json({ 
+      error: 'Validation failed', 
+      field: err.field,
+      details: err.message 
+    });
   } else {
     next(err); // Pass to next error middleware
   }
 });
 
-// Logging middleware
+// Logging middleware with structured logging
 app.useErrorMiddleware((err, req, res, next) => {
-  console.error(`[${new Date().toISOString()}] Error:`, err);
+  console.error(`[${new Date().toISOString()}] Error:`, {
+    message: err.message,
+    stack: err.stack,
+    url: req.url,
+    method: req.method,
+    ip: req.ip,
+    userAgent: req.headers['user-agent']
+  });
   next(err);
 });
 
-// Final error formatter
+// Final error formatter with environment awareness
 app.useErrorMiddleware((err, req, res, next) => {
   const status = err.statusCode || 500;
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
   res.status(status).json({
     error: err.message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    status: status,
+    timestamp: new Date().toISOString(),
+    ...(isDevelopment && { 
+      stack: err.stack,
+      details: err.details 
+    })
   });
+});
+
+// Error transformation middleware
+app.useErrorMiddleware((err, req, res, next) => {
+  if (err.name === 'MongoError' || err.name === 'MongoNetworkError') {
+    next(new DatabaseError('Database operation failed'));
+  } else if (err.name === 'JsonWebTokenError') {
+    next(new AuthenticationError('Invalid token'));
+  } else {
+    next(err);
+  }
 });</code></pre>
 
     <h2>Custom Error Classes</h2>
-    <pre><code class="language-javascript">// Define custom error types
-class ValidationError extends Error {
-  constructor(message, field) {
+    <p>Create specialized error classes for better error categorization and handling:</p>
+    <pre><code class="language-javascript">// Base application error class
+class AppError extends Error {
+  constructor(message, statusCode = 500) {
     super(message);
-    this.name = 'ValidationError';
-    this.statusCode = 400;
-    this.field = field;
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.isOperational = true;
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 
-class DatabaseError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = 'DatabaseError';
-    this.statusCode = 503;
+// Validation error with field context
+class ValidationError extends AppError {
+  constructor(message, field, details = null) {
+    super(message, 400);
+    this.field = field;
+    this.details = details;
+  }
+}
+
+// Database operation errors
+class DatabaseError extends AppError {
+  constructor(message, originalError = null) {
+    super(message, 503);
+    this.originalError = originalError;
+  }
+}
+
+// Authentication and authorization errors
+class AuthenticationError extends AppError {
+  constructor(message = 'Authentication required') {
+    super(message, 401);
+  }
+}
+
+class AuthorizationError extends AppError {
+  constructor(message = 'Access denied') {
+    super(message, 403);
+  }
+}
+
+// Resource not found error
+class NotFoundError extends AppError {
+  constructor(resource, id) {
+    super(`${resource} with ID ${id} not found`, 404);
+    this.resource = resource;
+    this.id = id;
+  }
+}
+
+// Rate limiting error
+class RateLimitError extends AppError {
+  constructor(message = 'Too many requests', retryAfter = 60) {
+    super(message, 429);
+    this.retryAfter = retryAfter;
   }
 }
 
@@ -122,38 +205,133 @@ app.post('/users', (req, res) => {
   if (!req.body.email) {
     throw new ValidationError('Email is required', 'email');
   }
-  // ...
+  
+  if (!isValidEmail(req.body.email)) {
+    throw new ValidationError('Invalid email format', 'email', {
+      pattern: 'Must be a valid email address',
+      example: 'user@example.com'
+    });
+  }
+  
+  // Database operations that might fail
+  try {
+    const user = createUser(req.body);
+    return res.status(201).json(user);
+  } catch (dbError) {
+    throw new DatabaseError('Failed to create user', dbError);
+  }
+});
+
+app.get('/users/:id', async (req, res) => {
+  const user = await getUserById(req.params.id);
+  if (!user) {
+    throw new NotFoundError('User', req.params.id);
+  }
+  
+  if (!user.isActive) {
+    throw new AuthorizationError('User account is deactivated');
+  }
+  
+  return res.json(user);
 });</code></pre>
 
     <h2>Route-Level Error Handling</h2>
-    <pre><code class="language-javascript">// Async/await with try/catch
+    <p>Handle errors at the route level with try/catch and custom error responses:</p>
+    <pre><code class="language-javascript">// Async/await with comprehensive try/catch
 app.get('/profile/:id', async (req, res) => {
   try {
     const user = await getUserById(req.params.id);
     if (!user) {
-      throw new Error('User not found');
-      // Or: const err = new Error('User not found');
-      // err.statusCode = 404;
-      // throw err;
+      throw new NotFoundError('User', req.params.id);
     }
-    return await app.render('profile', { user });
+    
+    if (user.role !== 'admin' && user.id !== req.user.id) {
+      throw new AuthorizationError('Cannot access other user profiles');
+    }
+    
+    const profileData = await getProfileData(user.id);
+    return await app.render('profile', { user, profileData });
+    
   } catch (err) {
-    // Route-specific handling
-    if (err.message === 'User not found') {
-      return res.status(404).send('User not found');
+    // Route-specific error handling
+    if (err instanceof NotFoundError) {
+      return res.status(404).send(`
+        &lt;h1&gt;User Not Found&lt;/h1&gt;
+        &lt;p&gt;The requested user does not exist&lt;/p&gt;
+        &lt;a href="/users"&gt;Back to Users&lt;/a&gt;
+      `);
     }
+    
+    if (err instanceof AuthorizationError) {
+      return res.status(403).send(`
+        &lt;h1&gt;Access Denied&lt;/h1&gt;
+        &lt;p&gt;${err.message}&lt;/p&gt;
+      `);
+    }
+    
+    // Log unexpected errors but don't expose details
+    console.error('Profile route error:', err);
     throw err; // Pass to error middleware
   }
 });
 
-// Promise-based handling
+// Promise-based error handling with custom responses
 app.get('/api/data', (req, res) => {
-  fetchData()
-    .then(data => res.json(data))
+  fetchExternalData(req.query)
+    .then(data => {
+      if (!data || data.length === 0) {
+        return res.status(204).end(); // No content
+      }
+      res.json(data);
+    })
     .catch(err => {
-      console.error('Data fetch failed:', err);
-      res.status(500).json({ error: 'Failed to load data' });
+      if (err.code === 'ETIMEDOUT') {
+        return res.status(504).json({ 
+          error: 'Upstream service timeout',
+          retry: true 
+        });
+      }
+      
+      if (err.response?.status === 404) {
+        return res.status(404).json({ 
+          error: 'Requested resource not found',
+          details: err.message 
+        });
+      }
+      
+      // Log and pass to error middleware
+      console.error('API data fetch failed:', err);
+      throw err;
     });
+});
+
+// Error handling with automatic retry logic
+app.post('/api/upload', async (req, res) => {
+  const maxRetries = 3;
+  let attempt = 0;
+  
+  while (attempt < maxRetries) {
+    try {
+      const result = await processUpload(req.files);
+      return res.json({ success: true, data: result });
+    } catch (err) {
+      attempt++;
+      
+      if (attempt === maxRetries) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(413).json({ 
+            error: 'File too large',
+            maxSize: '10MB' 
+          });
+        }
+        
+        throw new DatabaseError('Failed to process upload after retries', err);
+      }
+      
+      // Wait before retrying
+      await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+    }
+  }
 });</code></pre>
 
     <h2>Built-in Error Types</h2>
@@ -163,6 +341,7 @@ app.get('/api/data', (req, res) => {
           <th>Error Type</th>
           <th>Status Code</th>
           <th>Description</th>
+          <th>Automatic Handling</th>
         </tr>
       </thead>
       <tbody>
@@ -170,74 +349,278 @@ app.get('/api/data', (req, res) => {
           <td>404 Not Found</td>
           <td>404</td>
           <td>Automatic for unmatched routes</td>
+          <td>Yes</td>
         </tr>
         <tr>
           <td>File Upload Errors</td>
           <td>400/413</td>
-          <td>Size limits, invalid types</td>
+          <td>Size limits, invalid types, max files exceeded</td>
+          <td>Yes</td>
         </tr>
         <tr>
           <td>JSON Parse Errors</td>
           <td>400</td>
           <td>Invalid JSON payloads</td>
+          <td>Yes</td>
         </tr>
         <tr>
           <td>Static File Errors</td>
           <td>404</td>
           <td>Missing static files</td>
+          <td>Yes</td>
         </tr>
         <tr>
           <td>Template Errors</td>
           <td>500</td>
           <td>Template rendering failures</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Database Errors</td>
+          <td>503</td>
+          <td>Connection issues, query failures</td>
+          <td>Via Middleware</td>
+        </tr>
+        <tr>
+          <td>Validation Errors</td>
+          <td>400</td>
+          <td>Input validation failures</td>
+          <td>Via Middleware</td>
+        </tr>
+        <tr>
+          <td>Authentication Errors</td>
+          <td>401</td>
+          <td>Invalid credentials, missing tokens</td>
+          <td>Via Middleware</td>
+        </tr>
+        <tr>
+          <td>Authorization Errors</td>
+          <td>403</td>
+          <td>Insufficient permissions</td>
+          <td>Via Middleware</td>
         </tr>
       </tbody>
     </table>
 
+    <h2>Global Error Handler</h2>
+    <p>Set a global error handler that catches all unhandled errors:</p>
+    <pre><code class="language-javascript">// Global error handler with comprehensive logging
+app.error((err, req, res) => {
+  const statusCode = err.statusCode || 500;
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  // Structured logging
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    statusCode: statusCode,
+    message: err.message,
+    stack: err.stack,
+    url: req.url,
+    method: req.method,
+    ip: req.ip,
+    userAgent: req.headers['user-agent'],
+    userId: req.user?.id,
+    ...(err instanceof ValidationError && { field: err.field }),
+    ...(err instanceof DatabaseError && { originalError: err.originalError?.message })
+  };
+  
+  console.error('Application Error:', logEntry);
+  
+  // Different responses based on environment
+  if (isDevelopment) {
+    return `
+      &lt;h1&gt;${statusCode} Error&lt;/h1&gt;
+      &lt;h2&gt;${err.message}&lt;/h2&gt;
+      &lt;pre&gt;${err.stack}&lt;/pre&gt;
+      &lt;h3&gt;Request Details:&lt;/h3&gt;
+      &lt;pre&gt;${JSON.stringify({
+        url: req.url,
+        method: req.method,
+        ip: req.ip,
+        headers: req.headers
+      }, null, 2)}&lt;/pre&gt;
+    `;
+  }
+  
+  // Production error response
+  switch (statusCode) {
+    case 404:
+      return `&lt;h1&gt;Page Not Found&lt;/h1&gt;
+              &lt;p&gt;The requested page could not be found&lt;/p&gt;
+              &lt;a href="/"&gt;Return to Homepage&lt;/a&gt;`;
+    
+    case 500:
+      return `&lt;h1&gt;Server Error&lt;/h1&gt;
+              &lt;p&gt;We apologize for the inconvenience. Our team has been notified.&lt;/p&gt;
+              &lt;p&gt;Please try again later.&lt;/p&gt;`;
+    
+    default:
+      return `&lt;h1&gt;Error ${statusCode}&lt;/h1&gt;
+              &lt;p&gt;An unexpected error occurred&lt;/p&gt;`;
+  }
+});</code></pre>
+
     <h2>Error Handling Best Practices</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
+    <div>
+      <div class="feature-card" style="margin-top: 5px;">
         <h3><i class="fas fa-bug"></i> Development vs Production</h3>
         <pre><code class="language-javascript">app.error((err, req, res) => {
   if (process.env.NODE_ENV === 'development') {
     return `&lt;pre&gt;${err.stack}&lt;/pre&gt;`;
   }
+  
+  // Production error handling
+  if (err.statusCode === 404) {
+    return '&lt;h1&gt;Page Not Found&lt;/h1&gt;';
+  }
+  
   return '&lt;h1&gt;Something went wrong&lt;/h1&gt;';
 });</code></pre>
       </div>
-      <div class="feature-card">
+      <div class="feature-card" style="margin-top: 5px;">
         <h3><i class="fas fa-tags"></i> Error Classification</h3>
         <pre><code class="language-javascript">class AppError extends Error {
   constructor(message, statusCode) {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = true;
+    this.timestamp = new Date().toISOString();
   }
+}
+
+// Usage: Distinguish operational vs programmer errors
+if (err.isOperational) {
+  // Client-facing error message
+  res.status(err.statusCode).json({ error: err.message });
+} else {
+  // Programmer error - log and send generic message
+  console.error('Programmer error:', err);
+  res.status(500).json({ error: 'Internal server error' });
 }</code></pre>
       </div>
-      <div class="feature-card">
+      <div class="feature-card" style="margin-top: 5px;">
         <h3><i class="fas fa-file-alt"></i> Structured Logging</h3>
         <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
   logger.error({
     message: err.message,
     stack: err.stack,
     url: req.url,
-    ip: req.ip
+    method: req.method,
+    ip: req.ip,
+    userId: req.user?.id,
+    statusCode: err.statusCode || 500,
+    timestamp: new Date().toISOString(),
+    ...(err instanceof ValidationError && {
+      validationErrors: err.details
+    })
   });
   next(err);
 });</code></pre>
       </div>
-      <div class="feature-card">
+      <div class="feature-card" style="margin-top: 5px;">
         <h3><i class="fas fa-exchange-alt"></i> Error Transformation</h3>
         <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
+  // Transform specific error types
   if (err.name === 'MongoError') {
-    next(new DatabaseError('Database operation failed'));
+    next(new DatabaseError('Database operation failed', err));
+  } else if (err.name === 'JsonWebTokenError') {
+    next(new AuthenticationError('Invalid authentication token'));
+  } else if (err.name === 'TokenExpiredError') {
+    next(new AuthenticationError('Authentication token expired'));
+  } else if (err.code === 'LIMIT_FILE_SIZE') {
+    next(new AppError('File too large', 413));
   } else {
     next(err);
   }
 });</code></pre>
       </div>
     </div>
+
+    <h2>Error Recovery Strategies</h2>
+    <pre><code class="language-javascript">// Retry mechanism for transient errors
+async function withRetry(operation, maxRetries = 3, delay = 1000) {
+  let lastError;
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      
+      // Don't retry on certain errors
+      if (error instanceof ValidationError || 
+          error instanceof AuthorizationError) {
+        break;
+      }
+      
+      // Exponential backoff
+      const waitTime = delay * Math.pow(2, attempt - 1);
+      console.warn(`Attempt ${attempt} failed, retrying in ${waitTime}ms`);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
+    }
+  }
+  
+  throw lastError;
+}
+
+// Circuit breaker pattern
+class CircuitBreaker {
+  constructor(failureThreshold = 5, resetTimeout = 60000) {
+    this.failureThreshold = failureThreshold;
+    this.resetTimeout = resetTimeout;
+    this.failureCount = 0;
+    this.lastFailureTime = null;
+    this.state = 'CLOSED';
+  }
+  
+  async execute(operation) {
+    if (this.state === 'OPEN') {
+      if (Date.now() - this.lastFailureTime > this.resetTimeout) {
+        this.state = 'HALF_OPEN';
+      } else {
+        throw new AppError('Service unavailable', 503);
+      }
+    }
+    
+    try {
+      const result = await operation();
+      if (this.state === 'HALF_OPEN') {
+        this.state = 'CLOSED';
+        this.failureCount = 0;
+      }
+      return result;
+    } catch (error) {
+      this.failureCount++;
+      this.lastFailureTime = Date.now();
+      
+      if (this.failureCount >= this.failureThreshold) {
+        this.state = 'OPEN';
+      }
+      
+      throw error;
+    }
+  }
+}
+
+// Usage in routes
+const databaseBreaker = new CircuitBreaker();
+
+app.get('/api/data', async (req, res) => {
+  try {
+    const data = await databaseBreaker.execute(() => 
+      fetchDataFromDatabase(req.query)
+    );
+    res.json(data);
+  } catch (error) {
+    if (error.message === 'Service unavailable') {
+      return res.status(503).json({ 
+        error: 'Service temporarily unavailable',
+        retryAfter: 60 
+      });
+    }
+    throw error;
+  }
+});</code></pre>
 
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/static-files" class="btn next">

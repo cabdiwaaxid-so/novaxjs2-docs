@@ -105,9 +105,18 @@
       gap: 2rem;
     }
 
+    .feature-card {
+      background-color: var(--secondary-bg);
+      border-radius: var(--border-radius);
+      padding: var(--space-lg);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+      border: var(--border-width) solid var(--border-color);
+    }
 
     .feature-card:hover {
       transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-color);
     }
 
     .feature-card i {
@@ -119,22 +128,16 @@
     .quick-start {
       padding: 3rem 0;
     }
-
-    @media (max-width: 768px) {
-      .hero-content h1 {
-        font-size: 2.5rem;
-      }
-      
-      .subtitle {
-        font-size: 1.2rem;
-      }
-      
-      .hero-buttons {
-        flex-direction: column;
-      }
-    }
-    .y h3{
-      text-align: center;
+    
+    .version-badge {
+      background: var(--accent-color);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-left: 1rem;
+      vertical-align: middle;
     }
   </style>
 </head>
@@ -148,7 +151,7 @@
           <div class="bar3"></div>
         </div>
         <div id="down">
-          <p>Novaxjs2</p>
+          <p>Novaxjs2 <span class="version-badge">v8.3.0</span></p>
           <a href="/docs/about"><i class="fas fa-info-circle"></i> About</a>
           <a href="/docs/installation"><i class="fas fa-download"></i> Installation</a>
           <a href="/docs/features"><i class="fas fa-star"></i> Features</a>
@@ -161,7 +164,7 @@
           <a href="/docs/templating"><i class="fas fa-file-code"></i> Templating</a>
           <a href="/docs/static-files"><i class="fas fa-reply"></i> Static Files</a>
           <a href="/docs/error-handling"><i class="fas fa-exclamation-triangle"></i> Error Handling</a>
-          <a href="/docs/file-configuration"><i class="fas fa-exclamation-triangle"></i> File Configuration</a>
+          <a href="/docs/file-configuration"><i class="fas fa-cog"></i> File Configuration</a>
           <a href="/docs/example"><i class="fas fa-laptop-code"></i> Example</a>
           <a href="/docs/projects"><i class="fas fa-project-diagram"></i> Projects</a>
           <a href="/docs/contact"><i class="fas fa-envelope"></i> Contact</a>
@@ -174,11 +177,17 @@
       <!-- Hero Section -->
       <section class="hero">
         <div class="hero-content">
-          <h1>Build Faster with Novaxjs2</h1>
+          <h1>Build Faster with Novaxjs2 <span class="version-badge">v8.3.0</span></h1>
           <p class="subtitle">The lightweight Node.js framework for modern web applications</p>
           <div class="hero-buttons">
             <a href="/docs/installation" class="btn primary">
               <i class="fas fa-rocket"></i> Get Started
+            </a>
+            <a href="https://github.com/cabdiwaaxid-so/novaxjs2" class="btn primary" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.npmjs.com/package/novaxjs2" class="btn primary" target="_blank">
+              <i class="fab fa-npm"></i> NPM
             </a>
           </div>
         </div>
@@ -188,12 +197,7 @@ const app = new Nova();
 
 // Simple route
 app.get('/', (req, res) => {
-  return 'Hello World!';
-});
-
-// API endpoint
-app.get('/api/users', (req, res) => {
-  res.json([{ id: 1, name: 'John' }]);
+  res.send('Hello World!');
 });
 
 // Start server
@@ -206,26 +210,46 @@ app.at(3000, () => {
       <!-- Key Features -->
       <section class="features">
         <h2>Why Choose Novaxjs2?</h2>
-        <div class="features-grid y">
+        <div class="features-grid">
           <div class="feature-card">
             <i class="fas fa-tachometer-alt"></i>
             <h3>Blazing Fast</h3>
-            <p>Minimal overhead and optimized routing for high performance applications</p>
+            <p>Minimal overhead and optimized routing for high performance applications with built-in minification</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-cubes"></i>
             <h3>Modular</h3>
-            <p>Plugin system lets you extend functionality without bloat</p>
+            <p>Extensible plugin system lets you add functionality without bloat. Supports custom methods and middleware</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-shield-alt"></i>
             <h3>Secure</h3>
-            <p>Built-in protections against common web vulnerabilities</p>
+            <p>Built-in CORS, file upload validation, and protection against common web vulnerabilities</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-code"></i>
             <h3>Simple API</h3>
-            <p>Intuitive syntax that's easy to learn and use</p>
+            <p>Intuitive syntax that's easy to learn with comprehensive routing and middleware support</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-upload"></i>
+            <h3>File Handling</h3>
+            <p>Advanced multipart form parsing with configurable file size limits, types, and naming options</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-file-code"></i>
+            <h3>Templating Engine</h3>
+            <p>Powerful built-in templating with HTML and JavaScript templates, conditionals, loops, and helpers</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-cogs"></i>
+            <h3>Middleware Support</h3>
+            <p>Flexible middleware system with error handling middleware and route-specific middleware</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-bolt"></i>
+            <h3>Automatic Minification</h3>
+            <p>Built-in minification for HTML, CSS, and JavaScript with intelligent content preservation</p>
           </div>
         </div>
       </section>
@@ -246,15 +270,170 @@ app.at(3000, () => {
         </div>
         
         <p>Then create your first app:</p>
-        <pre><code class="language-javascript">// app.js
+        <p><code>index.js</code></p>
+        <pre><code class="language-javascript">// index.js
+const Nova = require('novaxjs2');
+const app = new Nova();
+const posts = [
+  {
+    id: "1",
+    title: "Hello Novax!",
+    content: "This is my very first post using Novaxjs2 🚀",
+    author: "Admin",
+    createdAt: "2025-08-21T09:00:00Z"
+  },
+  {
+    id: "2",
+    title: "Getting Started",
+    content: "Novaxjs2 makes building web apps super simple with built-in routing and templates.",
+    author: "Jane Doe",
+    createdAt: "2025-08-21T10:15:00Z"
+  },
+  {
+    id: "3",
+    title: "Why Novax?",
+    content: "Because it's lightweight, modern, and designed for both frontend and backend flexibility.",
+    author: "John Smith",
+    createdAt: "2025-08-21T11:30:00Z"
+  }
+];
+
+// Using built-in engine
+app.setViewEngine('novax', {
+  viewsPath: 'views',
+  viewsType: 'html'
+});
+
+app.get('/', async (req, res) => {
+  const html = await app.render('home', { posts });
+  res.send(html);
+});
+
+app.at(3000, () => console.log('Server is running on port 3000'));</code></pre>
+      <p><code>views/home.html</code></p>
+      <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My First Novax App&lt;/title&gt;
+    &lt;style&gt;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    li {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+    li:hover {
+      transform: translateY(-3px);
+    }
+    h2 {
+      margin: 0 0 10px;
+      color: #0078d7;
+    }
+    p {
+      margin: 0 0 8px;
+      line-height: 1.5;
+    }
+    small {
+      color: #666;
+      font-size: 0.9em;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;📌 My First Novax App&lt;/h1&gt;
+  &lt;ul&gt;
+    {{#each posts}}
+      &lt;li&gt;
+        &lt;h2&gt;{{title}}&lt;/h2&gt;
+        &lt;p&gt;{{content}}&lt;/p&gt;
+        &lt;small&gt;By {{author}} - {{createdAt}}&lt;/small&gt;
+      &lt;/li&gt;
+    {{/each}}
+  &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      
+      <h3>Advanced Features Example</h3>
+      <pre><code class="language-javascript">// Advanced example showing multiple features
 const Nova = require('novaxjs2');
 const app = new Nova();
 
-app.get('/', (req, res) => {
-  return 'Hello World!';
+// Enable CORS
+app.cors({
+  origins: ['https://yourdomain.com', 'http://localhost:3000'],
+  methods: 'GET, POST, PUT, DELETE, OPTIONS',
+  headers: 'Content-Type, Authorization',
+  credentials: true
 });
 
-app.at(3000);</code></pre>
+// Configure file uploads
+app.setFileConfig({
+  maxSize: 10,
+  allowedTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+  maxFiles: 5,
+  keepOriginalName: false
+});
+
+// Add custom middleware
+app.useMiddleware((req, res, next) => {
+  console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`);
+  next();
+});
+
+// Route with parameters and middleware
+app.get('/user/:id', (req, res) => {
+  const userId = req.params.id;
+  return `User Profile: ${userId}`;
+});
+
+// File upload route
+app.post('/upload', (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({ error: 'No files uploaded' });
+  }
+  
+  return res.json({ 
+    message: 'Files uploaded successfully', 
+    files: req.files 
+  });
+});
+
+// Group routes
+app.group('/api', (api) => {
+  api.get('/users', (req, res) => {
+    return { users: [{ id: 1, name: 'John' }] };
+  });
+  
+  api.post('/users', (req, res) => {
+    return { message: 'User created', user: req.body };
+  });
+});
+
+// Start server with custom host
+app.at(3000, '0.0.0.0', () => {
+  console.log('Server running on http://0.0.0.0:3000');
+});</code></pre>
       </section>
       
       <div id="footer">
@@ -265,7 +444,7 @@ app.at(3000);</code></pre>
         <a href="https://x.com/CabdiWaaxi100" title="Twitter">
     <i class="fab fa-twitter"></i>
         </a>
-        <a href="https://github.com/WhoappRoom" title="GitHub">
+        <a href="https://github.com/cabdiwaaxid-so" title="GitHub">
     <i class="fab fa-github"></i>
         </a>
         <a href="https://www.npmjs.com/package/novaxjs2" title="NPM">
@@ -276,9 +455,9 @@ app.at(3000);</code></pre>
         </a>
   </div>
   <p>&copy; 2025 Novaxjs2. All rights reserved.</p>
-  <p>Version 8.0.0</p>
+  <p>Version 8.3.0</p>
   <p>Created by <code>Cabdi Waaxid Siciid</code></p>
-  <p>Last updated: August, 3, 2025</p>
+  <p>Last updated: August, 21, 2025</p>
 </div>
     </div>
   </div>

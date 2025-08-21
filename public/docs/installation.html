@@ -12,11 +12,11 @@
   <link rel="icon" href="/logo.png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <meta name="title" content="Novaxjs2 - Installation Guide">
-<meta name="description" content="Step-by-step guide to install Novaxjs2 framework via npm or yarn">
-<meta property="og:title" content="Novaxjs2 - Installation Guide">
-<meta property="og:description" content="Get started with Novaxjs2 in minutes">
-<meta property="twitter:title" content="Novaxjs2 - Installation Guide">
-<meta property="twitter:description" content="Quick setup instructions for Novaxjs2">
+  <meta name="description" content="Step-by-step guide to install Novaxjs2 framework via npm or yarn with initialization options">
+  <meta property="og:title" content="Novaxjs2 - Installation Guide">
+  <meta property="og:description" content="Get started with Novaxjs2 in minutes with comprehensive setup instructions">
+  <meta property="twitter:title" content="Novaxjs2 - Installation Guide">
+  <meta property="twitter:description" content="Quick setup instructions for Novaxjs2 framework">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="stylesheet" href="/styles.css">
   <title>Novaxjs2 docs - Installation</title>
@@ -24,28 +24,109 @@
 <body>
   <article id="installation">
     <h1><i class="fas fa-download"></i> Installation</h1>
-    <p>Get started with Novaxjs2 in seconds:</p>
+    <p>Get started with Novaxjs2 in seconds. The framework is lightweight, easy to install, and requires minimal configuration.</p>
     
+    <h2>Prerequisites</h2>
+    <p>Before installing Novaxjs2, make sure you have:</p>
+    <ul>
+      <li>Node.js version 12.0 or higher</li>
+      <li>npm or yarn package manager</li>
+      <li>Basic knowledge of JavaScript and Node.js</li>
+    </ul>
+    
+    <h2>Installation Methods</h2>
     <div class="tabs">
-          <div class="tab active" onclick="changeTab(event, 'npm')">npm</div>
-          <div class="tab" onclick="changeTab(event, 'yarn')">Yarn</div>
-        </div>
-        
-        <div id="npm" class="tab-content active">
-          <pre><code class="language-bash">npm install novaxjs2</code></pre>
-        </div>
-        <div id="yarn" class="tab-content">
-          <pre><code class="language-bash">yarn add novaxjs2</code></pre>
-        </div>
+      <div class="tab active" onclick="changeTab(event, 'npm')">npm</div>
+      <div class="tab" onclick="changeTab(event, 'yarn')">Yarn</div>
+    </div>
+    
+    <div id="npm" class="tab-content active">
+      <pre><code class="language-bash">npm install novaxjs2</code></pre>
+    </div>
+    <div id="yarn" class="tab-content">
+      <pre><code class="language-bash">yarn add novaxjs2</code></pre>
+    </div>
+    
+    <h2>Quick Start</h2>
+    <p>Create a simple server to test your installation:</p>
+    <pre><code class="language-javascript">// app.js
+const Nova = require('novaxjs2');
+const app = new Nova();
+
+// Basic route
+app.get('/', (req, res) => {
+  return '&lt;h1&gt;Hello Novaxjs2!&lt;/h1&gt;';
+});
+
+// Start server
+app.at(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});</code></pre>
+    
+    <p>Run your server:</p>
+    <pre><code class="language-bash">node app.js</code></pre>
+    
+    <h2>Initialization Options</h2>
+    <p>You can customize Novaxjs2 with initialization options:</p>
+    <pre><code class="language-javascript">const app = new Nova();
+
+app.init({
+  staticPath: 'public',     // Serve static files from 'public' directory
+  minifier: true,           // Enable HTML/CSS/JS minification (default: true)
+  fileConfig: {             // File upload configuration
+    maxSize: 10,            // Max file size in MB
+    allowedTypes: ['image/jpeg', 'image/png'],
+    maxFiles: 5,
+    keepOriginalName: false
+  }
+});</code></pre>
+    
+    <h2>Project Structure</h2>
+    <p>A typical Novaxjs2 project structure:</p>
+    <pre><code class="language-plaintext">my-app/
+├── app.js                 # Main application file
+├── package.json
+├── views/                 # Template files (optional)
+│   ├── home.html
+│   └── layout.html
+├── public/               # Static assets (optional)
+│   ├── css/
+│   ├── js/
+│   └── images/
+└── uploads/              # Uploaded files (auto-created)</code></pre>
+    
+    <h2>Version Compatibility</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Novaxjs2 Version</th>
+          <th>Node.js Version</th>
+          <th>Features</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>8.x</td>
+          <td>12.0+</td>
+          <td>Full feature set with middleware, templating, file uploads</td>
+        </tr>
+        <tr>
+          <td>7.x</td>
+          <td>10.0+</td>
+          <td>Basic routing and static file serving</td>
+        </tr>
+      </tbody>
+    </table>
+    
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/about" class="btn next">
         <i class="fas fa-arrow-left"></i> Prev: About 
       </a>
       <a href="/docs/features" class="btn next">
-        Next: features <i class="fas fa-arrow-right"></i>
+        Next: Features <i class="fas fa-arrow-right"></i>
       </a>
     </div>
-</article>
+  </article>
 
   {{ #if footer }}
     {{ footer }}

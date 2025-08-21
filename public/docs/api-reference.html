@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="title" content="Novaxjs2 - API Reference">
-<meta name="description" content="Complete API documentation for Novaxjs2 framework methods and properties">
-<meta property="og:title" content="Novaxjs2 - API Reference">
-<meta property="og:description" content="Detailed API documentation for Novaxjs2">
-<meta property="twitter:title" content="Novaxjs2 - API Reference">
-<meta property="twitter:description" content="Comprehensive API docs for Novaxjs2 framework">
+  <meta name="title" content="Novaxjs2 v8.3.0 - API Reference">
+<meta name="description" content="Complete API documentation for Novaxjs2 v8.3.0 framework methods and properties">
+<meta property="og:title" content="Novaxjs2 v8.3.0 - API Reference">
+<meta property="og:description" content="Detailed API documentation for Novaxjs2 v8.3.0">
+<meta property="twitter:title" content="Novaxjs2 v8.3.0 - API Reference">
+<meta property="twitter:description" content="Comprehensive API docs for Novaxjs2 framework v8.3.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
@@ -18,13 +18,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 docs - Api Reference</title>
+  <title>Novaxjs2 v8.3.0 docs - Api Reference</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="api-reference">
-    <h1><i class="fas fa-book"></i> API Reference</h1>
+    <h1><i class="fas fa-book"></i> API Reference v8.3.0</h1>
+    <p>Complete documentation of all methods and properties available in Novaxjs2 version 8.3.0.</p>
     
     <h2>Core Methods</h2>
     <table class="api-reference">
@@ -37,24 +38,24 @@
       </thead>
       <tbody>
         <tr>
-          <td><code>get(path, handler)</code></td>
-          <td>Define GET route</td>
-          <td><code>app.get('/', (req, res) => {...})</code></td>
+          <td><code>get(path, ...handlers)</code></td>
+          <td>Define GET route with optional middleware</td>
+          <td><code>app.get('/', authMiddleware, (req, res) => {...})</code></td>
         </tr>
         <tr>
-          <td><code>post(path, handler)</code></td>
-          <td>Define POST route</td>
-          <td><code>app.post('/users', (req, res) => {...})</code></td>
+          <td><code>post(path, ...handlers)</code></td>
+          <td>Define POST route with optional middleware</td>
+          <td><code>app.post('/users', validateUser, (req, res) => {...})</code></td>
         </tr>
         <tr>
-          <td><code>put(path, handler)</code></td>
-          <td>Define PUT route</td>
-          <td><code>app.put('/users/:id', (req, res) => {...})</code></td>
+          <td><code>put(path, ...handlers)</code></td>
+          <td>Define PUT route with optional middleware</td>
+          <td><code>app.put('/users/:id', authMiddleware, (req, res) => {...})</code></td>
         </tr>
         <tr>
-          <td><code>delete(path, handler)</code></td>
-          <td>Define DELETE route</td>
-          <td><code>app.delete('/users/:id', (req, res) => {...})</code></td>
+          <td><code>delete(path, ...handlers)</code></td>
+          <td>Define DELETE route with optional middleware</td>
+          <td><code>app.delete('/users/:id', authMiddleware, (req, res) => {...})</code></td>
         </tr>
         <tr>
           <td><code>group(prefix, callback)</code></td>
@@ -63,13 +64,18 @@
         </tr>
         <tr>
           <td><code>at(port, host, callback)</code></td>
-          <td>Start server </td>
-          <td><code>app.at(3000, () => {...})</code></td>
+          <td>Start server on specified port</td>
+          <td><code>app.at(3000, 'localhost', () => {...})</code></td>
         </tr>
         <tr>
           <td><code>on(status, handler)</code></td>
-          <td>Error handler</td>
+          <td>Custom error handler for specific status codes</td>
           <td><code>app.on(404, () => 'Not found')</code></td>
+        </tr>
+        <tr>
+          <td><code>init(options)</code></td>
+          <td>Initialize app with configuration options</td>
+          <td><code>app.init({ staticPath: 'public', minifier: true })</code></td>
         </tr>
       </tbody>
     </table>
@@ -96,7 +102,7 @@
         </tr>
         <tr>
           <td><code>serveStatic(dir)</code></td>
-          <td>Serve static files</td>
+          <td>Serve static files from directory</td>
           <td><code>app.serveStatic('public')</code></td>
         </tr>
       </tbody>
@@ -114,22 +120,42 @@
       <tbody>
         <tr>
           <td><code>cors(options)</code></td>
-          <td>Configure CORS</td>
+          <td>Configure CORS settings</td>
           <td><code>app.cors({ origins: ['*'] })</code></td>
         </tr>
         <tr>
           <td><code>setFileSizeLimit(mb)</code></td>
-          <td>Set upload limit</td>
+          <td>Set file upload size limit</td>
           <td><code>app.setFileSizeLimit(50)</code></td>
         </tr>
         <tr>
+          <td><code>setFileConfig(config)</code></td>
+          <td>Configure multiple file upload settings</td>
+          <td><code>app.setFileConfig({ maxSize: 10, allowedTypes: ['image/*'] })</code></td>
+        </tr>
+        <tr>
+          <td><code>setAllowedFileTypes(types)</code></td>
+          <td>Set allowed MIME types for uploads</td>
+          <td><code>app.setAllowedFileTypes(['image/jpeg', 'image/png'])</code></td>
+        </tr>
+        <tr>
+          <td><code>setMaxFiles(max)</code></td>
+          <td>Set maximum number of files per upload</td>
+          <td><code>app.setMaxFiles(5)</code></td>
+        </tr>
+        <tr>
+          <td><code>setKeepOriginalName(keep)</code></td>
+          <td>Set whether to keep original filenames</td>
+          <td><code>app.setKeepOriginalName(true)</code></td>
+        </tr>
+        <tr>
           <td><code>style(css)</code></td>
-          <td>Global CSS</td>
+          <td>Set global CSS styles</td>
           <td><code>app.style = 'body { color: red }'</code></td>
         </tr>
         <tr>
           <td><code>js(script)</code></td>
-          <td>Global JavaScript</td>
+          <td>Set global JavaScript</td>
           <td><code>app.js = 'console.log("Hello")'</code></td>
         </tr>
       </tbody>
@@ -190,6 +216,11 @@
           <td>Client IP address</td>
           <td>String</td>
         </tr>
+        <tr>
+          <td><code>req.headers</code></td>
+          <td>Request headers</td>
+          <td>Object</td>
+        </tr>
       </tbody>
     </table>
     
@@ -205,7 +236,7 @@
       <tbody>
         <tr>
           <td><code>res.status(code)</code></td>
-          <td>Set HTTP status</td>
+          <td>Set HTTP status code</td>
           <td><code>res.status(404)</code></td>
         </tr>
         <tr>
@@ -220,7 +251,7 @@
         </tr>
         <tr>
           <td><code>res.send(content, contentType)</code></td>
-          <td>Send raw content</td>
+          <td>Send raw content with optional content type</td>
           <td><code>res.send('Hello World', 'text/plain')</code></td>
         </tr>
         <tr>
@@ -228,8 +259,14 @@
           <td>Set multiple headers</td>
           <td><code>res.set({ 'X-Custom': 'value' })</code></td>
         </tr>
+        <tr>
+          <td><code>res.sendFile(filePath, contentTypeOrRes, res)</code></td>
+          <td>Send file to client</td>
+          <td><code>app.sendFile('/path/to/file.html', 'text/html', res)</code></td>
+        </tr>
       </tbody>
     </table>
+    
     <h2>Plugin System</h2>
     <table class="api-reference">
       <thead>
@@ -267,6 +304,44 @@
           <td><code>render(file, data)</code></td>
           <td>Render template with data</td>
           <td><code>await app.render('home', { title: 'Home' })</code></td>
+        </tr>
+        <tr>
+          <td><code>addHelper(name, fn)</code></td>
+          <td>Add template helper function</td>
+          <td><code>app.addHelper('formatDate', (date) => {...})</code></td>
+        </tr>
+        <tr>
+          <td><code>addHelpers(helpers)</code></td>
+          <td>Add multiple template helpers</td>
+          <td><code>app.addHelpers({ helper1: fn1, helper2: fn2 })</code></td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h2>Content Minification Methods</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>minifyContent(content)</code></td>
+          <td>Minify HTML content</td>
+          <td><code>app.minifyContent(htmlString)</code></td>
+        </tr>
+        <tr>
+          <td><code>minifyCSS(css)</code></td>
+          <td>Minify CSS content</td>
+          <td><code>app.minifyCSS(cssString)</code></td>
+        </tr>
+        <tr>
+          <td><code>minifyJs(js)</code></td>
+          <td>Minify JavaScript content</td>
+          <td><code>app.minifyJs(jsString)</code></td>
         </tr>
       </tbody>
     </table>

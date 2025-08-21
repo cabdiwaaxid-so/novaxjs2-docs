@@ -103,7 +103,6 @@ pre {
   background-color: #1e1e1e;
   border-radius: var(--border-radius);
   padding: var(--space-md);
-  overflow-x: auto;
   margin-bottom: var(--space-md);
   position: relative;
   box-shadow: var(--shadow-md);
@@ -112,13 +111,13 @@ pre {
 pre code {
   background-color: transparent;
   padding: 0;
+  text-wrap: wrap;
 }
 
 /* Layout */
 #app {
   display: flex;
   min-height: 100vh;
-  width: 100%;
 }
 
 #header {
@@ -346,7 +345,6 @@ table {
   margin-bottom: var(--space-lg);
   background-color: var(--secondary-bg);
   border-radius: var(--border-radius);
-  overflow: hidden;
 }
 
 th, td {
@@ -667,12 +665,9 @@ label {
   border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-hover);
+  background: var(--highlight-color);
 }
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.1);
   border-radius: 0;
-}
-::-webkit-scrollbar-track:hover {
-  background: rgba(0, 0, 0, 0.2);
 }

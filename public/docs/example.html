@@ -12,94 +12,314 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <meta name="title" content="Novaxjs2 - Complete Example">
-<meta name="description" content="Full-featured Novaxjs2 application example demonstrating multiple framework features">
-<meta property="og:title" content="Novaxjs2 - Complete Example">
-<meta property="og:description" content="Sample application using Novaxjs2">
-<meta property="twitter:title" content="Novaxjs2 - Complete Example">
-<meta property="twitter:description" content="Example Novaxjs2 application">
-  <title>Novaxjs2 docs - Example</title>
+  <meta name="title" content="Novaxjs2 v8.3.0 - Complete Example">
+  <meta name="description" content="Full-featured Novaxjs2 v8.3.0 application example demonstrating all framework features including routing, middleware, templating, file uploads, and more">
+  <meta property="og:title" content="Novaxjs2 v8.3.0 - Complete Example">
+  <meta property="og:description" content="Complete sample application using Novaxjs2 v8.3.0 with all features implemented">
+  <meta property="twitter:title" content="Novaxjs2 v8.3.0 - Complete Example">
+  <meta property="twitter:description" content="Example Novaxjs2 v8.3.0 application with comprehensive feature implementation">
+  <title>Novaxjs2 v8.3.0 docs - Complete Example</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="example">
-        <h1><i class="fas fa-laptop-code"></i> Complete Example</h1>
-        <p>A complete Novaxjs2 application demonstrating multiple features.</p>
-        
-        <pre><code class="language-javascript">const Nova = require('novaxjs2');
+    <h1><i class="fas fa-laptop-code"></i> Complete Example (v8.3.0)</h1>
+    <p>A comprehensive Novaxjs2 v8.3.0 application demonstrating all framework features including routing, middleware, templating, file handling, error management, and more.</p>
+    
+    <h2>Full Application Example</h2>
+    <pre><code class="language-javascript">const Nova = require('novaxjs2');
 const app = new Nova();
+
+// Global initialization with options
+app.init({
+  staticPath: 'public',
+  minifier: true,
+  fileConfig: {
+    maxSize: 10,
+    allowedTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+    maxFiles: 3,
+    keepOriginalName: false
+  }
+});
 
 // Global styles and scripts
 app.style = `
   body { 
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
-    background: #f5f5f5;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   }
 `;
 
-app.js = 'console.log("App initialized");';
+app.js = `
+  console.log("Novaxjs2 v8.3.0 App initialized");
+  // Client-side functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    // Example client-side code
+    console.log('DOM fully loaded and parsed');
+  });
+`;
 
-// Middleware
+// Middleware stack
 app.useMiddleware((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url} - IP: ${req.ip}`);
   next();
 });
 
-// CORS
-app.cors({
-  origins: ['http://localhost:3000'],
-  methods: ['GET', 'POST']
+app.useMiddleware((req, res, next) => {
+  // Add custom header to all responses
+  res.setHeader('X-Powered-By', 'Novaxjs2 v8.3.0');
+  next();
 });
 
-// File upload limit
-app.setFileSizeLimit(10); // 10MB
+// CORS configuration
+app.cors({
+  origins: ['http://localhost:3000', 'https://yourdomain.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  headers: ['Content-Type', 'Authorization', 'X-Custom-Header'],
+  credentials: true
+});
 
-// Routes
-app.get('/', (req, res) => {
+// View engine setup
+app.setViewEngine('novax', {
+  viewsPath: './views',
+  viewsType: 'html',
+  helpers: {
+    formatDate: (date) => new Date(date).toLocaleDateString(),
+    uppercase: (str) => str.toUpperCase()
+  }
+});
+
+// Route groups for API versioning
+app.group('/api/v1', (api) => {
+  // User routes
+  api.get('/users', (req, res) => {
+    const users = [
+      { id: 1, name: 'John Doe', email: 'john@example.com', role: 'user' },
+      { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'admin' },
+      { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'user' }
+    ];
+    res.json(users);
+  });
+
+  api.get('/users/:id', (req, res) => {
+    const userId = parseInt(req.params.id);
+    // Simulate database lookup
+    const user = { id: userId, name: 'Sample User', email: 'user@example.com' };
+    res.json(user);
+  });
+
+  api.post('/users', (req, res) => {
+    const newUser = req.body;
+    // Validate and save user
+    if (!newUser.name || !newUser.email) {
+      return res.status(400).json({ error: 'Name and email are required' });
+    }
+    
+    // Simulate saving to database
+    newUser.id = Date.now();
+    newUser.createdAt = new Date().toISOString();
+    
+    res.status(201).json({ 
+      success: true, 
+      message: 'User created successfully',
+      user: newUser 
+    });
+  });
+
+  // Product routes
+  api.get('/products', (req, res) => {
+    const products = [
+      { id: 1, name: 'Product A', price: 29.99, category: 'electronics' },
+      { id: 2, name: 'Product B', price: 49.99, category: 'books' },
+      { id: 3, name: 'Product C', price: 19.99, category: 'clothing' }
+    ];
+    
+    // Filter by category if provided
+    if (req.query.category) {
+      const filtered = products.filter(p => 
+        p.category.toLowerCase() === req.query.category.toLowerCase()
+      );
+      return res.json(filtered);
+    }
+    
+    res.json(products);
+  });
+});
+
+// Authentication middleware example
+const requireAuth = (req, res, next) => {
+  // Simulate authentication check
+  const authHeader = req.headers.authorization;
+  if (!authHeader || authHeader !== 'Bearer valid-token-123') {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  next();
+};
+
+// Protected routes
+app.group('/admin', (admin) => {
+  admin.get('/dashboard', requireAuth, (req, res) => {
+    return app.render('admin-dashboard', {
+      title: 'Admin Dashboard',
+      user: { name: 'Admin User', role: 'administrator' },
+      stats: { users: 150, products: 45, orders: 289 }
+    });
+  });
+
+  admin.post('/settings', requireAuth, (req, res) => {
+    // Update settings logic
+    res.json({ success: true, message: 'Settings updated' });
+  });
+});
+
+// File upload endpoint
+app.post('/upload', (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({ error: 'No files were uploaded' });
+  }
+
+  const uploadedFiles = [];
+  for (const [fieldname, file] of Object.entries(req.files)) {
+    uploadedFiles.push({
+      fieldname,
+      originalName: file.originalname,
+      filename: file.filename,
+      size: file.size,
+      mimetype: file.mimetype,
+      path: file.path
+    });
+  }
+
+  res.json({
+    success: true,
+    message: `${uploadedFiles.length} file(s) uploaded successfully`,
+    files: uploadedFiles
+  });
+});
+
+// Templating example
+app.get('/welcome/:name', async (req, res) => {
+  const userName = req.params.name;
+  const welcomeData = {
+    title: `Welcome ${userName}`,
+    userName: userName,
+    visitCount: Math.floor(Math.random() * 100) + 1,
+    currentDate: new Date().toLocaleDateString(),
+    features: [
+      'Fast and lightweight',
+      'Built-in templating engine',
+      'File upload handling',
+      'Middleware support',
+      'RESTful routing'
+    ]
+  };
+
+  try {
+    const html = await app.render('welcome-template', welcomeData);
+    res.send(html);
+  } catch (error) {
+    res.status(500).send('Error rendering template');
+  }
+});
+
+// Static file serving (configured in init)
+app.get('/docs', (req, res) => {
+  res.sendFile('./public/documentation.html', 'text/html', res);
+});
+
+// Custom error pages
+app.on(404, (err, req, res) => {
   return `
-    &lt;h1&gt;Welcome to Novaxjs2&lt;/h1&gt;
-    &lt;p&gt;This is a sample application.&lt;/p&gt;
+    &lt;div class="container"&gt;
+      &lt;h1&gt;404 - Page Not Found&lt;/h1&gt;
+      &lt;p&gt;The page you're looking for doesn't exist.&lt;/p&gt;
+      &lt;p&gt;&lt;a href="/">Return to Home&lt;/a>&lt;/p&gt;
+      &lt;p&gt;&lt;small>Requested URL: ${req.url}&lt;/small&gt;&lt;/p&gt;
+    &lt;/div&gt;
   `;
 });
 
-app.get('/api/users', (req, res) => {
-  res.json([
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Smith' }
-  ]);
+app.on(500, (err, req, res) => {
+  return `
+    &lt;div class="container"&gt;
+      &lt;h1&gt;500 - Server Error&lt;/h1&gt;
+      &lt;p&gt;Something went wrong on our end. Please try again later.&lt;/p&gt;
+      &lt;p&gt;&gt;a href="/">Return to Home&lt;/a&gt;&lt;/p&gt;
+      ${process.env.NODE_ENV === 'development' ? `&lt;pre&gt;${err.stack}&lt;/pre&gt;` : ''}
+    &lt;/div&gt;
+  `;
 });
 
-app.post('/api/users', (req, res) => {
-  const newUser = req.body;
-  // Save to database...
-  res.status(201).json({ success: true, user: newUser });
-});
-
-app.post('/upload', (req, res) => {
-  if (!req.files || !req.files.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-  res.json({ message: 'File uploaded successfully' });
-});
-
-// Error handling
-app.on(404, () => {
-  return '&lt;h1&gt;404 - Page Not Found&lt;/h1&gt;';
-});
-
+// Global error handler
 app.error((err, req, res) => {
-  console.error(err);
-  return '&lt;h1&gt;500 - Server Error&lt;/h1&gt;';
+  console.error('Unhandled error:', err);
+  
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return 'File size exceeds the allowed limit of 10MB';
+  }
+  
+  if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+    return 'Unexpected file field';
+  }
+  
+  // Default error response
+  return `
+    &lt;div class="container"&gt;
+      &lt;h1&gt;Application Error&lt;/h1&gt;
+      &lt;p&gt;We encountered an unexpected error. Our team has been notified.&lt;/p&gt;
+      &lt;p&gt;&lt;a href="/">Return to Home&lt;/a&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  `;
 });
 
-// Start server
-app.at(3000, () => {
-  console.log('Server running on port 3000');
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: '8.3.0'
+  });
+});
+
+// Start server with environment configuration
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || 'localhost';
+
+app.at(PORT, HOST, () => {
+  console.log(`🚀 Novaxjs2 v8.3.0 server running on http://${HOST}:${PORT}`);
+  console.log(`📚 Documentation available at http://${HOST}:${PORT}/docs`);
+  console.log(`🩺 Health check at http://${HOST}:${PORT}/health`);
 });</code></pre>
-<div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+
+    <h2>Key Features Demonstrated</h2>
+    <ul>
+      <li><strong>Initialization & Configuration</strong> - Comprehensive app setup with options</li>
+      <li><strong>Middleware Stack</strong> - Multiple middleware functions with logging and headers</li>
+      <li><strong>CORS Configuration</strong> - Cross-origin resource sharing setup</li>
+      <li><strong>Route Groups</strong> - API versioning and route organization</li>
+      <li><strong>Authentication Middleware</strong> - Protected routes with auth checks</li>
+      <li><strong>File Upload Handling</strong> - Multi-file upload with configuration</li>
+      <li><strong>Templating Engine</strong> - Dynamic HTML generation with views</li>
+      <li><strong>Error Handling</strong> - Custom error pages and global error handler</li>
+      <li><strong>Static File Serving</strong> - Built-in static file delivery</li>
+      <li><strong>Health Endpoint</strong> - Application monitoring endpoint</li>
+    </ul>
+
+    <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/file-configuration" class="btn next">
         <i class="fas fa-arrow-left"></i> Prev: File Configuration
       </a>
@@ -107,7 +327,7 @@ app.at(3000, () => {
         Next: Projects <i class="fas fa-arrow-right"></i>
       </a>
     </div>
-      </article>
+  </article>
   
   {{ #if footer }}
     {{ footer }}

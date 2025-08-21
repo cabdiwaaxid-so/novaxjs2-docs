@@ -7,24 +7,36 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
-  <meta name="title" content="Novaxjs2 - Basic Usage">
-<meta name="description" content="Learn how to create routes, handle requests and build applications with Novaxjs2">
-<meta property="og:title" content="Novaxjs2 - Basic Usage">
-<meta property="og:description" content="Getting started with Novaxjs2 framework basics">
-<meta property="twitter:title" content="Novaxjs2 - Basic Usage">
-<meta property="twitter:description" content="Fundamentals of using Novaxjs2">
+  <meta name="title" content="Novaxjs2 v8.3.0 - Basic Usage">
+  <meta name="description" content="Learn how to create routes, handle requests and build applications with Novaxjs2 v8.3.0">
+  <meta property="og:title" content="Novaxjs2 v8.3.0 - Basic Usage">
+  <meta property="og:description" content="Getting started with Novaxjs2 framework basics including view engines, file uploads, and advanced routing">
+  <meta property="twitter:title" content="Novaxjs2 v8.3.0 - Basic Usage">
+  <meta property="twitter:description" content="Fundamentals of using Novaxjs2 with enhanced features">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 docs - Basic Usage</title>
+  <title>Novaxjs2 v8.3.0 docs - Basic Usage</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="usage">
-    <h1><i class="fas fa-code"></i> Basic Usage</h1>
+    <h1><i class="fas fa-code"></i> Basic Usage - Novaxjs2 v8.3.0</h1>
+    
+    <div class="feature-highlights">
+      <h3>New in v8.3.0:</h3>
+      <ul>
+        <li>Enhanced view engine support with Novax templates</li>
+        <li>Advanced file upload handling with configurable options</li>
+        <li>Improved middleware and error handling</li>
+        <li>Route grouping for better organization</li>
+        <li>Content minification for improved performance</li>
+        <li>Plugin system for extensibility</li>
+      </ul>
+    </div>
     
     <h2>Creating a Server</h2>
     <pre><code class="language-javascript">const Nova = require('novaxjs2');
@@ -32,7 +44,7 @@ const app = new Nova();
 
 // Define routes
 app.get('/', (req, res) => {
-    return '&lt;h1&gt;Welcome to Novaxjs2!&lt;/h1&gt;';
+    return '&lt;h1&gt;Welcome to Novaxjs2 v8.3.0!&lt;/h1&gt;';
 });
 
 // Start server
@@ -60,12 +72,143 @@ app.get('/search:', (req, res) => {
     
     // Set response status
     res.status(201).json({
-    success: true,
-    data: data
+      success: true,
+      data: data
     });
 });</code></pre>
     
-      <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+    <h2>File Uploads</h2>
+    <pre><code class="language-javascript">// Configure file uploads
+app.setFileConfig({
+  maxSize: 10, // MB
+  allowedTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+  keepOriginalName: true,
+  maxFiles: 3
+});
+
+// Handle file upload
+app.post('/upload', (req, res) => {
+  const files = req.files;
+  const formData = req.body;
+  
+  return {
+    message: 'Files uploaded successfully',
+    files: Object.keys(files),
+    formData: formData
+  };
+});</code></pre>
+    
+    <h2>View Engine</h2>
+    <pre><code class="language-javascript">// Set up Novax view engine
+app.setViewEngine('novax', {
+  viewsPath: './views',
+  viewsType: 'html', // or 'js'
+  helpers: {
+    formatDate: (date) => new Date(date).toLocaleDateString()
+  }
+});
+
+// Render a template
+app.get('/profile', async (req, res) => {
+  const userData = { name: 'John', joined: '2023-01-15' };
+  const html = await app.render('profile', userData);
+  return html;
+});</code></pre>
+    
+    <h2>Route Grouping</h2>
+    <pre><code class="language-javascript">// Group routes under a common prefix
+app.group('/api/v1', (api) => {
+  api.get('/users', (req, res) => {
+    return { users: ['John', 'Jane'] };
+  });
+  
+  api.post('/users', (req, res) => {
+    // Create new user
+    return { success: true, user: req.body };
+  });
+  
+  // Nested groups
+  api.group('/admin', (admin) => {
+    admin.get('/dashboard', (req, res) => {
+      return { adminData: 'Secret info' };
+    });
+  });
+});</code></pre>
+    
+    <h2>Middleware</h2>
+    <pre><code class="language-javascript">// Custom middleware
+const authMiddleware = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+  next();
+};
+
+// Error handling middleware
+app.useErrorMiddleware((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: 'Something went wrong' });
+});
+
+// Apply middleware to specific routes
+app.get('/protected', authMiddleware, (req, res) => {
+  return { message: 'Protected content' };
+});</code></pre>
+    
+    <h2>Custom Error Handling</h2>
+    <pre><code class="language-javascript">// Custom 404 handler
+app.on(404, (err, req, res) => {
+  return `&lt;h1&gt;Custom 404 Page&lt;/h1&gt;
+          &lt;p&gt;The route ${req.url} was not found&lt;/p&gt;`;
+});
+
+// Custom 500 handler
+app.on(500, (err, req, res) => {
+  return `&lt;h1&gt;Server Error&lt;/h1&gt;
+          &lt;p&gt;${err.message}&lt;/p&gt;`;
+});</code></pre>
+    
+    <h2>CORS Configuration</h2>
+    <pre><code class="language-javascript">// Enable CORS
+app.cors({
+  origins: ['https://example.com', 'http://localhost:3000'],
+  methods: 'GET, POST, PUT, DELETE, OPTIONS',
+  headers: 'Content-Type, Authorization',
+  credentials: true
+});</code></pre>
+    
+    <h2>Static File Serving</h2>
+    <pre><code class="language-javascript">// Serve static files from 'public' directory
+app.serveStatic('public');
+
+// With custom options
+app.init({
+  staticPath: 'assets',
+  minifier: true, // Enable content minification
+  fileConfig: {
+    maxSize: 5,
+    allowedTypes: ['image/*'],
+    maxFiles: 10
+  }
+});</code></pre>
+    
+    <h2>Plugin System</h2>
+    <pre><code class="language-javascript">// Using a plugin
+const myPlugin = (context, options) => {
+  context.addMethod('greet', function(name) {
+    return `Hello, ${name}!`;
+  });
+  
+  context.addRoute('get', '/greet/:name', (req, res) => {
+    return this.greet(req.params.name);
+  });
+};
+
+app.usePlugin(myPlugin, { prefix: '/api' });</code></pre>
+    
+    <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/features" class="btn next">
         <i class="fas fa-arrow-left"></i> Prev: Core Features 
       </a>
@@ -74,7 +217,7 @@ app.get('/search:', (req, res) => {
       </a>
     </div>
 
-</article>
+  </article>
   
   {{ #if footer }}
     {{ footer }}

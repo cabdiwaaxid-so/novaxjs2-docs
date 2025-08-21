@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <meta name="title" content="Novaxjs2 - File Uploads">
-<meta name="description" content="Handle file uploads in Novaxjs2 with size limits, type restrictions and management">
-<meta property="og:title" content="Novaxjs2 - File Uploads">
-<meta property="og:description" content="Complete guide to file upload handling in Novaxjs2">
-<meta property="twitter:title" content="Novaxjs2 - File Uploads">
-<meta property="twitter:description" content="Managing file uploads with Novaxjs2">
+  <meta name="description" content="Handle file uploads in Novaxjs2 with size limits, type restrictions, validation and management">
+  <meta property="og:title" content="Novaxjs2 - File Uploads">
+  <meta property="og:description" content="Complete guide to file upload handling in Novaxjs2 with examples">
+  <meta property="twitter:title" content="Novaxjs2 - File Uploads">
+  <meta property="twitter:description" content="Managing file uploads with Novaxjs2 framework">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
@@ -24,34 +24,90 @@
 <body>
   
   <article id="file-uploads">
-        <h1><i class="fas fa-file-upload"></i> File Uploads</h1>
-        <p>Novaxjs2 supports file uploads with configurable size limits and automatic parsing.</p>
-        
-        <h2>Basic File Upload</h2>
-        <pre><code class="language-html">&lt;form action="/upload" method="post" enctype="multipart/form-data"&gt;
-  &lt;input type="file" name="myFile"&gt;
+    <h1><i class="fas fa-file-upload"></i> File Uploads</h1>
+    <p>Novaxjs2 supports robust file uploads with automatic multipart form data parsing, configurable size limits, type restrictions, and comprehensive file management capabilities.</p>
+    
+    <h2>Basic File Upload</h2>
+    <p>Create an HTML form with file input and handle the upload in your route:</p>
+    <pre><code class="language-html">&lt;form action="/upload" method="post" enctype="multipart/form-data"&gt;
+  &lt;input type="file" name="myFile" multiple&gt;
   &lt;button type="submit"&gt;Upload&lt;/button&gt;
 &lt;/form&gt;</code></pre>
-        
-        <pre><code class="language-javascript">app.post('/upload', (req, res) => {
+    
+    <pre><code class="language-javascript">app.post('/upload', (req, res) => {
   const file = req.files.myFile;
   console.log('Uploaded file:', file);
-  res.json({ message: 'File uploaded successfully' });
+  
+  // File properties available:
+  // file.originalname - Original filename
+  // file.size - File size in bytes
+  // file.path - Path to stored file
+  // file.mimetype - MIME type of the file
+  
+  res.json({ 
+    message: 'File uploaded successfully',
+    filename: file.originalname,
+    size: file.size
+  });
 });</code></pre>
-        
-        <h2>Configuration</h2>
-        <pre><code class="language-javascript">// Set file size limit (default: 50MB)
-app.setFileSizeLimit(10); // 10MB limit</code></pre>
-        
-        <h2>Error Handling</h2>
-        <pre><code class="language-javascript">app.error((err, req, res) => {
+    
+    <h2>Multiple File Uploads</h2>
+    <p>Handle multiple files in a single request:</p>
+    <pre><code class="language-javascript">app.post('/upload-multiple', (req, res) => {
+  const files = req.files; // Object containing all uploaded files
+  
+  // Process each file
+  const uploadedFiles = [];
+  for (const fieldName in files) {
+    const fileArray = files[fieldName];
+    for (const file of fileArray) {
+      uploadedFiles.push({
+        field: fieldName,
+        name: file.originalname,
+        size: file.size,
+        type: file.mimetype
+      });
+    }
+  }
+  
+  return {
+    message: `${uploadedFiles.length} files uploaded successfully`,
+    files: uploadedFiles
+  };
+});</code></pre>
+    
+    <h2>Configuration</h2>
+    <p>Configure file upload limits and restrictions:</p>
+    <pre><code class="language-javascript">// Set file size limit (default: 50MB)
+app.setFileSizeLimit(10); // 10MB limit
+
+// Set allowed file types
+app.setAllowedFileTypes(['image/jpeg', 'image/png', 'application/pdf']);
+
+// Set maximum number of files per upload
+app.setMaxFiles(5);
+
+// Keep original filenames
+app.setKeepOriginalName(true);</code></pre>
+    
+    <h2>Error Handling</h2>
+    <p>Handle file upload errors gracefully:</p>
+    <pre><code class="language-javascript">app.error((err, req, res) => {
   if (err.code === 'LIMIT_FILE_SIZE') {
     return 'File is too large! Maximum size is 10MB';
   }
+  if (err.code === 'LIMIT_FILE_TYPE') {
+    return 'File type not allowed. Please upload JPEG, PNG, or PDF files only.';
+  }
+  if (err.code === 'LIMIT_FILE_COUNT') {
+    return 'Too many files uploaded. Maximum is 5 files per request.';
+  }
   return 'An error occurred during file upload';
 });</code></pre>
-<h2>File Management</h2>
-<pre><code class="language-javascript">// Clear all uploaded files
+
+    <h2>File Management</h2>
+    <p>Use the file handler for advanced file operations:</p>
+    <pre><code class="language-javascript">// Clear all uploaded files
 app.fileHandler.clearUploads();
 
 // Remove specific file
@@ -59,16 +115,80 @@ app.fileHandler.removeFile('/path/to/file');
 
 // Get readable stream of a file
 const stream = app.fileHandler.getFileStream('/path/to/file');
-stream.pipe(res);</code></pre>
+stream.pipe(res);
+
+// Check file handler configuration
+console.log('Max file size:', app.fileHandler.maxFileSize);
+console.log('Allowed types:', app.fileHandler.allowedTypes);</code></pre>
+
+    <h2>Complete Example</h2>
+    <pre><code class="language-javascript">const Nova = require('novaxjs2');
+const app = new Nova();
+
+// Configure file uploads
+app.setFileConfig({
+  maxSize: 10,
+  allowedTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+  maxFiles: 5,
+  keepOriginalName: true
+});
+
+// Upload route
+app.post('/upload', (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return { error: 'No files were uploaded' };
+  }
+  
+  const files = req.files;
+  const results = [];
+  
+  // Process each file
+  for (const fieldName in files) {
+    const fileArray = Array.isArray(files[fieldName]) ? 
+      files[fieldName] : [files[fieldName]];
+    
+    for (const file of fileArray) {
+      results.push({
+        field: fieldName,
+        filename: file.originalname,
+        size: file.size,
+        mimetype: file.mimetype,
+        path: file.path
+      });
+    }
+  }
+  
+  return {
+    message: 'Upload successful',
+    count: results.length,
+    files: results
+  };
+});
+
+// Error handling
+app.error((err, req, res) => {
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return { error: 'File too large', maxSize: '10MB' };
+  }
+  if (err.code === 'LIMIT_FILE_TYPE') {
+    return { error: 'Invalid file type', allowedTypes: ['JPEG', 'PNG', 'PDF'] };
+  }
+  return { error: 'Upload failed', details: err.message };
+});
+
+app.at(3000, () => {
+  console.log('Server running on port 3000 with file upload support');
+});</code></pre>
+
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/plugin-system" class="btn next">
         <i class="fas fa-arrow-left"></i> Prev: Plugin System
       </a>
       <a href="/docs/cors" class="btn next">
-        Next: Cors <i class="fas fa-arrow-right"></i>
+        Next: CORS <i class="fas fa-arrow-right"></i>
       </a>
     </div>
-      </article>
+  </article>
   
   {{ #if footer }}
     {{ footer }}

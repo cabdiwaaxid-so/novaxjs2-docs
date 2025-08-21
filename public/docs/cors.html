@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-  <meta name="title" content="Novaxjs2 - CORS Configuration">
-<meta name="description" content="Set up Cross-Origin Resource Sharing in Novaxjs2 applications">
-<meta property="og:title" content="Novaxjs2 - CORS Configuration">
-<meta property="og:description" content="Secure your API with proper CORS settings">
-<meta property="twitter:title" content="Novaxjs2 - CORS Configuration">
-<meta property="twitter:description" content="Managing CORS in Novaxjs2">
+  <meta name="title" content="Novaxjs2 v8.3.0 - CORS Configuration">
+<meta name="description" content="Set up Cross-Origin Resource Sharing in Novaxjs2 v8.3.0 applications with enhanced options">
+<meta property="og:title" content="Novaxjs2 v8.3.0 - CORS Configuration">
+<meta property="og:description" content="Secure your API with proper CORS settings in Novaxjs2 v8.3.0">
+<meta property="twitter:title" content="Novaxjs2 v8.3.0 - CORS Configuration">
+<meta property="twitter:description" content="Managing CORS in Novaxjs2 v8.3.0">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
@@ -18,54 +18,112 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 docs - File Uploads</title>
+  <title>Novaxjs2 v8.3.0 docs - CORS Configuration</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="cors">
-        <h1><i class="fas fa-shield-alt"></i> CORS Configuration</h1>
-        <p>Configure Cross-Origin Resource Sharing (CORS) for your API endpoints.</p>
-        
-        <h2>Basic Setup</h2>
-        <pre><code class="language-javascript">app.cors({
+    <h1><i class="fas fa-shield-alt"></i> CORS Configuration v8.3.0</h1>
+    <p>Configure Cross-Origin Resource Sharing (CORS) for your API endpoints with enhanced options in Novaxjs2 v8.3.0.</p>
+    
+    <h2>Basic Setup</h2>
+    <pre><code class="language-javascript">app.cors({
   origins: ['https://example.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  headers: ['Content-Type', 'Authorization'],
+  credentials: true
+});</code></pre>
+    
+    <h2>Allow All Origins</h2>
+    <pre><code class="language-javascript">app.cors({
+  origins: ['*'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  headers: ['Content-Type', 'Authorization', 'X-Requested-With']
+});</code></pre>
+    
+    <h2>Dynamic Origin Validation</h2>
+    <pre><code class="language-javascript">app.cors({
+  origins: (origin, callback) => {
+    // Custom logic to validate origin
+    const allowedOrigins = ['https://example.com', 'https://app.example.com'];
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST'],
   headers: ['Content-Type']
 });</code></pre>
-        
-        <h2>Allow All Origins</h2>
-        <pre><code class="language-javascript">app.cors({
-  origins: ['*']
-});</code></pre>
-        
-        <h2>Options</h2>
-        <table class="api-reference">
-          <thead>
-            <tr>
-              <th>Option</th>
-              <th>Description</th>
-              <th>Default</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>origins</code></td>
-              <td>Allowed origins (array)</td>
-              <td>[]</td>
-            </tr>
-            <tr>
-              <td><code>methods</code></td>
-              <td>Allowed HTTP methods</td>
-              <td>['GET','POST','PUT','DELETE']</td>
-            </tr>
-            <tr>
-              <td><code>headers</code></td>
-              <td>Allowed headers</td>
-              <td>['Content-Type']</td>
-            </tr>
-          </tbody>
-        </table>
+    
+    <h2>Options</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Option</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>origins</code></td>
+          <td>Allowed origins (array or function)</td>
+          <td>Array|Function</td>
+          <td>[]</td>
+        </tr>
+        <tr>
+          <td><code>methods</code></td>
+          <td>Allowed HTTP methods</td>
+          <td>Array</td>
+          <td>['GET','POST','PUT','DELETE']</td>
+        </tr>
+        <tr>
+          <td><code>headers</code></td>
+          <td>Allowed headers</td>
+          <td>Array</td>
+          <td>['Content-Type']</td>
+        </tr>
+        <tr>
+          <td><code>credentials</code></td>
+          <td>Allow credentials</td>
+          <td>Boolean</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td><code>maxAge</code></td>
+          <td>Max age in seconds for preflight requests</td>
+          <td>Number</td>
+          <td>86400 (24 hours)</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h2>Preflight Request Handling</h2>
+    <p>Novaxjs2 v8.3.0 automatically handles OPTIONS requests for CORS preflight checks. You don't need to define OPTIONS routes manually.</p>
+    
+    <h2>Best Practices</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3><i class="fas fa-lock"></i> Restrict Origins</h3>
+        <p>Always specify allowed origins instead of using wildcard (*) in production.</p>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-list"></i> Limit Methods</h3>
+        <p>Only allow HTTP methods that your API actually uses.</p>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-headers"></i> Specify Headers</h3>
+        <p>Explicitly list allowed headers to prevent unauthorized access.</p>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fas fa-shield"></i> Use Credentials Carefully</h3>
+        <p>Only enable credentials when necessary and with specific origins.</p>
+      </div>
+    </div>
+    
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/file-uploads" class="btn next">
         <i class="fas fa-arrow-left"></i> Prev: File Uploads
@@ -74,7 +132,7 @@
         Next: Middleware <i class="fas fa-arrow-right"></i>
       </a>
     </div>
-      </article>
+  </article>
   
   {{ #if footer }}
     {{ footer }}

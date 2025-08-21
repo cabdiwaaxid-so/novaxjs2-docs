@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <meta name="title" content="Novaxjs2 - Templating Engine">
-  <meta name="description" content="Complete guide to NovaxJS2's powerful templating engine with conditionals, loops, and advanced features">
+  <meta name="description" content="Complete guide to NovaxJS2's powerful templating engine with conditionals, loops, helpers, and advanced features">
   <meta property="og:title" content="Novaxjs2 - Templating Engine">
-  <meta property="og:description" content="Master NovaxJS2's template rendering with this comprehensive guide">
+  <meta property="og:description" content="Master NovaxJS2's template rendering with HTML and JavaScript templates">
   <meta property="twitter:title" content="Novaxjs2 - Templating Engine">
-  <meta property="twitter:description" content="Complete documentation for NovaxJS2 templating system">
+  <meta property="twitter:description" content="Complete documentation for NovaxJS2 templating system with examples">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
@@ -22,19 +22,34 @@
 
 <article id="templating">
   <h1><i class="fas fa-file-code"></i> Templating Engine</h1>
-  <p>Novaxjs2 includes a powerful templating system with two rendering modes: <code>HTML</code> templates with custom syntax and <code>JavaScript</code> templates for maximum flexibility.</p>
+  <p>Novaxjs2 includes a powerful templating system with two rendering modes: <code>HTML</code> templates with custom syntax and <code>JavaScript</code> templates for maximum flexibility and control.</p>
 
   <h2>Setting Up Views</h2>
   <pre><code class="language-javascript">
 // Configure view engine (HTML mode)
 app.setViewEngine('novax', {
-  viewsPath: './views',  // optional, defaults to './views'
-  viewsType: 'html'      // 'html' or 'js'
+  viewsPath: './views',  // Directory containing templates
+  viewsType: 'html',     // 'html' or 'js'
+  helpers: {             // Custom helper functions
+    formatDate: (date) => new Date(date).toLocaleDateString(),
+    uppercase: (str) => str.toUpperCase()
+  }
 });
 
 // Or for JavaScript templates:
 app.setViewEngine('novax', {
-  viewsType: 'js'       // Uses JavaScript files for templates
+  viewsType: 'js',       // Uses JavaScript files for templates
+  viewsPath: './templates'
+});
+
+// Add custom helpers programmatically
+app.addHelper('reverse', (str) => str.split('').reverse().join(''));
+app.addHelper('currency', (amount) => `$${amount.toFixed(2)}`);
+
+// Add multiple helpers at once
+app.addHelpers({
+  truncate: (str, length) => str.length > length ? str.substring(0, length) + '...' : str,
+  pluralize: (count, singular, plural) => count === 1 ? singular : plural
 });
   </code></pre>
 
@@ -51,6 +66,7 @@ app.setViewEngine('novax', {
 &lt;body&gt;
   &lt;h1&gt;&#123;&#123; heading &#125;&#125;&lt;/h1&gt;
   &lt;p&gt;Current time: &#123;&#123; new Date().toLocaleTimeString() &#125;&#125;&lt;/p&gt;
+  &lt;p&gt;Formatted date: &#123;&#123; formatDate(createdAt) &#125;&#125;&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
@@ -84,11 +100,11 @@ app.setViewEngine('novax', {
   &#123;&#123;/each&#125;&#125;
 &lt;/ul&gt;
 
-&lt;!-- Accessing array this --&gt;
+&lt;!-- Accessing array index --&gt;
 &#123;&#123;#each items&#125;&#125;
   &lt;div class="item-&#123;&#123; index &#125;&#125;"&gt;
     &lt;h3&gt;&#123;&#123; name &#125;&#125;&lt;/h3&gt;
-    &lt;p&gt;Position: &#123;&#123; this.index &#125;&#125; &lt;/p&gt;
+    &lt;p&gt;Position: &#123;&#123; index &#125;&#125; of &#123;&#123; this.length &#125;&#125;&lt;/p&gt;
   &lt;/div&gt;
 &#123;&#123;/each&#125;&#125;
 
@@ -107,9 +123,14 @@ app.setViewEngine('novax', {
 &lt;!-- JSON output --&gt;
 &lt;script&gt;
   const userData = &#123;&#123; JSON.stringify(user) &#125;&#125;;
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;
 
-  <h2>JavaScript Templates (<code>coomonJs</code>)</h2>
+&lt;!-- Using helpers --&gt;
+&lt;p&gt;Price: &#123;&#123; currency(product.price) &#125;&#125;&lt;/p&gt;
+&lt;p&gt;&#123;&#123; truncate(description, 100) &#125;&#125;&lt;/p&gt;
+&lt;p&gt;&#123;&#123; pluralize(items.length, 'item', 'items') &#125;&#125;&lt;/p&gt;</code></pre>
+
+  <h2>JavaScript Templates (CommonJS style)</h2>
   <p>For more complex logic, you can use JavaScript templates that export a function or string:</p>
   
   <pre><code class="language-javascript">// views/home.js
@@ -119,27 +140,36 @@ module.exports = function(data) {
     ? 'Welcome Administrator' 
     : `Welcome ${data.user.name}`;
   
-  return `
-    &lt;!DOCTYPE html&gt;
-    &lt;html&gt;
-    &lt;head&gt;
-      &lt;title&gt;${data.title}&lt;/title&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-      &lt;h1&gt;${welcomeMessage}&lt;/h1&gt;
-      ${renderItems(data.items)}
-    &lt;/body&gt;
-    &lt;/html&gt;
-  `;
-  
+  // Helper function within template
   function renderItems(items) {
     return items.map(item => `
       &lt;div class="item"&gt;
         &lt;h3&gt;${item.name}&lt;/h3&gt;
         &lt;p&gt;Price: $${item.price.toFixed(2)}&lt;/p&gt;
+        &lt;p&gt;${item.description}&lt;/p&gt;
       &lt;/div&gt;
     `).join('');
   }
+  
+  return `
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;${data.title}&lt;/title&gt;
+      &lt;style&gt;
+        body { font-family: Arial, sans-serif; }
+        .item { border: 1px solid #ccc; padding: 1rem; margin: 1rem 0; }
+      &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;h1&gt;${welcomeMessage}&lt;/h1&gt;
+      ${renderItems(data.items)}
+      &lt;footer&gt;
+        &lt;p&gt;Generated on ${new Date().toLocaleDateString()}&lt;/p&gt;
+      &lt;/footer&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+  `;
 };</code></pre>
 
   <h2>Rendering Templates</h2>
@@ -156,12 +186,14 @@ app.get('/', async (req, res) => {
       }
     },
     items: [
-      { name: 'Product 1', price: 19.99 },
-      { name: 'Product 2', price: 29.99 }
-    ]
+      { name: 'Product 1', price: 19.99, description: 'A great product' },
+      { name: 'Product 2', price: 29.99, description: 'Another great product' }
+    ],
+    createdAt: new Date()
   };
   
-  return await app.render('home', data);
+  const html = await app.render('home', data);
+  return html;
 });
 
 // With error handling
@@ -170,8 +202,20 @@ app.get('/profile', async (req, res) => {
     const userData = await getUserData(req.user.id);
     return await app.render('profile', userData);
   } catch (err) {
-    return await app.render('error', { message: 'Failed to load profile' });
+    return await app.render('error', { 
+      message: 'Failed to load profile',
+      error: err.message 
+    });
   }
+});
+
+// Using with other response methods
+app.get('/api/user/:id', async (req, res) => {
+  const user = await getUserById(req.params.id);
+  if (!user) {
+    return res.status(404).render('404', { id: req.params.id });
+  }
+  return res.render('user-profile', { user });
 });</code></pre>
 
   <h2>Template Reference</h2>
@@ -220,12 +264,59 @@ app.get('/profile', async (req, res) => {
         <td>Convert objects to JSON</td>
       </tr>
       <tr>
+        <td>Helpers</td>
+        <td><code>&#123;&#123; helperName(arg) &#125;&#125;</code></td>
+        <td>Use custom helper functions</td>
+      </tr>
+      <tr>
         <td>JavaScript</td>
         <td><code>module.exports = function(data) {...}</code></td>
         <td>Full JavaScript templates when using <code>viewsType: 'js'</code></td>
       </tr>
     </tbody>
   </table>
+
+  <h2>Advanced Features</h2>
+  <pre><code class="language-javascript">// Using third-party view engines
+const pug = require('pug');
+app.setViewEngine(pug, {
+  viewsPath: './views',
+  viewsType: 'pug',
+  engineOptions: {
+    pretty: true
+  }
+});
+
+// Async helpers
+app.addHelper('fetchData', async (url) => {
+  const response = await fetch(url);
+  return await response.json();
+});
+
+// Template inheritance (using JavaScript templates)
+// base-template.js
+module.exports = function(data, content) {
+  return `
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;${data.title}&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;header&gt;...&lt;/header&gt;
+      &lt;main&gt;${content}&lt;/main&gt;
+      &lt;footer&gt;...&lt;/footer&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+  `;
+};
+
+// page.js
+module.exports = async function(data) {
+  const baseTemplate = require('./base-template');
+  const pageContent = `&lt;h1&gt;${data.title}&lt;/h1&gt;&lt;p&gt;${data.content}&lt;/p&gt;`;
+  return baseTemplate(data, pageContent);
+};</code></pre>
 
   <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
     <a href="/docs/middleware" class="btn next">

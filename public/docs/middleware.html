@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="title" content="Novaxjs2 - Middleware System">
-<meta name="description" content="Implement and chain middleware functions in Novaxjs2 applications">
-<meta property="og:title" content="Novaxjs2 - Middleware System">
-<meta property="og:description" content="Middleware architecture in Novaxjs2">
-<meta property="twitter:title" content="Novaxjs2 - Middleware System">
-<meta property="twitter:description" content="Working with middleware">
+  <meta name="description" content="Implement and chain middleware functions in Novaxjs2 applications with comprehensive examples">
+  <meta property="og:title" content="Novaxjs2 - Middleware System">
+  <meta property="og:description" content="Middleware architecture in Novaxjs2 with route-specific and error middleware">
+  <meta property="twitter:title" content="Novaxjs2 - Middleware System">
+  <meta property="twitter:description" content="Working with middleware in Novaxjs2 framework">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
@@ -24,72 +24,251 @@
 <body>
   
   <article id="middleware">
-        <h1><i class="fas fa-cogs"></i> Middleware System</h1>
-        <p>Novaxjs2 provides a flexible middleware system for request processing.</p>
-        
-        <h2>Standard Middleware</h2>
-        <pre><code class="language-javascript">app.useMiddleware((req, res, next) => {
-  console.log(`Request: ${req.method} ${req.url}`);
+    <h1><i class="fas fa-cogs"></i> Middleware System</h1>
+    <p>Novaxjs2 provides a flexible middleware system for request processing, error handling, and response transformation. Middleware functions have access to the request and response objects and can execute any code, make changes to these objects, or end the request-response cycle.</p>
+    
+    <h2>Standard Middleware</h2>
+    <p>Global middleware that runs for every request:</p>
+    <pre><code class="language-javascript">// Logging middleware
+app.useMiddleware((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next(); // Call next middleware
-});</code></pre>
-        
-        <h2>Error Middleware</h2>
-        <pre><code class="language-javascript">app.useErrorMiddleware((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(500).end('Internal Server Error');
-});</code></pre>
-        
-        <h2>Built-in Middleware</h2>
-        <pre><code class="language-javascript">// Static file serving
-app.serveStatic('public');
+});
 
-// JSON body parsing (automatic)
-// Form data parsing (automatic)
-// File upload parsing (automatic)</code></pre>
-      </article>
-      
-      <article id="route-middleware">
-  <h1><i class="fas fa-code-branch"></i> Route-Specific Middleware</h1>
+// Authentication middleware
+app.useMiddleware((req, res, next) => {
+  const token = req.headers.authorization;
+  if (token === 'secret-token') {
+    req.user = { id: 1, name: 'John Doe' };
+    next();
+  } else {
+    res.status(401).end('Unauthorized');
+  }
+});
+
+// Body parsing middleware (built-in)
+// JSON and form data parsing is automatic in Novaxjs2</code></pre>
+    
+    <h2>Error Middleware</h2>
+    <p>Middleware that handles errors in the application:</p>
+    <pre><code class="language-javascript">// Error handling middleware
+app.useErrorMiddleware((err, req, res, next) => {
+  console.error('Error:', err.stack);
   
-  <p>Novaxjs2 supports adding middleware to specific routes:</p>
+  // Custom error responses based on error type
+  if (err.statusCode === 404) {
+    return res.status(404).end('Page not found');
+  }
   
-  <h2>Adding Middleware to Routes</h2>
-  <pre><code class="language-javascript">// Middleware function
+  res.status(500).end('Internal Server Error');
+});
+
+// Async error handling
+app.useErrorMiddleware(async (err, req, res, next) => {
+  // Log error to database or external service
+  await logErrorToService(err, req);
+  
+  res.status(500).json({
+    error: 'Something went wrong',
+    requestId: req.id // Custom request ID
+  });
+});</code></pre>
+    
+    <h2>Built-in Middleware</h2>
+    <p>Novaxjs2 includes several built-in middleware functions:</p>
+    <pre><code class="language-javascript">// Static file serving
+app.serveStatic('public'); // Serve files from 'public' directory
+
+// Automatic body parsing for:
+// - JSON (application/json)
+// - Form data (application/x-www-form-urlencoded)
+// - Multipart form data (multipart/form-data) for file uploads
+
+// CORS support
+app.cors({
+  origins: ['https://example.com', 'http://localhost:3000'],
+  methods: 'GET, POST, PUT, DELETE, OPTIONS',
+  headers: 'Content-Type, Authorization',
+  credentials: true
+});</code></pre>
+
+    <h2>Middleware Execution Order</h2>
+    <p>Middleware executes in the order they are defined. Understanding the execution flow is crucial:</p>
+    <pre><code class="language-javascript">app.useMiddleware((req, res, next) => {
+  console.log('Middleware 1');
+  next();
+});
+
+app.useMiddleware((req, res, next) => {
+  console.log('Middleware 2');
+  next();
+});
+
+app.get('/', (req, res) => {
+  console.log('Route handler');
+  return 'Hello World';
+});
+
+// Execution order:
+// 1. Middleware 1
+// 2. Middleware 2
+// 3. Route handler</code></pre>
+    
+    <h2>Middleware Best Practices</h2>
+    <ul>
+      <li>Always call <code>next()</code> to pass control to the next middleware</li>
+      <li>Handle errors properly in error middleware</li>
+      <li>Use async middleware for I/O operations</li>
+      <li>Keep middleware focused on single responsibilities</li>
+    </ul>
+  </article>
+  
+  <article id="route-middleware">
+    <h1><i class="fas fa-code-branch"></i> Route-Specific Middleware</h1>
+    
+    <p>Novaxjs2 supports adding middleware to specific routes, allowing for fine-grained control over request processing.</p>
+    
+    <h2>Adding Middleware to Routes</h2>
+    <p>Apply middleware to individual routes:</p>
+    <pre><code class="language-javascript">// Middleware function
 function logRequest(req, res, next) {
   console.log(`Request: ${req.method} ${req.url}`);
   next();
 }
 
+function requireAuth(req, res, next) {
+  if (!req.headers.authorization) {
+    return res.status(401).end('Authentication required');
+  }
+  next();
+}
+
 // Route with middleware
-app.get('/protected', logRequest, (req, res) => {
+app.get('/protected', logRequest, requireAuth, (req, res) => {
   return 'This route is protected by middleware';
+});
+
+// POST route with middleware
+app.post('/api/data', logRequest, requireAuth, (req, res) => {
+  return { message: 'Data processed successfully' };
 });</code></pre>
-  
-  <h2>Multiple Middleware</h2>
-  <pre><code class="language-javascript">function auth(req, res, next) {
-  if (req.headers.authorization) {
+    
+    <h2>Multiple Middleware</h2>
+    <p>Chain multiple middleware functions together:</p>
+    <pre><code class="language-javascript">// Validation middleware
+function validateUserData(req, res, next) {
+  const { username, email } = req.body;
+  if (!username || !email) {
+    return res.status(400).end('Username and email are required');
+  }
+  next();
+}
+
+// Sanitization middleware
+function sanitizeData(req, res, next) {
+  if (req.body.username) {
+    req.body.username = req.body.username.trim();
+  }
+  next();
+}
+
+// Rate limiting middleware
+function rateLimit(req, res, next) {
+  const ip = req.ip;
+  const requests = requestCount[ip] || 0;
+  if (requests > 100) {
+    return res.status(429).end('Too many requests');
+  }
+  requestCount[ip] = requests + 1;
+  next();
+}
+
+app.post('/register', 
+  rateLimit,
+  validateUserData,
+  sanitizeData,
+  (req, res) => {
+    // Process registration
+    return { message: 'User registered successfully' };
+  }
+);</code></pre>
+
+    <h2>Async Middleware</h2>
+    <p>Middleware can be asynchronous for database operations or API calls:</p>
+    <pre><code class="language-javascript">// Async middleware for database operations
+async function loadUser(req, res, next) {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).end('User not found');
+    }
+    req.user = user;
     next();
-  } else {
-    res.status(401).end('Unauthorized');
+  } catch (error) {
+    next(error);
   }
 }
 
-app.get('/admin', 
-  logRequest, 
-  auth,
+// Async middleware for API calls
+async function fetchExternalData(req, res, next) {
+  try {
+    const response = await fetch('https://api.example.com/data');
+    req.externalData = await response.json();
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
+app.get('/user/:userId/profile',
+  loadUser,
+  fetchExternalData,
   (req, res) => {
-    return 'Admin dashboard';
+    return {
+      user: req.user,
+      externalData: req.externalData
+    };
   }
 );</code></pre>
+
+    <h2>Error Handling in Route Middleware</h2>
+    <p>Proper error handling in route-specific middleware:</p>
+    <pre><code class="language-javascript">// Error-prone middleware
+function riskyOperation(req, res, next) {
+  try {
+    // Some operation that might fail
+    if (Math.random() > 0.5) {
+      throw new Error('Something went wrong');
+    }
+    next();
+  } catch (error) {
+    next(error); // Pass error to error middleware
+  }
+}
+
+// Alternatively, use async/await with try/catch
+async function asyncRiskyOperation(req, res, next) {
+  try {
+    await someAsyncOperation();
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
+app.get('/risky', riskyOperation, (req, res) => {
+  return 'This might fail sometimes';
+});</code></pre>
+
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/cors" class="btn next">
-        <i class="fas fa-arrow-left"></i> Prev: Cors
+        <i class="fas fa-arrow-left"></i> Prev: CORS
       </a>
       <a href="/docs/templating" class="btn next">
         Next: Templating <i class="fas fa-arrow-right"></i>
       </a>
     </div>
-</article>
+  </article>
   
   {{ #if footer }}
     {{ footer }}

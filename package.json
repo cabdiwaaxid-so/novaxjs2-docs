@@ -12,6 +12,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "novaxjs2": "^8.0.0"
+    "novaxjs2": "^8.3.0"
   }
 }

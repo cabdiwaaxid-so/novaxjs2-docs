@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <meta name="title" content="Novaxjs2 - Plugin System">
-<meta name="description" content="Extend Novaxjs2 functionality with custom plugins - complete guide">
+<meta name="description" content="Extend Novaxjs2 functionality with custom plugins - complete guide to creating and using plugins">
 <meta property="og:title" content="Novaxjs2 - Plugin System">
-<meta property="og:description" content="Learn to create and use plugins with Novaxjs2">
+<meta property="og:description" content="Learn to create and use plugins with Novaxjs2 to extend framework functionality">
 <meta property="twitter:title" content="Novaxjs2 - Plugin System">
-<meta property="twitter:description" content="Extending Novaxjs2 with plugins">
+<meta property="twitter:description" content="Complete guide to extending Novaxjs2 with custom plugins">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
@@ -25,50 +25,184 @@
   
   <article id="plugin-system">
     <h1><i class="fas fa-puzzle-piece"></i> Plugin System</h1>
-    <p>Extend Novaxjs2 functionality with custom plugins:</p>
+    <p>Novaxjs2's plugin system allows you to extend the framework with custom functionality, methods, routes, and middleware.</p>
     
     <h2>Creating a Plugin</h2>
-    <pre><code class="language-javascript">function myPlugin({addMethod,addRoute, addRoute, addMiddleware }, options) {
-  // Add new methods
+    <p>Plugins are functions that receive a context object with methods to extend the framework:</p>
+    <pre><code class="language-javascript">function myPlugin(context, options) {
+  const { addMethod, addRoute, addMiddleware, setConfig, getConfig } = context;
+  
+  // Add new methods to the app instance
   addMethod('greet', function(name) {
     return `Hello ${name}!`;
   });
   
-  // Add routes
+  // Add custom routes
   addRoute('get', '/plugin-route', (req, res) => {
     return 'This route was added by plugin';
   });
   
   // Add middleware
   addMiddleware((req, res, next) => {
-    console.log('Plugin middleware');
+    console.log('Plugin middleware executed');
     next();
   });
   
   // Store configuration
-  setConfig('pluginConfig', options);
+  setConfig('apiKey', options.apiKey);
+  
+  // Retrieve configuration later
+  const apiKey = getConfig('apiKey');
+  
+  // You can also return values that will be available on the app instance
+  return {
+    utilityFunction: () => 'This is a utility function'
+  };
 }</code></pre>
     
     <h2>Using a Plugin</h2>
-    <pre><code class="language-javascript">app.usePlugin(myPlugin, { setting: 'value' });
+    <pre><code class="language-javascript">const Nova = require('novaxjs2');
+const app = new Nova();
+
+// Use the plugin with options
+app.usePlugin(myPlugin, { 
+  apiKey: 'your-api-key-here',
+  otherSetting: 'value' 
+});
 
 // Now you can use plugin methods
 app.get('/', (req, res) => {
-  return app.greet('World');
-});</code></pre>
-
-<h2>Plugin Configuration</h2>
-<pre><code class="language-javascript">// In your plugin:
-function myPlugin({ setConfig, getConfig }, options) {
-  // Store configuration
-  setConfig('apiKey', options.apiKey);
+  const greeting = app.greet('World'); // From plugin
+  const utility = app.utilityFunction(); // From plugin return value
   
-  // Later retrieve it
-  const apiKey = getConfig('apiKey');
-}</code></pre>
-<div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
+  return res.send(`${greeting} - ${utility}`);
+});
+
+// Plugin routes are automatically registered
+// Access: GET /plugin-route</code></pre>
+
+    <h2>Plugin Context Methods</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+          <th>Parameters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>addMethod(name, fn)</code></td>
+          <td>Adds a method to the app instance</td>
+          <td>name: string, fn: function</td>
+        </tr>
+        <tr>
+          <td><code>addRoute(method, path, handler)</code></td>
+          <td>Adds a route with the specified HTTP method</td>
+          <td>method: string, path: string, handler: function</td>
+        </tr>
+        <tr>
+          <td><code>addMiddleware(fn)</code></td>
+          <td>Adds application-level middleware</td>
+          <td>fn: function(req, res, next)</td>
+        </tr>
+        <tr>
+          <td><code>addErrorMiddleware(fn)</code></td>
+          <td>Adds error handling middleware</td>
+          <td>fn: function(err, req, res, next)</td>
+        </tr>
+        <tr>
+          <td><code>setConfig(key, value)</code></td>
+          <td>Stores configuration values</td>
+          <td>key: string, value: any</td>
+        </tr>
+        <tr>
+          <td><code>getConfig(key)</code></td>
+          <td>Retrieves configuration values</td>
+          <td>key: string</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Complete Plugin Example</h2>
+    <pre><code class="language-javascript">// plugins/auth-plugin.js
+function authPlugin(context, options) {
+  const { addMethod, addMiddleware, setConfig } = context;
+  
+  // Store configuration
+  setConfig('jwtSecret', options.jwtSecret);
+  
+  // Add authentication middleware
+  addMiddleware((req, res, next) => {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    
+    if (!token) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+    
+    try {
+      // Verify token (pseudo-code)
+      req.user = verifyToken(token, options.jwtSecret);
+      next();
+    } catch (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+  });
+  
+  // Add auth utility methods
+  addMethod('requireAuth', (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+    next();
+  });
+  
+  addMethod('requireRole', (role) => {
+    return (req, res, next) => {
+      if (!req.user || req.user.role !== role) {
+        return res.status(403).json({ error: 'Insufficient permissions' });
+      }
+      next();
+    };
+  });
+  
+  return {
+    generateToken: (userData) => {
+      // Token generation logic
+      return signToken(userData, options.jwtSecret);
+    }
+  };
+}
+
+// Using the auth plugin
+const Nova = require('novaxjs2');
+const app = new Nova();
+
+app.usePlugin(authPlugin, {
+  jwtSecret: 'your-secret-key'
+});
+
+// Protected route using plugin methods
+app.get('/admin', 
+  app.requireAuth,
+  app.requireRole('admin'),
+  (req, res) => {
+    return res.json({ message: 'Welcome admin!', user: req.user });
+  }
+);</code></pre>
+
+    <h2>Best Practices for Plugins</h2>
+    <ul>
+      <li>Use clear, descriptive names for plugin methods</li>
+      <li>Provide comprehensive error handling</li>
+      <li>Document your plugin's API and options</li>
+      <li>Use configuration system for customizable behavior</li>
+      <li>Consider returning utility functions for advanced usage</li>
+    </ul>
+
+    <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/api-reference" class="btn next">
-        <i class="fas fa-arrow-left"></i> Prev: Api References
+        <i class="fas fa-arrow-left"></i> Prev: API Reference
       </a>
       <a href="/docs/file-uploads" class="btn next">
         Next: File Uploads <i class="fas fa-arrow-right"></i>
@@ -81,5 +215,6 @@ function myPlugin({ setConfig, getConfig }, options) {
   {{/if}}
   
   <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
+  <script src="/helper.js"></script>
 </body>
 </html>
