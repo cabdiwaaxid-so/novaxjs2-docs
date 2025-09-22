@@ -10,7 +10,7 @@ app.setViewEngine('novax', {
 })
 const docs = ['about', 'installation', 'features', 'usage', 'api-reference', 'plugin-system', 'file-uploads', 'cors', 'middleware', 'templating', 'route-middleware', 'responses', 'error-handling', 'example', 'projects', 'contact', 'static-files', 'file-configuration', 'app']
 app.get('/', async (req, res) => {
-  res.send(await app.render('../index'))
+  res.send(await app.render('index'))
 });
 
 app.get('/docs/:feature', (req, res) => {
