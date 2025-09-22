@@ -60,9 +60,7 @@
     </div>
       </article>
   
-  {{ #if footer }}
-    {{ footer }}
-  {{/if}}
+  @include('footer.html')
   
   <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
 </body>

@@ -154,6 +154,8 @@ app.at(3000, () => console.log('Server running on port 3000'));</code></pre>
   "mimetype": "image/jpeg",        // MIME type
   "size": 102400,                  // File size in bytes
   "path": "/uploads/abc123.jpg"    // Path to saved file
+  "mv": [Function: mv],
+  remove: [Function: remove]
 }</code></pre>
     
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
@@ -165,9 +167,7 @@ app.at(3000, () => console.log('Server running on port 3000'));</code></pre>
       </a>
     </div>
   </article>
-  {{ #if footer }}
-    {{ footer }}
-  {{/if}}
+  @include('footer.html')
   <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
   <script src="/helper.js"></script>
 </body>

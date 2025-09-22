@@ -5,21 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-  <meta name="title" content="Novaxjs2 v8.3.0 - Core Features">
-  <meta name="description" content="Explore Novaxjs2 v8.3.0's powerful features including advanced routing, middleware, templating, file handling, and performance optimizations">
-  <meta property="og:title" content="Novaxjs2 v8.3.0 - Core Features">
-  <meta property="og:description" content="Discover what makes Novaxjs2 v8.3.0 a great Node.js framework choice with comprehensive feature overview">
-  <meta property="twitter:title" content="Novaxjs2 v8.3.0 - Core Features">
-  <meta property="twitter:description" content="Key features of the Novaxjs2 v8.3.0 framework with detailed explanations">
+  <meta name="title" content="Novaxjs2 v9.3.4 - Core Features">
+  <meta name="description" content="Explore Novaxjs2 v9.3.4's powerful features including advanced routing, middleware, templating, file handling, and performance optimizations">
+  <meta property="og:title" content="Novaxjs2 v9.3.4 - Core Features">
+  <meta property="og:description" content="Discover what makes Novaxjs2 v9.3.4 a great Node.js framework choice with comprehensive feature overview">
+  <meta property="twitter:title" content="Novaxjs2 v9.3.4 - Core Features">
+  <meta property="twitter:description" content="Key features of the Novaxjs2 v9.3.4 framework with detailed explanations">
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 v8.3.0 docs - Features</title>
+  <title>Novaxjs2 v9.3.4 docs - Features</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="features">
-    <h1><i class="fas fa-star"></i> Core Features (v8.3.0)</h1>
-    <p class="subtitle">Novaxjs2 v8.3.0 is packed with powerful features designed to make web development faster, simpler, and more efficient. Here's a comprehensive overview of what the framework offers.</p>
+    <h1><i class="fas fa-star"></i> Core Features (v9.3.4)</h1>
+    <p class="subtitle">Novaxjs2 v9.3.4 is packed with powerful features designed to make web development faster, simpler, and more efficient. Here's a comprehensive overview of what the framework offers.</p>
     
     <div class="feature-grid">
       <div class="feature-card">
@@ -31,6 +31,7 @@
           <li><strong>Route groups</strong> - Organize routes with common prefixes</li>
           <li><strong>Regular expression routes</strong> - Advanced pattern matching</li>
           <li><strong>Middleware per route</strong> - Apply middleware to specific routes</li>
+          <li><strong>Router modules</strong> - <code>app.useRouter()</code> for modular apps</li>
         </ul>
       </div>
       
@@ -51,12 +52,14 @@
         <ul>
           <li><strong>Built-in Novax template engine</strong> - No external dependencies</li>
           <li><strong>Dual-mode templates</strong> - HTML syntax or JavaScript functions</li>
-          <li><strong>Conditionals</strong> - <code>&#123;&#123;#if&#125;&#125;, &#123;&#123;#else&#125;&#125;, &#123;&#123;#elif&#125;&#125;, &#123;&#123;/if&#125;&#125;</code></li>
-          <li><strong>Loops</strong> - <code>&#123;&#123;#each&#125;&#125;</code> with index support</li>
-          <li><strong>Variable interpolation</strong> - <code>&#123;&#123;variable &#125;&#125;</code> syntax</li>
+          <li><strong>New &#64; syntax</strong> - Cleaner template expressions</li>
+          <li><strong>Conditionals</strong> - <code>&#64;if, &#64;else, &#64;elif, &#64;end</code></li>
+          <li><strong>Loops</strong> - <code>&#64;each</code> with index support</li>
+          <li><strong>Variable interpolation</strong> - <code>&#64;variable</code> and <code>&#64;{expression}</code></li>
           <li><strong>Custom helpers</strong> - Register helper functions</li>
           <li><strong>Third-party engine support</strong> - EJS, Pug, Handlebars integration</li>
-          <li><strong>Layout system</strong> - Template inheritance and partials</li>
+          <li><strong>Template includes</strong> - <code>&#64;include('template')</code></li>
+          <li><strong>Variable declaration</strong> - <code>&#64;var</code> for template variables</li>
         </ul>
       </div>
       
@@ -83,6 +86,7 @@
           <li><strong>XSS protection</strong> - Automatic content escaping in templates</li>
           <li><strong>Header security</strong> - Custom security headers</li>
           <li><strong>Error sanitization</strong> - Production error message hiding</li>
+          <li><strong>Cookie security</strong> - HTTP-only, secure cookies support</li>
         </ul>
       </div>
       
@@ -96,6 +100,7 @@
           <li><strong>Streaming support</strong> - File and response streaming</li>
           <li><strong>Memory management</strong> - Efficient buffer handling</li>
           <li><strong>Connection handling</strong> - Keep-alive and timeout management</li>
+          <li><strong>Template caching</strong> - Improved rendering performance</li>
         </ul>
       </div>
       
@@ -109,6 +114,7 @@
           <li><strong>Plugin system</strong> - Extend framework functionality</li>
           <li><strong>Configuration system</strong> - App-wide settings management</li>
           <li><strong>Helper functions</strong> - Custom template helpers</li>
+          <li><strong>Cookie management</strong> - <code>res.cookie()</code> and <code>res.clearCookie()</code></li>
         </ul>
       </div>
 
@@ -121,6 +127,7 @@
           <li><strong>Configuration management</strong> - Plugin-specific settings</li>
           <li><strong>Lifecycle hooks</strong> - Plugin initialization events</li>
           <li><strong>Dependency management</strong> - Plugin interoperability</li>
+          <li><strong>Method injection</strong> - Add custom methods to app instance</li>
         </ul>
       </div>
 
@@ -133,6 +140,7 @@
           <li><strong>Development mode</strong> - Detailed error messages</li>
           <li><strong>Production mode</strong> - User-friendly error pages</li>
           <li><strong>Error logging</strong> - Structured error information</li>
+          <li><strong>Error transformation</strong> - Custom error classes and formatting</li>
         </ul>
       </div>
 
@@ -145,41 +153,22 @@
           <li><strong>Redirect support</strong> - <code>res.redirect()</code> method</li>
           <li><strong>Header manipulation</strong> - <code>res.set()</code> method</li>
           <li><strong>Request information</strong> - URL, protocol, IP address data</li>
-        </ul>
-      </div>
-
-      <div class="feature-card">
-        <h3><i class="fas fa-tools"></i> Development Experience</h3>
-        <ul>
-          <li><strong>Hot reload support</strong> - Development server restarts</li>
-          <li><strong>Debug logging</strong> - Detailed request information</li>
-          <li><strong>Code minification</strong> - Production-ready asset optimization</li>
-          <li><strong>Template caching</strong> - Improved rendering performance</li>
-          <li><strong>Environment detection</strong> - Development vs production modes</li>
-          <li><strong>Comprehensive documentation</strong> - Detailed guides and examples</li>
-        </ul>
-      </div>
-
-      <div class="feature-card">
-        <h3><i class="fas fa-server"></i> Server Management</h3>
-        <ul>
-          <li><strong>Port and host configuration</strong> - Flexible server binding</li>
-          <li><strong>Graceful shutdown</strong> - Connection draining support</li>
-          <li><strong>Process management</strong> - PID file and process signals</li>
-          <li><strong>Health checks</strong> - Application monitoring endpoints</li>
-          <li><strong>Cluster support</strong> - Multi-process application scaling</li>
-          <li><strong>Proxy support</strong> - Behind load balancer configuration</li>
+          <li><strong>Cookie support</strong> - Automatic cookie parsing and setting</li>
         </ul>
       </div>
     </div>
 
-    <h2>Version 8.3.0 Specific Features</h2>
+    <h2>Version 9.3.4 Specific Features</h2>
     <ul>
-      <li><strong>Enhanced Plugin System</strong> - Improved plugin context and options handling</li>
-      <li><strong>Extended Template Helpers</strong> - Additional built-in template functions</li>
-      <li><strong>Improved Error Messages</strong> - More descriptive error reporting</li>
-      <li><strong>Performance Optimizations</strong> - Faster route matching and middleware execution</li>
-      <li><strong>Security Enhancements</strong> - Additional security headers and protections</li>
+      <li><strong>Enhanced Templating Engine</strong> - New <code>&#64;</code> syntax for cleaner templates</li>
+      <li><strong>Cookie Support</strong> - Built-in cookie parsing and management</li>
+      <li><strong>Router Modules</strong> - <code>app.useRouter()</code> for better code organization</li>
+      <li><strong>Template Includes</strong> - <code>&#64;include()</code> directive for partials</li>
+      <li><strong>Variable Declaration</strong> - <code>&#64;var</code> for template-scoped variables</li>
+      <li><strong>Improved Error Handling</strong> - Better stack traces and error messages</li>
+      <li><strong>Enhanced Plugin System</strong> - More integration points and options</li>
+      <li><strong>Performance Optimizations</strong> - Faster routing and template rendering</li>
+      <li><strong>Security Enhancements</strong> - Additional security headers and cookie options</li>
       <li><strong>Extended File Type Support</strong> - Additional MIME type recognitions</li>
       <li><strong>Better Documentation</strong> - Comprehensive guides and examples</li>
     </ul>
@@ -194,8 +183,6 @@
     </div>
   </article>
   
-  {{ #if footer }}
-    {{ footer }}
-  {{/if}}
+  @include('footer.html')
 </body>
 </html>

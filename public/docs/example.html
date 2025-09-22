@@ -12,20 +12,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <meta name="title" content="Novaxjs2 v8.3.0 - Complete Example">
-  <meta name="description" content="Full-featured Novaxjs2 v8.3.0 application example demonstrating all framework features including routing, middleware, templating, file uploads, and more">
-  <meta property="og:title" content="Novaxjs2 v8.3.0 - Complete Example">
-  <meta property="og:description" content="Complete sample application using Novaxjs2 v8.3.0 with all features implemented">
-  <meta property="twitter:title" content="Novaxjs2 v8.3.0 - Complete Example">
-  <meta property="twitter:description" content="Example Novaxjs2 v8.3.0 application with comprehensive feature implementation">
-  <title>Novaxjs2 v8.3.0 docs - Complete Example</title>
+  <meta name="title" content="Novaxjs2 v9.3.4 - Complete Example">
+  <meta name="description" content="Full-featured Novaxjs2 v9.3.4 application example demonstrating all framework features including routing, middleware, templating, file uploads, and more">
+  <meta property="og:title" content="Novaxjs2 v9.3.4 - Complete Example">
+  <meta property="og:description" content="Complete sample application using Novaxjs2 v9.3.4 with all features implemented">
+  <meta property="twitter:title" content="Novaxjs2 v9.3.4 - Complete Example">
+  <meta property="twitter:description" content="Example Novaxjs2 v9.3.4 application with comprehensive feature implementation">
+  <title>Novaxjs2 v9.3.4 docs - Complete Example</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="example">
-    <h1><i class="fas fa-laptop-code"></i> Complete Example (v8.3.0)</h1>
-    <p>A comprehensive Novaxjs2 v8.3.0 application demonstrating all framework features including routing, middleware, templating, file handling, error management, and more.</p>
+    <h1><i class="fas fa-laptop-code"></i> Complete Example (v9.3.4)</h1>
+    <p>A comprehensive Novaxjs2 v9.3.4 application demonstrating all framework features including routing, middleware, templating, file handling, error management, and more.</p>
     
     <h2>Full Application Example</h2>
     <pre><code class="language-javascript">const Nova = require('novaxjs2');
@@ -64,7 +64,7 @@ app.style = `
 `;
 
 app.js = `
-  console.log("Novaxjs2 v8.3.0 App initialized");
+  console.log("Novaxjs2 v9.3.4 App initialized");
   // Client-side functionality
   document.addEventListener('DOMContentLoaded', function() {
     // Example client-side code
@@ -80,7 +80,7 @@ app.useMiddleware((req, res, next) => {
 
 app.useMiddleware((req, res, next) => {
   // Add custom header to all responses
-  res.setHeader('X-Powered-By', 'Novaxjs2 v8.3.0');
+  res.setHeader('X-Powered-By', 'Novaxjs2 v9.3.4');
   next();
 });
 
@@ -291,7 +291,7 @@ app.get('/health', (req, res) => {
     status: 'OK', 
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    version: '8.3.0'
+    version: '9.3.4'
   });
 });
 
@@ -300,7 +300,7 @@ const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
 
 app.at(PORT, HOST, () => {
-  console.log(`🚀 Novaxjs2 v8.3.0 server running on http://${HOST}:${PORT}`);
+  console.log(`🚀 Novaxjs2 v9.3.4 server running on http://${HOST}:${PORT}`);
   console.log(`📚 Documentation available at http://${HOST}:${PORT}/docs`);
   console.log(`🩺 Health check at http://${HOST}:${PORT}/health`);
 });</code></pre>
@@ -329,9 +329,7 @@ app.at(PORT, HOST, () => {
     </div>
   </article>
   
-  {{ #if footer }}
-    {{ footer }}
-  {{/if}}
+  @include('footer.html')
   
   <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
   <script src="/helper.js"></script>

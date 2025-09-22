@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="title" content="Novaxjs2 v8.3.0 - API Reference">
-<meta name="description" content="Complete API documentation for Novaxjs2 v8.3.0 framework methods and properties">
-<meta property="og:title" content="Novaxjs2 v8.3.0 - API Reference">
-<meta property="og:description" content="Detailed API documentation for Novaxjs2 v8.3.0">
-<meta property="twitter:title" content="Novaxjs2 v8.3.0 - API Reference">
-<meta property="twitter:description" content="Comprehensive API docs for Novaxjs2 framework v8.3.0">
+  <meta name="title" content="Novaxjs2 v9.3.4 - API Reference">
+<meta name="description" content="Complete API documentation for Novaxjs2 v9.3.4 framework methods and properties">
+<meta property="og:title" content="Novaxjs2 v9.3.4 - API Reference">
+<meta property="og:description" content="Detailed API documentation for Novaxjs2 v9.3.4">
+<meta property="twitter:title" content="Novaxjs2 v9.3.4 - API Reference">
+<meta property="twitter:description" content="Comprehensive API docs for Novaxjs2 framework v9.3.4">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
@@ -18,14 +18,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 v8.3.0 docs - Api Reference</title>
+  <title>Novaxjs2 v9.3.4 docs - Api Reference</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="api-reference">
-    <h1><i class="fas fa-book"></i> API Reference v8.3.0</h1>
-    <p>Complete documentation of all methods and properties available in Novaxjs2 version 8.3.0.</p>
+    <h1><i class="fas fa-book"></i> API Reference v9.3.4</h1>
+    <p>Complete documentation of all methods and properties available in Novaxjs2 version 9.3.4.</p>
     
     <h2>Core Methods</h2>
     <table class="api-reference">
@@ -76,6 +76,11 @@
           <td><code>init(options)</code></td>
           <td>Initialize app with configuration options</td>
           <td><code>app.init({ staticPath: 'public', minifier: true })</code></td>
+        </tr>
+        <tr>
+          <td><code>useRouter(router)</code></td>
+          <td>Use a router module or function</td>
+          <td><code>app.useRouter(userRouter);<br>app.useRouter(require('./routes/api'));</code></td>
         </tr>
       </tbody>
     </table>
@@ -221,6 +226,11 @@
           <td>Request headers</td>
           <td>Object</td>
         </tr>
+        <tr>
+          <td><code>req.cookies</code></td>
+          <td>Parsed cookies</td>
+          <td>Object</td>
+        </tr>
       </tbody>
     </table>
     
@@ -258,6 +268,16 @@
           <td><code>res.set(headers)</code></td>
           <td>Set multiple headers</td>
           <td><code>res.set({ 'X-Custom': 'value' })</code></td>
+        </tr>
+        <tr>
+          <td><code>res.cookie(name, value, options)</code></td>
+          <td>Set cookie</td>
+          <td><code>res.cookie('token', 'abc123', { maxAge: 900000 })</code></td>
+        </tr>
+        <tr>
+          <td><code>res.clearCookie(name, options)</code></td>
+          <td>Clear cookie</td>
+          <td><code>res.clearCookie('token')</code></td>
         </tr>
         <tr>
           <td><code>res.sendFile(filePath, contentTypeOrRes, res)</code></td>
@@ -345,6 +365,44 @@
         </tr>
       </tbody>
     </table>
+
+    <h2>New in v9.3.4</h2>
+    <table class="api-reference">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>req.cookies</code></td>
+          <td>Automatic cookie parsing</td>
+          <td><code>const token = req.cookies.token;</code></td>
+        </tr>
+        <tr>
+          <td><code>res.cookie()</code></td>
+          <td>Set cookies with options</td>
+          <td><code>res.cookie('user', 'john', { httpOnly: true });</code></td>
+        </tr>
+        <tr>
+          <td><code>res.clearCookie()</code></td>
+          <td>Clear cookies</td>
+          <td><code>res.clearCookie('session');</code></td>
+        </tr>
+        <tr>
+          <td>Enhanced Templating</td>
+          <td>New <code>&#64;</code> syntax for templates</td>
+          <td><code>&#64;if(user) Welcome &#64;user.name! &#64;end</code></td>
+        </tr>
+        <tr>
+          <td>Improved Error Handling</td>
+          <td>Better error messages and stack traces</td>
+          <td><code>app.on(500, (err) => `Error: ${err.message}`);</code></td>
+        </tr>
+      </tbody>
+    </table>
     
     <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
       <a href="/docs/usage" class="btn next">
@@ -356,9 +414,7 @@
     </div>
   </article>
   
-  {{ #if footer }}
-    {{ footer }}
-  {{/if}}
+  @include('footer.html')
   
   <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
 </body>

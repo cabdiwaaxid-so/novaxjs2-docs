@@ -32,26 +32,21 @@
     <pre><code class="language-javascript">function myPlugin(context, options) {
   const { addMethod, addRoute, addMiddleware, setConfig, getConfig } = context;
   
-  // Add new methods to the app instance
   addMethod('greet', function(name) {
     return `Hello ${name}!`;
   });
   
-  // Add custom routes
   addRoute('get', '/plugin-route', (req, res) => {
     return 'This route was added by plugin';
   });
   
-  // Add middleware
   addMiddleware((req, res, next) => {
     console.log('Plugin middleware executed');
     next();
   });
   
-  // Store configuration
   setConfig('apiKey', options.apiKey);
   
-  // Retrieve configuration later
   const apiKey = getConfig('apiKey');
   
   // You can also return values that will be available on the app instance
@@ -210,9 +205,7 @@ app.get('/admin',
     </div>
   </article>
   
-  {{ #if footer }}
-    {{ footer }}
-  {{/if}}
+  @include('footer.html')
   
   <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
   <script src="/helper.js"></script>

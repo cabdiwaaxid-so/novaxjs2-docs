@@ -5,24 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-  <meta name="title" content="Novaxjs2 - Templating Engine">
-  <meta name="description" content="Complete guide to NovaxJS2's powerful templating engine with conditionals, loops, helpers, and advanced features">
-  <meta property="og:title" content="Novaxjs2 - Templating Engine">
-  <meta property="og:description" content="Master NovaxJS2's template rendering with HTML and JavaScript templates">
-  <meta property="twitter:title" content="Novaxjs2 - Templating Engine">
-  <meta property="twitter:description" content="Complete documentation for NovaxJS2 templating system with examples">
+  <meta name="title" content="Novaxjs2 v9.3.4 - Templating Engine">
+  <meta name="description" content="Complete guide to NovaxJS2 v9.3.4's powerful templating engine with conditionals, loops, helpers, and advanced features">
+  <meta property="og:title" content="Novaxjs2 v9.3.4 - Templating Engine">
+  <meta property="og:description" content="Master NovaxJS2 v9.3.4's template rendering with HTML and JavaScript templates">
+  <meta property="twitter:title" content="Novaxjs2 v9.3.4 - Templating Engine">
+  <meta property="twitter:description" content="Complete documentation for NovaxJS2 v9.3.4 templating system with examples">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 Docs - Templating Engine</title>
+  <title>Novaxjs2 v9.3.4 Docs - Templating Engine</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
 <article id="templating">
-  <h1><i class="fas fa-file-code"></i> Templating Engine</h1>
-  <p>Novaxjs2 includes a powerful templating system with two rendering modes: <code>HTML</code> templates with custom syntax and <code>JavaScript</code> templates for maximum flexibility and control.</p>
+  <h1><i class="fas fa-file-code"></i> Templating Engine v9.3.4</h1>
+  <p>Novaxjs2 v9.3.4 includes a powerful templating system with two rendering modes: <code>HTML</code> templates with custom syntax and <code>JavaScript</code> templates for maximum flexibility and control.</p>
 
   <h2>Setting Up Views</h2>
   <pre><code class="language-javascript">
@@ -53,82 +53,119 @@ app.addHelpers({
 });
   </code></pre>
 
-  <h2>HTML Templates</h2>
-  <p>HTML templates use a custom syntax with double curly braces for expressions and special tags for logic.</p>
+  <h2>HTML Templates (New Syntax)</h2>
+  <p>HTML templates use the new <code>&#64;</code> syntax for expressions and special tags for logic.</p>
   
   <h3>Basic Syntax</h3>
   <pre><code class="language-html">&lt;!-- views/home.html --&gt;
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
-  &lt;title&gt;&#123;&#123; title &#125;&#125;&lt;/title&gt;
+  &lt;title&gt;&#64;title&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;h1&gt;&#123;&#123; heading &#125;&#125;&lt;/h1&gt;
-  &lt;p&gt;Current time: &#123;&#123; new Date().toLocaleTimeString() &#125;&#125;&lt;/p&gt;
-  &lt;p&gt;Formatted date: &#123;&#123; formatDate(createdAt) &#125;&#125;&lt;/p&gt;
+  &lt;h1&gt;&#64;heading&lt;/h1&gt;
+  &lt;p&gt;Current time: &#64;{new Date().toLocaleTimeString()}&lt;/p&gt;
+  &lt;p&gt;Formatted date: &#64;formatDate(createdAt)&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
   <h3>Conditional Logic</h3>
   <pre><code class="language-html">&lt;!-- If/Else statements --&gt;
-&#123;&#123;#if user.isAdmin&#125;&#125;
+&#64;if(user.isAdmin)
   &lt;div class="admin-panel"&gt;Admin controls&lt;/div&gt;
-&#123;&#123;#else&#125;&#125;
+&#64;else
   &lt;p&gt;Regular user view&lt;/p&gt;
-&#123;&#123;/if&#125;&#125;
+&#64;end
 
 &lt;!-- Complex conditions --&gt;
-&#123;&#123;#if (user.age >= 18) && (user.status === 'active')&#125;&#125;
+&#64;if((user.age >= 18) && (user.status === 'active'))
   &lt;p&gt;Adult active user&lt;/p&gt;
-&#123;&#123;/if&#125;&#125;
+&#64;end
 
 &lt;!-- Else if --&gt;
-&#123;&#123;#if score >= 90&#125;&#125;
+&#64;if(score >= 90)
   &lt;p&gt;Grade: A&lt;/p&gt;
-&#123;&#123;#elif score >= 80&#125;&#125;
+&#64;elif(score >= 80)
   &lt;p&gt;Grade: B&lt;/p&gt;
-&#123;&#123;#else&#125;&#125;
+&#64;else
   &lt;p&gt;Grade: C&lt;/p&gt;
-&#123;&#123;/if&#125;&#125;</code></pre>
+&#64;end</code></pre>
 
   <h3>Loops</h3>
   <pre><code class="language-html">&lt;!-- Basic loop --&gt;
 &lt;ul&gt;
-  &#123;&#123;#each items&#125;&#125;
-    &lt;li&gt;&#123;&#123; name &#125;&#125; - $&#123;&#123; price &#125;&#125;&lt;/li&gt;
-  &#123;&#123;/each&#125;&#125;
+  &#64;each(items)
+    &lt;li&gt;&#64;name - $&#64;price&lt;/li&gt;
+  &#64;end
 &lt;/ul&gt;
 
 &lt;!-- Accessing array index --&gt;
-&#123;&#123;#each items&#125;&#125;
-  &lt;div class="item-&#123;&#123; index &#125;&#125;"&gt;
-    &lt;h3&gt;&#123;&#123; name &#125;&#125;&lt;/h3&gt;
-    &lt;p&gt;Position: &#123;&#123; index &#125;&#125; of &#123;&#123; this.length &#125;&#125;&lt;/p&gt;
+&#64;each(items)
+  &lt;div class="item-&#64;index"&gt;
+    &lt;h3&gt;&#64;name&lt;/h3&gt;
+    &lt;p&gt;Position: &#64;index of &#64;{this.length}&lt;/p&gt;
   &lt;/div&gt;
-&#123;&#123;/each&#125;&#125;
+&#64;end
 
 &lt;!-- Accessing array items by index --&gt;
-&#123;&#123;#each items&#125;&#125;
-  &lt;p&gt;Next item: &#123;&#123; this[index+1]?.name &#125;&#125;&lt;/p&gt;
-&#123;&#123;/each&#125;&#125;</code></pre>
+&#64;each(items)
+  &lt;p&gt;Next item: &#64;{this[index+1]?.name}&lt;/p&gt;
+&#64;end</code></pre>
 
   <h3>Nested Data & Object Access</h3>
   <pre><code class="language-html">&lt;!-- Nested object access --&gt;
-&lt;p&gt;Shipping to: &#123;&#123; user.address.city &#125;&#125;, &#123;&#123; user.address.country &#125;&#125;&lt;/p&gt;
+&lt;p&gt;Shipping to: &#64;user.address.city, &#64;user.address.country&lt;/p&gt;
 
 &lt;!-- Array access --&gt;
-&lt;p&gt;First item: &#123;&#123; items[0].name &#125;&#125;&lt;/p&gt;
+&lt;p&gt;First item: &#64;{items[0].name}&lt;/p&gt;
 
 &lt;!-- JSON output --&gt;
 &lt;script&gt;
-  const userData = &#123;&#123; JSON.stringify(user) &#125;&#125;;
+  const userData = &#64;{JSON.stringify(user)};
 &lt;/script&gt;
 
 &lt;!-- Using helpers --&gt;
-&lt;p&gt;Price: &#123;&#123; currency(product.price) &#125;&#125;&lt;/p&gt;
-&lt;p&gt;&#123;&#123; truncate(description, 100) &#125;&#125;&lt;/p&gt;
-&lt;p&gt;&#123;&#123; pluralize(items.length, 'item', 'items') &#125;&#125;&lt;/p&gt;</code></pre>
+&lt;p&gt;Price: &#64;currency(product.price)&lt;/p&gt;
+&lt;p&gt;&#64;truncate(description, 100)&lt;/p&gt;
+&lt;p&gt;&#64;pluralize(items.length, 'item', 'items')&lt;/p&gt;</code></pre>
+
+  <h3>Variable Declaration</h3>
+  <pre><code class="language-html">&lt;!-- Declare variables --&gt;
+&#64;var fullName = user.firstName + ' ' + user.lastName
+&#64;var discount = user.isPremium ? 0.2 : 0.1
+
+&lt;p&gt;Welcome, &#64;fullName!&lt;/p&gt;
+&lt;p&gt;Your discount: &#64;{discount * 100}%&lt;/p&gt;
+
+&lt;!-- Object destructuring --&gt;
+&#64;var {city, country} = user.address
+&lt;p&gt;Location: &#64;city, &#64;country&lt;/p&gt;
+
+&lt;!-- Array destructuring --&gt;
+&#64;var [firstItem, secondItem] = items
+&lt;p&gt;First: &#64;firstItem.name, Second: &#64;secondItem.name&lt;/p&gt;</code></pre>
+
+  <h3>Template Includes</h3>
+  <pre><code class="language-html">&lt;!-- Include other templates --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;&#64;title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &#64;include('header.html', { user: user })
+  
+  &lt;main&gt;
+    &#64;include('content.html', { 
+      content: pageContent, 
+      sidebar: true 
+    })
+  &lt;/main&gt;
+  
+  &#64;include('footer.html')
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
 
   <h2>JavaScript Templates (CommonJS style)</h2>
   <p>For more complex logic, you can use JavaScript templates that export a function or string:</p>
@@ -218,7 +255,7 @@ app.get('/api/user/:id', async (req, res) => {
   return res.render('user-profile', { user });
 });</code></pre>
 
-  <h2>Template Reference</h2>
+  <h2>Template Reference (New Syntax)</h2>
   <table class="api-reference">
     <thead>
       <tr>
@@ -230,43 +267,53 @@ app.get('/api/user/:id', async (req, res) => {
     <tbody>
       <tr>
         <td>Variables</td>
-        <td><code>&#123;&#123; variable &#125;&#125;</code></td>
+        <td><code>&#64;variable</code></td>
         <td>Output variable value</td>
       </tr>
       <tr>
         <td>Expressions</td>
-        <td><code>&#123;&#123; user.name &#125;&#125;</code><br><code>&#123;&#123; items[0].price &#125;&#125;</code></td>
-        <td>JavaScript-like expressions</td>
+        <td><code>&#64;{expression}</code></td>
+        <td>JavaScript expressions</td>
       </tr>
       <tr>
         <td>Conditionals</td>
-        <td><code>&#123;&#123;#if condition&#125;&#125;...&#123;&#123;/if&#125;&#125;</code></td>
+        <td><code>&#64;if(condition)...&#64;end</code></td>
         <td>Conditional rendering</td>
       </tr>
       <tr>
         <td>Else/Elif</td>
-        <td><code>&#123;&#123;#else&#125;&#125;</code><br><code>&#123;&#123;#elif condition&#125;&#125;</code></td>
+        <td><code>&#64;else</code><br><code>&#64;elif(condition)</code></td>
         <td>Else clauses for conditionals</td>
       </tr>
       <tr>
         <td>Loops</td>
-        <td><code>&#123;&#123;#each array&#125;&#125;...&#123;&#123;/each&#125;&#125;</code></td>
+        <td><code>&#64;each(array)...&#64;end</code></td>
         <td>Iterate over arrays with <code>index</code> available</td>
       </tr>
       <tr>
         <td>Array Access</td>
-        <td><code>&#123;&#123; this[index] &#125;&#125;</code></td>
+        <td><code>&#64;{this[index]}</code></td>
         <td>Access array items by index in loops</td>
       </tr>
       <tr>
         <td>JSON Output</td>
-        <td><code>&#123;&#123; JSON.stringify(data) &#125;&#125;</code></td>
+        <td><code>&#64;{JSON.stringify(data)}</code></td>
         <td>Convert objects to JSON</td>
       </tr>
       <tr>
         <td>Helpers</td>
-        <td><code>&#123;&#123; helperName(arg) &#125;&#125;</code></td>
+        <td><code>&#64;helperName(arg)</code></td>
         <td>Use custom helper functions</td>
+      </tr>
+      <tr>
+        <td>Variable Declaration</td>
+        <td><code>&#64;var name = value</code></td>
+        <td>Declare template variables</td>
+      </tr>
+      <tr>
+        <td>Template Includes</td>
+        <td><code>&#64;include('template.html', data)</code></td>
+        <td>Include other templates</td>
       </tr>
       <tr>
         <td>JavaScript</td>
@@ -318,6 +365,18 @@ module.exports = async function(data) {
   return baseTemplate(data, pageContent);
 };</code></pre>
 
+  <h2>What's New in v9.3.4 Templating</h2>
+  <ul>
+    <li>New <code>&#64;</code> syntax for cleaner template expressions</li>
+    <li>Variable declaration with <code>&#64;var</code></li>
+    <li>Template includes with <code>&#64;include</code></li>
+    <li>Object and array destructuring support</li>
+    <li>Improved performance for template rendering</li>
+    <li>Enhanced error handling in template compilation</li>
+    <li>Better support for async helpers</li>
+    <li>Improved documentation and examples</li>
+  </ul>
+
   <div class="nav-buttons" style="margin-top: 2rem; display: flex; justify-content: space-between;">
     <a href="/docs/middleware" class="btn next">
       <i class="fas fa-arrow-left"></i> Prev: Middleware
@@ -328,9 +387,8 @@ module.exports = async function(data) {
   </div>
 </article>
 
-  {{ #if footer }}
-    {{ footer }}
-  {{/if }}
+@include('footer.html')
+
 <script>
   document.querySelectorAll('pre code').forEach((block) => {
     hljs.highlightBlock(block);

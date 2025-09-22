@@ -7,27 +7,27 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
   <script src="https://ace.c9.io/build/src-noconflict/ace.js"></script>
   <script src="https://ace.c9.io/build/src-noconflict/ext-language_tools.js"></script>
-  <meta name="title" content="Novaxjs2 v8.3.0 - Basic Usage">
-  <meta name="description" content="Learn how to create routes, handle requests and build applications with Novaxjs2 v8.3.0">
-  <meta property="og:title" content="Novaxjs2 v8.3.0 - Basic Usage">
+  <meta name="title" content="Novaxjs2 v9.3.4 - Basic Usage">
+  <meta name="description" content="Learn how to create routes, handle requests and build applications with Novaxjs2 v9.3.4">
+  <meta property="og:title" content="Novaxjs2 v9.3.4 - Basic Usage">
   <meta property="og:description" content="Getting started with Novaxjs2 framework basics including view engines, file uploads, and advanced routing">
-  <meta property="twitter:title" content="Novaxjs2 v8.3.0 - Basic Usage">
+  <meta property="twitter:title" content="Novaxjs2 v9.3.4 - Basic Usage">
   <meta property="twitter:description" content="Fundamentals of using Novaxjs2 with enhanced features">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.1/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.2/ace.js"></script>
   <link rel="icon" href="/logo.png">
-  <title>Novaxjs2 v8.3.0 docs - Basic Usage</title>
+  <title>Novaxjs2 v9.3.4 docs - Basic Usage</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   
   <article id="usage">
-    <h1><i class="fas fa-code"></i> Basic Usage - Novaxjs2 v8.3.0</h1>
+    <h1><i class="fas fa-code"></i> Basic Usage - Novaxjs2 v9.3.4</h1>
     
     <div class="feature-highlights">
-      <h3>New in v8.3.0:</h3>
+      <h3>New in v9.3.4:</h3>
       <ul>
         <li>Enhanced view engine support with Novax templates</li>
         <li>Advanced file upload handling with configurable options</li>
@@ -44,7 +44,7 @@ const app = new Nova();
 
 // Define routes
 app.get('/', (req, res) => {
-    return '&lt;h1&gt;Welcome to Novaxjs2 v8.3.0!&lt;/h1&gt;';
+    return '&lt;h1&gt;Welcome to Novaxjs2 v9.3.4!&lt;/h1&gt;';
 });
 
 // Start server
@@ -134,6 +134,48 @@ app.group('/api/v1', (api) => {
     });
   });
 });</code></pre>
+
+<h2>Router Usage Examples</h2>
+    <pre><code class="language-javascript">// Modular router approach
+// routes/users.js
+const novax = require('novaxjs2');
+
+module.exports = (app) => {
+  app.get('/users', (req, res) => {
+    res.json({ users: [] });
+  });
+  
+  app.post('/users', (req, res) => {
+    res.json({ created: true });
+  });
+};
+
+// Main app.js
+const app = new novax();
+app.useRouter(require('./routes/users'));
+
+// Router object approach
+const apiRouter = {
+  '/users': {
+    get: (req, res) => res.json({ users: [] }),
+    post: (req, res) => res.json({ created: true })
+  },
+  '/posts': {
+    get: (req, res) => res.json({ posts: [] })
+  }
+};
+
+app.useRouter(apiRouter);
+
+// Function router with middleware
+function createApiRouter(app) {
+  app.group('/api', ({ get, post }) => {
+    get('/users', getUserHandler);
+    post('/users', createUserHandler);
+  });
+}
+
+app.useRouter(createApiRouter);</code></pre>
     
     <h2>Middleware</h2>
     <pre><code class="language-javascript">// Custom middleware
@@ -219,9 +261,7 @@ app.usePlugin(myPlugin, { prefix: '/api' });</code></pre>
 
   </article>
   
-  {{ #if footer }}
-    {{ footer }}
-  {{/if}}
+  @include('footer.html')
   
   <script>document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});</script>
   <script src="/helper.js"></script>
