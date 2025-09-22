@@ -151,7 +151,7 @@
           <div class="bar3"></div>
         </div>
         <div id="down">
-          <p>Novaxjs2 <span class="version-badge">v8.3.0</span></p>
+          <p>Novaxjs2 <span class="version-badge">v9.3.4</span></p>
           <a href="/docs/about"><i class="fas fa-info-circle"></i> About</a>
           <a href="/docs/installation"><i class="fas fa-download"></i> Installation</a>
           <a href="/docs/features"><i class="fas fa-star"></i> Features</a>
@@ -177,7 +177,7 @@
       <!-- Hero Section -->
       <section class="hero">
         <div class="hero-content">
-          <h1>Build Faster with Novaxjs2 <span class="version-badge">v8.3.0</span></h1>
+          <h1>Build Faster with Novaxjs2 <span class="version-badge">v9.3.4</span></h1>
           <p class="subtitle">The lightweight Node.js framework for modern web applications</p>
           <div class="hero-buttons">
             <a href="/docs/installation" class="btn primary">
@@ -198,6 +198,12 @@ const app = new Nova();
 // Simple route
 app.get('/', (req, res) => {
   res.send('Hello World!');
+});
+
+// Cookie example
+app.get('/set-cookie', (req, res) => {
+  res.cookie('user', 'john', { maxAge: 900000, httpOnly: true });
+  res.send('Cookie set!');
 });
 
 // Start server
@@ -224,7 +230,7 @@ app.at(3000, () => {
           <div class="feature-card">
             <i class="fas fa-shield-alt"></i>
             <h3>Secure</h3>
-            <p>Built-in CORS, file upload validation, and protection against common web vulnerabilities</p>
+            <p>Built-in CORS, file upload validation, cookie security, and protection against common web vulnerabilities</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-code"></i>
@@ -239,12 +245,12 @@ app.at(3000, () => {
           <div class="feature-card">
             <i class="fas fa-file-code"></i>
             <h3>Templating Engine</h3>
-            <p>Powerful built-in templating with HTML and JavaScript templates, conditionals, loops, and helpers</p>
+            <p>Powerful built-in templating with new &#64; syntax, includes, variables, and custom helpers</p>
           </div>
           <div class="feature-card">
-            <i class="fas fa-cogs"></i>
-            <h3>Middleware Support</h3>
-            <p>Flexible middleware system with error handling middleware and route-specific middleware</p>
+            <i class="fas fa-cookie"></i>
+            <h3>Cookie Support</h3>
+            <p>Built-in cookie parsing and management with secure cookie options and automatic parsing</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-bolt"></i>
@@ -298,7 +304,7 @@ const posts = [
   }
 ];
 
-// Using built-in engine
+// Using built-in engine with new syntax
 app.setViewEngine('novax', {
   viewsPath: 'views',
   viewsType: 'html'
@@ -307,6 +313,17 @@ app.setViewEngine('novax', {
 app.get('/', async (req, res) => {
   const html = await app.render('home', { posts });
   res.send(html);
+});
+
+// Cookie example
+app.get('/profile', (req, res) => {
+  const userToken = req.cookies.token;
+  if (userToken) {
+    res.send('Welcome back!');
+  } else {
+    res.cookie('token', 'guest-session', { maxAge: 3600000 });
+    res.send('Welcome new user! Cookie set.');
+  }
 });
 
 app.at(3000, () => console.log('Server is running on port 3000'));</code></pre>
@@ -363,13 +380,13 @@ app.at(3000, () => console.log('Server is running on port 3000'));</code></pre>
 &lt;body&gt;
     &lt;h1&gt;📌 My First Novax App&lt;/h1&gt;
   &lt;ul&gt;
-    {{#each posts}}
+    &#64;each(posts)
       &lt;li&gt;
-        &lt;h2&gt;{{title}}&lt;/h2&gt;
-        &lt;p&gt;{{content}}&lt;/p&gt;
-        &lt;small&gt;By {{author}} - {{createdAt}}&lt;/small&gt;
+        &lt;h2&gt;&#64;title&lt;/h2&gt;
+        &lt;p&gt;&#64;content&lt;/p&gt;
+        &lt;small&gt;By &#64;author - &#64;createdAt&lt;/small&gt;
       &lt;/li&gt;
-    {{/each}}
+    &#64;end
   &lt;/ul&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -419,46 +436,61 @@ app.post('/upload', (req, res) => {
   });
 });
 
-// Group routes
-app.group('/api', (api) => {
-  api.get('/users', (req, res) => {
-    return { users: [{ id: 1, name: 'John' }] };
+// Cookie management example
+app.get('/login', (req, res) => {
+  res.cookie('session', 'user-123', { 
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production'
   });
-  
-  api.post('/users', (req, res) => {
-    return { message: 'User created', user: req.body };
-  });
+  res.send('Logged in successfully!');
 });
+
+app.get('/logout', (req, res) => {
+  res.clearCookie('session');
+  res.send('Logged out successfully!');
+});
+
+// Group routes with router modules
+const apiRouter = {
+  '/users': {
+    get: (req, res) => res.json({ users: [{ id: 1, name: 'John' }] }),
+    post: (req, res) => res.json({ message: 'User created', user: req.body })
+  },
+  '/posts': {
+    get: (req, res) => res.json({ posts: [] })
+  }
+};
+
+app.useRouter(apiRouter);
 
 // Start server with custom host
 app.at(3000, '0.0.0.0', () => {
   console.log('Server running on http://0.0.0.0:3000');
 });</code></pre>
+
+      <h3>New in v9.3.4</h3>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4><i class="fas fa-cookie"></i> Cookie Support</h4>
+          <p>Automatic cookie parsing with <code>req.cookies</code> and secure cookie management</p>
+        </div>
+        <div class="feature-card">
+          <h4><i class="fas fa-code"></i> New Template Syntax</h4>
+          <p>Cleaner <code>&#64;</code> syntax with <code>&#64;if</code>, <code>&#64;each</code>, <code>&#64;var</code>, and <code>&#64;include</code></p>
+        </div>
+        <div class="feature-card">
+          <h4><i class="fas fa-plug"></i> Router Modules</h4>
+          <p>Better code organization with <code>app.useRouter()</code> for modular applications</p>
+        </div>
+        <div class="feature-card">
+          <h4><i class="fas fa-bolt"></i> Performance</h4>
+          <p>Faster routing, improved template rendering, and better memory management</p>
+        </div>
+      </div>
       </section>
       
-      <div id="footer">
-  <div class="social-links">
-    <a href="https://www.facebook.com/share/14g2SMPvD3/" title="Facebook">
-    <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://x.com/CabdiWaaxi100" title="Twitter">
-    <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://github.com/cabdiwaaxid-so" title="GitHub">
-    <i class="fab fa-github"></i>
-        </a>
-        <a href="https://www.npmjs.com/package/novaxjs2" title="NPM">
-    <i class="fab fa-npm"></i>
-        </a>
-        <a href="https://www.whoappsomali.site/profile/novaxjs2" title="Whoapp Somali">
-          <i class="fa-solid fa-w"></i>
-        </a>
-  </div>
-  <p>&copy; 2025 Novaxjs2. All rights reserved.</p>
-  <p>Version 8.3.0</p>
-  <p>Created by <code>Cabdi Waaxid Siciid</code></p>
-  <p>Last updated: August, 21, 2025</p>
-</div>
+      @include('footer.html')
     </div>
   </div>
 
